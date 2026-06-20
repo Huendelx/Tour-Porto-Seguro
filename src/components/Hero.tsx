@@ -2,19 +2,14 @@ import { MapPin, Star } from "@phosphor-icons/react/dist/ssr";
 
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: "linear-gradient(160deg, var(--tps-ocean) 0%, var(--tps-ocean-light) 40%, #0cc 100%)" }}
-    >
-      {/* decorative circles */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image */}
       <div
-        className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-20"
-        style={{ background: "radial-gradient(circle, var(--tps-sand) 0%, transparent 70%)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/hero-bg.webp')" }}
       />
-      <div
-        className="absolute top-20 -left-20 w-[300px] h-[300px] rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, white 0%, transparent 70%)" }}
-      />
+      {/* Dark overlay so o texto fica legível */}
+      <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-5 text-center text-white">
         <div
@@ -66,13 +61,6 @@ export default function Hero() {
           <span className="opacity-40">·</span>
           <span className="opacity-80 text-sm">Guias licenciados CADASTUR</span>
         </div>
-      </div>
-
-      {/* wave bottom */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path d="M0 80L60 68C120 56 240 32 360 24C480 16 600 24 720 32C840 40 960 48 1080 44C1200 40 1320 24 1380 16L1440 8V80H0Z" fill="#fdfaf5" />
-        </svg>
       </div>
     </section>
   );
