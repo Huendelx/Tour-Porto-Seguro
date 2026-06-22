@@ -90,7 +90,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="mt-8 animate-slide-in-2">
             <a
               href="#"
-              className="flex items-center justify-center w-full py-4 bg-[#041610] text-white rounded-lg text-lg font-medium hover:bg-[#041610]/90 transition-colors"
+              className="flex items-center justify-center w-full py-4 bg-[#1a1a1a] text-white rounded-lg text-lg font-medium hover:bg-black/80 transition-colors"
             >
               Entrar
             </a>
