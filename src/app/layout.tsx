@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="h-full">
       <head>
-        <meta name="theme-color" content="#0f4d66" />
+        <meta name="theme-color" content="#ffffff" />
       </head>
       <body className="min-h-full flex flex-col">
         <Header />
