@@ -3,9 +3,15 @@ import TourSearchBar from "./TourSearchBar";
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center overflow-hidden pt-14">
+      {/* Mobile */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center md:hidden"
         style={{ backgroundImage: "url('/hero-bg.webp')" }}
+      />
+      {/* Desktop */}
+      <div
+        className="absolute inset-0 bg-cover bg-center hidden md:block"
+        style={{ backgroundImage: "url('/hero-bg-desktop.webp')" }}
       />
 
       <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-24 mb-auto">
