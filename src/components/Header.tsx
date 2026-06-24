@@ -130,7 +130,7 @@ export default function Header() {
               <Image src="/logo-pts.svg" alt="Tour Porto Seguro" fill className="object-contain" priority />
             </div>
             <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
-              TPS
+              Passeador
             </span>
           </div>
 
