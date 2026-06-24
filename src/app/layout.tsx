@@ -4,10 +4,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Tour Porto Seguro — Passeios na Costa do Descobrimento",
+  title: "Passeador — Passeios e experiências em Porto Seguro",
   description:
-    "Passeios exclusivos em Porto Seguro, Arraial d'Ajuda, Trancoso, Caraíva e região. Guias licenciados CADASTUR. Reserve pelo WhatsApp.",
-  keywords: ["passeios porto seguro", "turismo bahia", "arraial d'ajuda", "trancoso", "recife de fora"],
+    "Passeios e experiências com quem conhece de verdade. Porto Seguro, Arraial d'Ajuda, Trancoso, Caraíva e região. Guias licenciados CADASTUR.",
+  keywords: ["passeios porto seguro", "turismo bahia", "arraial d'ajuda", "trancoso", "passeador"],
 };
 
 export default function RootLayout({

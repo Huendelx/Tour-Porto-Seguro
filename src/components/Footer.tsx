@@ -6,10 +6,10 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 font-bold" style={{ color: "var(--tps-ocean)" }}>
           <Anchor size={20} weight="fill" />
-          Tour Porto Seguro
+          Passeador
         </div>
         <p className="text-xs" style={{ color: "var(--tps-gray)" }}>
-          © {new Date().getFullYear()} Tour Porto Seguro · CADASTUR registrado · Porto Seguro, BA
+          © {new Date().getFullYear()} Passeador · CADASTUR registrado · Porto Seguro, BA
         </p>
       </div>
     </footer>

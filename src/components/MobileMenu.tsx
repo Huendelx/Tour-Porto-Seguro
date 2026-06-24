@@ -95,7 +95,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               Entrar
             </a>
             <p className="text-center text-[#041610]/60 text-xs mt-6">
-              &copy; 2026 Tour Porto Seguro
+              &copy; 2026 Passeador
             </p>
           </div>
         </div>

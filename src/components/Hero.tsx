@@ -9,13 +9,13 @@ export default function Hero() {
       />
 
       <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-24 mb-auto">
-        <h1 className="text-4xl md:text-5xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
-          Explore Porto Seguro
+        <h1 className="text-4xl md:text-6xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
+          Passeie pelo Brasil
         </h1>
-        <TourSearchBar />
-        <p className="text-sm text-white/75 text-center max-w-md">
-          Passeios exclusivos em Porto Seguro e região. Do recife de corais às vilas históricas, cada experiência é inesquecível.
+        <p className="text-sm text-white/75 text-center max-w-md -mt-4">
+          Passeios e experiências com guias locais certificados.
         </p>
+        <TourSearchBar />
       </div>
     </section>
   );

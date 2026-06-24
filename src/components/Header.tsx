@@ -127,7 +127,7 @@ export default function Header() {
                   : "none"
               }}
             >
-              <Image src="/logo-pts.svg" alt="Tour Porto Seguro" fill className="object-contain" priority />
+              <Image src="/logo-passeador.svg" alt="Passeador" fill className="object-contain" priority />
             </div>
             <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
               Passeador
