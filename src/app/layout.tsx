@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description:
     "Passeios e experiências com quem conhece de verdade. Porto Seguro, Arraial d'Ajuda, Trancoso, Caraíva e região. Guias licenciados CADASTUR.",
   keywords: ["passeios porto seguro", "turismo bahia", "arraial d'ajuda", "trancoso", "passeador"],
+  themeColor: "#072d40",
 };
 
 export default function RootLayout({
