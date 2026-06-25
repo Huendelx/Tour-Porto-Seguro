@@ -62,6 +62,36 @@ html {
   opacity: 0;
 }
 
+/* ── Reviews carousel ── */
+@keyframes reviewsScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.reviews-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: reviewsScroll 36s linear infinite;
+}
+
+.reviews-track:hover {
+  animation-play-state: paused;
+}
+
+.reviews-carousel-wrap {
+  overflow: hidden;
+}
+
+.reviews-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .reviews-carousel-wrap { display: none; }
+  .reviews-mobile { display: block; }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

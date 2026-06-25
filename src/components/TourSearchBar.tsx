@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 // ─── ICONS ───
 const SearchIcon = () => (
@@ -405,23 +406,31 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
       <button
         onClick={() => { setOpen(true); setActiveStep("onde"); }}
         style={{
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-          width: "100%", background: "#fff", border: "1px solid #eee", borderRadius: 40,
-          padding: "16px 24px", cursor: "pointer",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          width: "85%", background: "#fff", border: "none", borderRadius: 60,
+          padding: "8px 8px 8px 24px", cursor: "pointer",
+          boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
         }}
       >
-        <span style={{ color: "#111", display: "flex" }}><SearchIcon /></span>
-        <span style={{ fontSize: 15, fontWeight: 500, color: "#555" }}>
+        <span style={{ fontSize: 16, fontWeight: 400, color: "#111" }}>
           {summaryText || "Pesquisar passeios"}
+        </span>
+        <span style={{
+          width: 48, height: 48, borderRadius: "50%", background: "#111",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          flexShrink: 0, color: "#fff",
+        }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+          </svg>
         </span>
       </button>
     );
   }
 
   if (subPage === "destinos") {
-    return (
-      <div style={{ position: "fixed", inset: 0, background: "#fff", zIndex: 1000, display: "flex", flexDirection: "column" }}>
+    return createPortal(
+      <div style={{ position: "fixed", inset: 0, background: "#fff", zIndex: 9999, display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "16px 16px 0" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, border: "2px solid #111", borderRadius: 12, padding: "12px 16px" }}>
             <button onClick={() => setSubPage(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#111", padding: 0, display: "flex" }}>
@@ -437,12 +446,13 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         <div style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
           <DestinosList onSelect={(d) => { setDestino(d); setSubPage(null); setActiveStep("quando"); }} />
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "#f7f7f7", zIndex: 1000, display: "flex", flexDirection: "column" }}>
+  return createPortal(
+    <div style={{ position: "fixed", inset: 0, background: "#f7f7f7", zIndex: 9999, display: "flex", flexDirection: "column" }}>
       <div style={{ display: "flex", justifyContent: "flex-end", padding: "16px 16px 8px" }}>
         <button
           onClick={() => setOpen(false)}
@@ -544,7 +554,8 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
           <SearchIcon /> Buscar
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
