@@ -148,7 +148,7 @@ export default function Header() {
               className={`px-3 py-2 ${linkCls}`}
               onMouseEnter={() => setPasseiosOpen(false)}
             >
-              Restaurantes
+              Promoções
             </a>
           </div>
 
