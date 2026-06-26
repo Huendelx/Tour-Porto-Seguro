@@ -18,8 +18,8 @@ export default function Hero() {
         <h1 className="text-4xl md:text-6xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
           Passeie pelo Brasil
         </h1>
-        <p className="text-sm text-white/75 text-center max-w-md -mt-4">
-          Passeios e experiências com guias locais certificados.
+        <p className="text-sm text-white/75 text-center max-w-[17rem] md:max-w-md -mt-4">
+          Passeios e experiências exclusivas com guias locais certificados.
         </p>
         <TourSearchBar />
       </div>
