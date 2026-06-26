@@ -1,8 +1,8 @@
 const experiences = [
-  { name: "Recife de Fora — Snorkeling", operator: "Mar Aberto Turismo", cat: "Náutico", rating: 4.9, reviews: 128, price: 95, duration: "4h", badge: "Mais reservado" },
-  { name: "Arraial d'Ajuda e Trancoso", operator: "Costa Sul Passeios", cat: "Terrestre", rating: 4.8, reviews: 94, price: 120, duration: "Dia inteiro", badge: null },
-  { name: "Coroa Vermelha — História e Praia", operator: "Raízes do Descobrimento", cat: "Cultural", rating: 4.7, reviews: 67, price: 65, duration: "Meio dia", badge: null },
-  { name: "Caraíva — Aldeia Mágica", operator: "Caraíva Explorer", cat: "Aventura", rating: 4.9, reviews: 156, price: 150, duration: "Dia inteiro", badge: "Imperdível" },
+  { name: "Recife de Fora — Snorkeling", operator: "Mar Aberto Turismo", cat: "Náutico", rating: 4.9, reviews: 128, price: 95, duration: "4h", badge: "Mais reservado", image: "/images/recife.jpg" },
+  { name: "Arraial d'Ajuda e Trancoso", operator: "Costa Sul Passeios", cat: "Terrestre", rating: 4.8, reviews: 94, price: 120, duration: "Dia inteiro", badge: null, image: "/images/arraial.jpg" },
+  { name: "Coroa Vermelha — História e Praia", operator: "Raízes do Descobrimento", cat: "Cultural", rating: 4.7, reviews: 67, price: 65, duration: "Meio dia", badge: null, image: "/images/coroa.jpg" },
+  { name: "Caraíva — Aldeia Mágica", operator: "Caraíva Explorer", cat: "Aventura", rating: 4.9, reviews: 156, price: 150, duration: "Dia inteiro", badge: "Imperdível", image: "/images/caraiva.jpg" },
 ];
 
 export default function ExperienciasSection() {
@@ -23,8 +23,9 @@ export default function ExperienciasSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {experiences.map((exp, i) => (
-            <div key={i} className="bg-white rounded-xl overflow-hidden border border-[#eee] cursor-pointer hover:shadow-md transition-shadow">
-              <div className="h-[200px] bg-[#e0e0e0] relative">
+            <div key={i} className="bg-white rounded-xl overflow-hidden border border-[#eee] cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="h-[200px] bg-[#e0e0e0] relative overflow-hidden">
+                <img src={exp.image} alt={exp.name} className="absolute inset-0 w-full h-full object-cover" />
                 {exp.badge && (
                   <span className="absolute top-3 left-3 bg-[#111] text-white text-[11px] font-semibold px-3 py-1 rounded-full">
                     {exp.badge}

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { Navigation, CalendarDays, Users } from "lucide-react";
 
 // ─── ICONS ───
 const SearchIcon = () => (
@@ -91,7 +92,7 @@ function Calendar({ selected, onSelect, monthsToShow = 1 }: { selected: Date | n
 
   const canGoPrev = startYear > today.getFullYear() || (startYear === today.getFullYear() && startMonth > today.getMonth());
 
-  const renderMonth = (offset: number) => {
+  const renderMonth = (offset: number, totalMonths: number) => {
     let m = startMonth + offset;
     let y = startYear;
     if (m > 11) { m -= 12; y += 1; }
@@ -109,10 +110,29 @@ function Calendar({ selected, onSelect, monthsToShow = 1 }: { selected: Date | n
     const isSel = (d: number | null) =>
       !!selected && !!d && selected.getDate() === d && selected.getMonth() === m && selected.getFullYear() === y;
 
+    const isFirst = offset === 0;
+    const isLast = offset === totalMonths - 1;
+
     return (
       <div key={`${y}-${m}`} style={{ flex: 1 }}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: "#111", marginBottom: 16 }}>
-          {MONTHS_PT[m]} {y}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <button
+            onClick={() => {
+              if (!isFirst || !canGoPrev) return;
+              if (startMonth === 0) { setStartMonth(11); setStartYear(startYear - 1); }
+              else setStartMonth(startMonth - 1);
+            }}
+            style={{ background: "none", border: "none", fontSize: 20, cursor: isFirst && canGoPrev ? "pointer" : "default", opacity: isFirst && canGoPrev ? 1 : 0, color: "#111", padding: "0 8px", lineHeight: 1 }}
+          >‹</button>
+          <span style={{ fontSize: 15, fontWeight: 600, color: "#111" }}>{MONTHS_PT[m]} {y}</span>
+          <button
+            onClick={() => {
+              if (!isLast) return;
+              if (startMonth === 11) { setStartMonth(0); setStartYear(startYear + 1); }
+              else setStartMonth(startMonth + 1);
+            }}
+            style={{ background: "none", border: "none", fontSize: 20, cursor: isLast ? "pointer" : "default", opacity: isLast ? 1 : 0, color: "#111", padding: "0 8px", lineHeight: 1 }}
+          >›</button>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2, textAlign: "center" }}>
           {DAYS_PT.map((d, i) => (
@@ -146,27 +166,8 @@ function Calendar({ selected, onSelect, monthsToShow = 1 }: { selected: Date | n
   };
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <button
-          onClick={() => {
-            if (!canGoPrev) return;
-            if (startMonth === 0) { setStartMonth(11); setStartYear(startYear - 1); }
-            else setStartMonth(startMonth - 1);
-          }}
-          style={{ background: "none", border: "none", fontSize: 20, cursor: canGoPrev ? "pointer" : "default", opacity: canGoPrev ? 1 : 0.2, color: "#111", padding: "4px 8px" }}
-        >‹</button>
-        <button
-          onClick={() => {
-            if (startMonth === 11) { setStartMonth(0); setStartYear(startYear + 1); }
-            else setStartMonth(startMonth + 1);
-          }}
-          style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#111", padding: "4px 8px" }}
-        >›</button>
-      </div>
-      <div style={{ display: "flex", gap: 32 }}>
-        {Array.from({ length: monthsToShow }).map((_, i) => renderMonth(i))}
-      </div>
+    <div style={{ display: "flex", gap: 32 }}>
+      {Array.from({ length: monthsToShow }).map((_, i) => renderMonth(i, monthsToShow))}
     </div>
   );
 }
@@ -401,6 +402,24 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
     setActiveStep("onde"); setSubPage(null);
   };
 
+  const shortDate = date
+    ? `${String(date.getDate()).padStart(2,"0")}/${String(date.getMonth()+1).padStart(2,"0")}`
+    : null;
+  const guestCount = adults + kids;
+  const hasValues = destino || date;
+
+  const ArrowBtn = () => (
+    <span style={{
+      width: 48, height: 48, borderRadius: "50%", background: "#111",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      flexShrink: 0, color: "#fff",
+    }}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+      </svg>
+    </span>
+  );
+
   if (!open) {
     return (
       <button
@@ -408,22 +427,35 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
           width: "85%", background: "#fff", border: "none", borderRadius: 60,
-          padding: "8px 8px 8px 24px", cursor: "pointer",
+          padding: "8px 8px 8px 20px", cursor: "pointer",
           boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
         }}
       >
-        <span style={{ fontSize: 16, fontWeight: 400, color: "#111" }}>
-          {summaryText || "Pesquisar passeios"}
-        </span>
-        <span style={{
-          width: 48, height: 48, borderRadius: "50%", background: "#111",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0, color: "#fff",
-        }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-          </svg>
-        </span>
+        {hasValues ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flex: 1 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
+              <Navigation size={15} strokeWidth={2} />
+              <span style={{ fontSize: 14, fontWeight: 500 }}>{destino?.name?.split(",")[0] || "Destino"}</span>
+            </span>
+            {shortDate && (
+              <>
+                <span style={{ color: "#ddd" }}>|</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
+                  <CalendarDays size={15} strokeWidth={2} />
+                  <span style={{ fontSize: 14, fontWeight: 500 }}>{shortDate}</span>
+                </span>
+              </>
+            )}
+            <span style={{ color: "#ddd" }}>|</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
+              <Users size={15} strokeWidth={2} />
+              <span style={{ fontSize: 14, fontWeight: 500 }}>{guestCount}</span>
+            </span>
+          </div>
+        ) : (
+          <span style={{ fontSize: 16, fontWeight: 400, color: "#111" }}>Pesquisar passeios</span>
+        )}
+        <ArrowBtn />
       </button>
     );
   }

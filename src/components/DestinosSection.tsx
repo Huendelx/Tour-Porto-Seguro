@@ -1,9 +1,9 @@
 const destinos = [
-  { name: "Porto Seguro", count: 24 },
-  { name: "Arraial d'Ajuda", count: 18 },
-  { name: "Trancoso", count: 12 },
-  { name: "Caraíva", count: 8 },
-  { name: "Praia do Espelho", count: 6 },
+  { name: "Porto Seguro", count: 24, image: "/images/recife.jpg" },
+  { name: "Arraial d'Ajuda", count: 18, image: "/images/arraial.jpg" },
+  { name: "Trancoso", count: 12, image: "/images/morro.jpg" },
+  { name: "Caraíva", count: 8, image: "/images/caraiva.jpg" },
+  { name: "Praia do Espelho", count: 6, image: "/images/espelho.jpg" },
 ];
 
 export default function DestinosSection() {
@@ -21,7 +21,8 @@ export default function DestinosSection() {
           {destinos.map((d, i) => (
             <div key={i} className="cursor-pointer group">
               <div className="relative h-[280px] bg-[#e5e5e5] rounded-xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <img src={d.image} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <span className="absolute bottom-4 left-4 text-white font-semibold text-lg z-10">
                   {d.name}
                 </span>

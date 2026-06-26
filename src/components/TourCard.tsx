@@ -28,12 +28,10 @@ export default function TourCard({ tour }: Props) {
       className="rounded-2xl overflow-hidden flex flex-col"
       style={{ backgroundColor: "white", boxShadow: "0 2px 16px rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.06)" }}
     >
-      {/* image placeholder */}
-      <div
-        className="relative h-48 flex items-center justify-center"
-        style={{ background: `linear-gradient(135deg, ${categoryColor[tour.category]}22 0%, ${categoryColor[tour.category]}44 100%)` }}
-      >
-        <Anchor size={64} weight="thin" style={{ color: categoryColor[tour.category], opacity: 0.3 }} />
+      {/* image */}
+      <div className="relative h-48 flex items-center justify-center bg-[#e5e5e5] overflow-hidden group">
+        <img src={tour.image} alt={tour.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
 
         {tour.badge && (
           <div
