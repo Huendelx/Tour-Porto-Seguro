@@ -1,9 +1,9 @@
 const destinos = [
-  { name: "Porto Seguro", count: 24, image: "/images/recife.jpg" },
-  { name: "Arraial d'Ajuda", count: 18, image: "/images/arraial.jpg" },
-  { name: "Trancoso", count: 12, image: "/images/morro.jpg" },
-  { name: "Caraíva", count: 8, image: "/images/caraiva.jpg" },
-  { name: "Praia do Espelho", count: 6, image: "/images/espelho.jpg" },
+  { name: "Porto Seguro", count: 24, image: "/images/recife.webp" },
+  { name: "Arraial d'Ajuda", count: 18, image: "/images/arraial.webp" },
+  { name: "Trancoso", count: 12, image: "/images/morro.webp" },
+  { name: "Caraíva", count: 8, image: "/images/caraiva.webp" },
+  { name: "Praia do Espelho", count: 6, image: "/images/espelho.webp" },
 ];
 
 export default function DestinosSection() {

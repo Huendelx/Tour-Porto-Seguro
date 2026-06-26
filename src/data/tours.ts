@@ -29,7 +29,7 @@ export const tours: Tour[] = [
     category: "terrestre",
     highlights: ["Quadrado de Trancoso", "Praia dos Coqueiros", "Igreja de Arraial"],
     includes: ["Transporte", "Guia local", "Água mineral"],
-    image: "/images/arraial.jpg",
+    image: "/images/arraial.webp",
     featured: true,
     badge: "Mais vendido",
   },
@@ -46,7 +46,7 @@ export const tours: Tour[] = [
     category: "nautico",
     highlights: ["Parque Marinho Nacional", "Snorkeling guiado", "Piscinas naturais"],
     includes: ["Barco", "Equipamento de snorkel", "Colete salva-vidas", "Guia"],
-    image: "/images/recife.jpg",
+    image: "/images/recife.webp",
     featured: true,
     badge: "Imperdível",
   },
@@ -63,7 +63,7 @@ export const tours: Tour[] = [
     category: "cultural",
     highlights: ["Marco do Descobrimento", "Mercado Pataxó", "Taperapuã Beach"],
     includes: ["Transporte", "Guia histórico"],
-    image: "/images/coroa.jpg",
+    image: "/images/coroa.webp",
   },
   {
     id: "caraiva",
@@ -78,7 +78,7 @@ export const tours: Tour[] = [
     category: "aventura",
     highlights: ["Travessia de canoa", "Praia sem estrutura", "Aldeia histórica"],
     includes: ["Transporte 4x4", "Travessia de barco", "Almoço típico"],
-    image: "/images/caraiva.jpg",
+    image: "/images/caraiva.webp",
     featured: true,
   },
   {
@@ -94,7 +94,7 @@ export const tours: Tour[] = [
     category: "nautico",
     highlights: ["Catamarã", "Quatro praias numeradas", "Fortaleza histórica"],
     includes: ["Passeio de barco", "Guia", "Almoço a bordo"],
-    image: "/images/morro.jpg",
+    image: "/images/morro.webp",
   },
   {
     id: "praia-do-espelho",
@@ -109,7 +109,7 @@ export const tours: Tour[] = [
     category: "terrestre",
     highlights: ["Piscinas naturais", "Falésias coloridas", "Água cristalina"],
     includes: ["Transporte 4x4", "Guia local"],
-    image: "/images/espelho.jpg",
+    image: "/images/espelho.webp",
     badge: "Top 5 Brasil",
   },
 ];

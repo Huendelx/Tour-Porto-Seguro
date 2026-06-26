@@ -1,8 +1,8 @@
 const experiences = [
-  { name: "Recife de Fora — Snorkeling", operator: "Mar Aberto Turismo", cat: "Náutico", rating: 4.9, reviews: 128, price: 95, duration: "4h", badge: "Mais reservado", image: "/images/recife.jpg" },
-  { name: "Arraial d'Ajuda e Trancoso", operator: "Costa Sul Passeios", cat: "Terrestre", rating: 4.8, reviews: 94, price: 120, duration: "Dia inteiro", badge: null, image: "/images/arraial.jpg" },
-  { name: "Coroa Vermelha — História e Praia", operator: "Raízes do Descobrimento", cat: "Cultural", rating: 4.7, reviews: 67, price: 65, duration: "Meio dia", badge: null, image: "/images/coroa.jpg" },
-  { name: "Caraíva — Aldeia Mágica", operator: "Caraíva Explorer", cat: "Aventura", rating: 4.9, reviews: 156, price: 150, duration: "Dia inteiro", badge: "Imperdível", image: "/images/caraiva.jpg" },
+  { name: "Recife de Fora — Snorkeling", operator: "Mar Aberto Turismo", cat: "Náutico", rating: 4.9, reviews: 128, price: 95, duration: "4h", badge: "Mais reservado", image: "/images/recife.webp" },
+  { name: "Arraial d'Ajuda e Trancoso", operator: "Costa Sul Passeios", cat: "Terrestre", rating: 4.8, reviews: 94, price: 120, duration: "Dia inteiro", badge: null, image: "/images/arraial.webp" },
+  { name: "Coroa Vermelha — História e Praia", operator: "Raízes do Descobrimento", cat: "Cultural", rating: 4.7, reviews: 67, price: 65, duration: "Meio dia", badge: null, image: "/images/coroa.webp" },
+  { name: "Caraíva — Aldeia Mágica", operator: "Caraíva Explorer", cat: "Aventura", rating: 4.9, reviews: 156, price: 150, duration: "Dia inteiro", badge: "Imperdível", image: "/images/caraiva.webp" },
 ];
 
 export default function ExperienciasSection() {
