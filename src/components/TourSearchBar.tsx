@@ -326,15 +326,17 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
               onMouseEnter={(e) => { if (active !== f.id) e.currentTarget.style.background = "#f7f7f7"; }}
               onMouseLeave={(e) => { if (active !== f.id) e.currentTarget.style.background = "transparent"; }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.02em", textTransform: "uppercase" }}>
-                {f.icon}
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.02em", textTransform: "uppercase" }}>
                 {f.label}
               </div>
-              <div style={{
-                fontSize: 14, marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                color: f.value ? "#111" : "#999", fontWeight: f.value ? 500 : 400,
-              }}>
-                {f.value || f.placeholder}
+              <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 2 }}>
+                <span style={{ color: f.value ? "#111" : "#bbb", flexShrink: 0 }}>{f.icon}</span>
+                <span style={{
+                  fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  color: f.value ? "#111" : "#999", fontWeight: f.value ? 500 : 400,
+                }}>
+                  {f.value || f.placeholder}
+                </span>
               </div>
             </button>
             {i < fields.length - 1 && <div style={{ width: 1, height: 28, background: "#e5e5e5", flexShrink: 0 }} />}
