@@ -300,9 +300,9 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
   useClickOutside(ref, () => setActive(null));
 
   const fields = [
-    { id: "onde", label: "Onde", value: destino?.name?.split(",")[0] || "", placeholder: "Buscar destinos" },
-    { id: "quando", label: "Quando", value: formatDate(date), placeholder: "Adicionar data" },
-    { id: "quem", label: "Quem", value: formatGuests(adults, kids), placeholder: "Participantes" },
+    { id: "onde", label: "Onde", value: destino?.name?.split(",")[0] || "", placeholder: "Buscar destinos", icon: <Navigation size={14} strokeWidth={2} /> },
+    { id: "quando", label: "Quando", value: formatDate(date), placeholder: "Adicionar data", icon: <CalendarDays size={14} strokeWidth={2} /> },
+    { id: "quem", label: "Quem", value: formatGuests(adults, kids), placeholder: "Participantes", icon: <Users size={14} strokeWidth={2} /> },
   ];
 
   return (
@@ -326,7 +326,8 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
               onMouseEnter={(e) => { if (active !== f.id) e.currentTarget.style.background = "#f7f7f7"; }}
               onMouseLeave={(e) => { if (active !== f.id) e.currentTarget.style.background = "transparent"; }}
             >
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.02em", textTransform: "uppercase" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.02em", textTransform: "uppercase" }}>
+                {f.icon}
                 {f.label}
               </div>
               <div style={{
