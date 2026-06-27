@@ -428,7 +428,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         onClick={() => { setOpen(true); setActiveStep("onde"); }}
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          width: "fit-content", minWidth: "60%", maxWidth: "91%",
+          width: "fit-content", minWidth: "calc(60% + 60px)", maxWidth: "91%",
           background: "#fff", border: "none", borderRadius: 60,
           padding: "8px 8px 8px 20px", cursor: "pointer",
           boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
