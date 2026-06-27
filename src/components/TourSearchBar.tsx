@@ -326,7 +326,7 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
               onMouseEnter={(e) => { if (active !== f.id) e.currentTarget.style.background = "#f7f7f7"; }}
               onMouseLeave={(e) => { if (active !== f.id) e.currentTarget.style.background = "transparent"; }}
             >
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.01em" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#111", letterSpacing: "0.02em", textTransform: "uppercase" }}>
                 {f.label}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 2 }}>
