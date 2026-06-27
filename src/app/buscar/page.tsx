@@ -73,27 +73,27 @@ function SearchResults() {
           </button>
           <div className="h-4 w-px bg-gray-200" />
           <p className="text-sm text-[#111]">
-            <span className="font-semibold">{filtered.length} passeios</span>{" "}
+            <span className="font-semibold text-[#1A6EFF]">{filtered.length} passeios</span>{" "}
             {destinoLabel ? `em ${destinoLabel}` : "disponíveis"}
           </p>
           {/* Pills ativos */}
           <div className="flex items-center gap-2 flex-wrap">
             {destino && destino !== "perto" && destinoLabel && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#111] text-white px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#1A6EFF] text-white px-3 py-1.5 rounded-full">
                 {destinoLabel}
                 <button onClick={() => clearParam("destino")} className="ml-0.5 opacity-70 hover:opacity-100">✕</button>
               </span>
             )}
             {adultos > 1 && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#EEF3FF] text-[#1A6EFF] px-3 py-1.5 rounded-full">
                 {adultos} adultos
-                <button onClick={() => clearParam("adultos")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
+                <button onClick={() => clearParam("adultos")} className="ml-0.5 opacity-60 hover:opacity-100">✕</button>
               </span>
             )}
             {criancas > 0 && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#EEF3FF] text-[#1A6EFF] px-3 py-1.5 rounded-full">
                 {criancas} criança{criancas > 1 ? "s" : ""}
-                <button onClick={() => clearParam("criancas")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
+                <button onClick={() => clearParam("criancas")} className="ml-0.5 opacity-60 hover:opacity-100">✕</button>
               </span>
             )}
           </div>
@@ -231,7 +231,7 @@ function FilterBtn({ active, onClick, icon, children }: { active: boolean; onCli
     <button
       onClick={onClick}
       className={`w-full text-left text-sm px-3 py-2 rounded-xl transition-colors flex items-center gap-2 ${
-        active ? "bg-[#111] text-white font-semibold" : "text-[#444] hover:bg-gray-50"
+        active ? "bg-[#1A6EFF] text-white font-semibold" : "text-[#444] hover:bg-gray-50"
       }`}
     >
       {icon && <span className="flex-shrink-0 opacity-70">{icon}</span>}
@@ -245,7 +245,7 @@ function MobileFilterChip({ active, onClick, icon, children }: { active: boolean
     <button
       onClick={onClick}
       className={`flex-shrink-0 text-sm px-4 py-2 rounded-full border transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-        active ? "bg-[#111] text-white border-[#111]" : "text-[#444] border-gray-200 hover:border-gray-400"
+        active ? "bg-[#1A6EFF] text-white border-[#1A6EFF]" : "text-[#444] border-gray-200 hover:border-gray-400"
       }`}
     >
       {icon && <span className="flex-shrink-0 opacity-80">{icon}</span>}
