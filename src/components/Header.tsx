@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
 import { CircleHelp } from "lucide-react";
@@ -127,7 +128,7 @@ export default function Header() {
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
 
           {/* LEFT — logo + nome */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0 cursor-pointer">
             <div
               className="relative w-7 h-7 flex-shrink-0 transition-all"
               style={{
@@ -139,7 +140,7 @@ export default function Header() {
             <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
               Passeador
             </span>
-          </div>
+          </Link>
 
           {/* CENTER — Passeios + Restaurantes */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
