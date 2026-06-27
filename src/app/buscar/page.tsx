@@ -57,7 +57,7 @@ function SearchResults() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 flex gap-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
 
         {/* ── Filtros sidebar desktop ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0">
