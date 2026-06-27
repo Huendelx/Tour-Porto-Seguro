@@ -38,7 +38,7 @@ function SearchResults() {
     <div className="min-h-screen bg-white">
       {/* ── Header barra ── */}
       <div className="sticky top-14 z-30 bg-white border-b border-gray-100 px-4 py-3 shadow-sm">
-        <div className="max-w-6xl mx-auto flex items-center gap-4">
+        <div className="max-w-none flex items-center gap-4">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#111] transition-colors"
@@ -57,7 +57,7 @@ function SearchResults() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 pt-24 pb-12 flex flex-col lg:flex-row gap-8">
+      <div className="max-w-none px-4 pt-24 pb-12 flex flex-col lg:flex-row gap-8">
 
         {/* ── Filtros sidebar desktop ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0">
