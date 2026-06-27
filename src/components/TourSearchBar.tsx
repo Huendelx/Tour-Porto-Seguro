@@ -614,11 +614,19 @@ export default function TourSearchBar() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
 
-  const saved = loadSearch();
-  const [destino, setDestino] = useState<Destino | null>(saved?.destino ?? null);
-  const [date, setDate] = useState<Date | null>(saved?.date ? new Date(saved.date) : null);
-  const [adults, setAdults] = useState<number>(saved?.adults ?? 1);
-  const [kids, setKids] = useState<number>(saved?.kids ?? 0);
+  const [destino, setDestino] = useState<Destino | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
+  const [adults, setAdults] = useState<number>(1);
+  const [kids, setKids] = useState<number>(0);
+
+  useEffect(() => {
+    const saved = loadSearch();
+    if (!saved) return;
+    if (saved.destino) setDestino(saved.destino);
+    if (saved.date) setDate(new Date(saved.date));
+    if (saved.adults != null) setAdults(saved.adults);
+    if (saved.kids != null) setKids(saved.kids);
+  }, []);
 
   const persist = (patch: object) =>
     saveSearch({
