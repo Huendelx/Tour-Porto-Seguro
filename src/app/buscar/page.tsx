@@ -105,7 +105,7 @@ function SearchResults() {
         {/* ── Filtros sidebar desktop ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0">
           <div className="sticky top-32">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Categoria</p>
+            <p className="text-xs font-semibold text-gray-400 mb-3">Categoria</p>
             <div className="space-y-1 mb-6">
               <FilterBtn active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={15} strokeWidth={1.75} />}>
                 Todos os passeios
@@ -117,7 +117,7 @@ function SearchResults() {
               ))}
             </div>
 
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Preço máximo</p>
+            <p className="text-xs font-semibold text-gray-400 mb-3">Preço máximo</p>
             <div className="mb-6">
               <input
                 type="range" min={50} max={500} step={10} value={maxPrice}
@@ -127,7 +127,7 @@ function SearchResults() {
               <p className="text-sm text-[#111] mt-1 font-medium">Até R${maxPrice}</p>
             </div>
 
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Ordenar por</p>
+            <p className="text-xs font-semibold text-gray-400 mb-3">Ordenar por</p>
             <div className="space-y-1">
               <FilterBtn active={sortBy === "relevance"} onClick={() => setSortBy("relevance")} icon={<Star size={15} strokeWidth={1.75} />}>Mais relevantes</FilterBtn>
               <FilterBtn active={sortBy === "price_asc"} onClick={() => setSortBy("price_asc")} icon={<ArrowDownNarrowWide size={15} strokeWidth={1.75} />}>Menor preço</FilterBtn>
