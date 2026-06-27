@@ -1,9 +1,12 @@
+import Link from "next/link";
+import Image from "next/image";
+
 const destinos = [
-  { name: "Porto Seguro", count: 24, image: "/images/recife.webp" },
-  { name: "Arraial d'Ajuda", count: 18, image: "/images/arraial.webp" },
-  { name: "Trancoso", count: 12, image: "/images/morro.webp" },
-  { name: "Caraíva", count: 8, image: "/images/caraiva.webp" },
-  { name: "Praia do Espelho", count: 6, image: "/images/espelho.webp" },
+  { name: "Porto Seguro", slug: "porto-seguro", count: 15, image: "/images/recife.webp" },
+  { name: "Arraial d'Ajuda", slug: "arraial-da-ajuda", count: 3, image: "/images/arraial.webp" },
+  { name: "Trancoso", slug: "trancoso", count: 4, image: "/images/espelho.webp" },
+  { name: "Caraíva", slug: "caraiva", count: 2, image: "/images/caraiva.webp" },
+  { name: "Praia do Espelho", slug: "praia-do-espelho", count: 3, image: "/images/espelho.webp" },
 ];
 
 export default function DestinosSection() {
@@ -18,17 +21,22 @@ export default function DestinosSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {destinos.map((d, i) => (
-            <div key={i} className="cursor-pointer group">
+          {destinos.map((d) => (
+            <Link key={d.slug} href={`/destinos/${d.slug}`} className="cursor-pointer group block">
               <div className="relative h-[280px] bg-[#e5e5e5] rounded-xl overflow-hidden">
-                <img src={d.image} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <Image
+                  src={d.image}
+                  alt={d.name}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <span className="absolute bottom-4 left-4 text-white font-semibold text-lg z-10">
                   {d.name}
                 </span>
               </div>
               <p className="text-[13px] text-[#888] mt-2">{d.count} experiências</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

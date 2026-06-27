@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
+import { CircleHelp } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 
 const ChevronDown = ({ className }: { className?: string }) => (
@@ -54,8 +55,10 @@ export default function Header() {
   const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +81,9 @@ export default function Header() {
     const handler = (e: MouseEvent) => {
       if (desktopMenuRef.current && !desktopMenuRef.current.contains(e.target as Node)) {
         setDesktopMenuOpen(false);
+      }
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -137,7 +143,7 @@ export default function Header() {
           {/* CENTER — Passeios + Restaurantes */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
             <button
-              className={`flex items-center gap-1 px-3 py-2 ${linkCls} ${passeiosOpen ? "opacity-60" : ""}`}
+              className={`flex items-center gap-1 px-3 py-2 ${linkCls} ${passeiosOpen ? "hover:!text-[#1a1a1a]" : ""}`}
               onMouseEnter={() => setPasseiosOpen(true)}
             >
               Passeios
@@ -145,7 +151,7 @@ export default function Header() {
             </button>
             <a
               href="#restaurantes"
-              className={`px-3 py-2 ${linkCls}`}
+              className={`px-3 py-2 ${linkCls} ${passeiosOpen ? "opacity-50" : ""}`}
               onMouseEnter={() => setPasseiosOpen(false)}
             >
               Promoções
@@ -157,9 +163,35 @@ export default function Header() {
             <a href="#guia" className={`${linkCls} hidden md:block mr-1 whitespace-nowrap`}>
               Torne-se um guia
             </a>
-            <button className={pillCls} aria-label="Idioma">
-              <GlobeIcon />
-            </button>
+            <div className="relative hidden md:block" ref={langMenuRef}>
+              <button
+                className={pillCls}
+                aria-label="Idioma"
+                onClick={() => setLangOpen(!langOpen)}
+              >
+                <GlobeIcon />
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-[calc(100%+10px)] w-48 bg-white rounded-2xl shadow-xl border border-black/8 overflow-hidden z-50 py-1">
+                  {[
+                    { code: "pt-BR", label: "Português", flag: "🇧🇷" },
+                    { code: "en",    label: "English",    flag: "🇺🇸" },
+                    { code: "es",    label: "Español",    flag: "🇪🇸" },
+                    { code: "fr",    label: "Français",   flag: "🇫🇷" },
+                    { code: "de",    label: "Deutsch",    flag: "🇩🇪" },
+                  ].map((lang) => (
+                    <button
+                      key={lang.code}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#1a1a1a] hover:bg-black/5 transition-colors"
+                      onClick={() => setLangOpen(false)}
+                    >
+                      <span className="text-base">{lang.flag}</span>
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             {/* Desktop: abre balão | Mobile: abre MobileMenu */}
             <div className="relative" ref={desktopMenuRef}>
               <button
@@ -180,7 +212,8 @@ export default function Header() {
               {/* Dropdown desktop */}
               {desktopMenuOpen && (
                 <div className="absolute right-0 top-[calc(100%+10px)] w-64 bg-white rounded-2xl shadow-xl border border-black/8 overflow-hidden z-50 py-1">
-                  <a href="#ajuda" className="block px-4 py-3 text-sm text-[#1a1a1a] hover:bg-black/5 transition-colors">
+                  <a href="#ajuda" className="flex items-center gap-3 px-4 py-3 text-sm text-[#1a1a1a] hover:bg-black/5 transition-colors">
+                    <CircleHelp size={16} strokeWidth={1.5} className="text-[#1a1a1a]" />
                     Central de Ajuda
                   </a>
 

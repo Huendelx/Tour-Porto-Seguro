@@ -1,9 +1,8 @@
-const experiences = [
-  { name: "Recife de Fora — Snorkeling", operator: "Mar Aberto Turismo", cat: "Náutico", rating: 4.9, reviews: 128, price: 95, duration: "4h", badge: "Mais reservado", image: "/images/recife.webp" },
-  { name: "Arraial d'Ajuda e Trancoso", operator: "Costa Sul Passeios", cat: "Terrestre", rating: 4.8, reviews: 94, price: 120, duration: "Dia inteiro", badge: null, image: "/images/arraial.webp" },
-  { name: "Coroa Vermelha — História e Praia", operator: "Raízes do Descobrimento", cat: "Cultural", rating: 4.7, reviews: 67, price: 65, duration: "Meio dia", badge: null, image: "/images/coroa.webp" },
-  { name: "Caraíva — Aldeia Mágica", operator: "Caraíva Explorer", cat: "Aventura", rating: 4.9, reviews: 156, price: 150, duration: "Dia inteiro", badge: "Imperdível", image: "/images/caraiva.webp" },
-];
+import Link from "next/link";
+import Image from "next/image";
+import { tours } from "@/data/tours";
+
+const featured = tours.filter((t) => t.featured).slice(0, 4);
 
 export default function ExperienciasSection() {
   return (
@@ -16,42 +15,54 @@ export default function ExperienciasSection() {
               As mais reservadas e bem avaliadas pelos viajantes.
             </p>
           </div>
-          <a href="#" className="text-[14px] font-semibold text-[#111] underline whitespace-nowrap mb-2">
+          <Link href="/buscar" className="text-[14px] font-semibold text-[#111] underline whitespace-nowrap mb-2">
             Ver todas →
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {experiences.map((exp, i) => (
-            <div key={i} className="bg-white rounded-xl overflow-hidden border border-[#eee] cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          {featured.map((tour) => (
+            <Link
+              key={tour.id}
+              href={`/passeios/${tour.slug}`}
+              className="group bg-white rounded-xl overflow-hidden border border-[#eee] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block"
+            >
               <div className="h-[200px] bg-[#e0e0e0] relative overflow-hidden">
-                <img src={exp.image} alt={exp.name} className="absolute inset-0 w-full h-full object-cover" />
-                {exp.badge && (
+                <Image
+                  src={tour.image}
+                  alt={tour.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {tour.badge && (
                   <span className="absolute top-3 left-3 bg-[#111] text-white text-[11px] font-semibold px-3 py-1 rounded-full">
-                    {exp.badge}
+                    {tour.badge}
                   </span>
                 )}
-                <span className="absolute top-3 right-3 bg-white text-[#555] text-[11px] font-medium px-3 py-1 rounded-full">
-                  {exp.cat}
+                <span className="absolute top-3 right-3 bg-white text-[#555] text-[11px] font-medium px-3 py-1 rounded-full capitalize">
+                  {tour.category}
                 </span>
               </div>
               <div className="p-4 pb-5">
-                <p className="text-[12px] text-[#999] m-0">{exp.operator}</p>
-                <h3 className="text-[16px] font-semibold text-[#111] mt-1 mb-2 leading-snug">{exp.name}</h3>
+                <p className="text-[12px] text-[#999] m-0">{tour.operator.name}</p>
+                <h3 className="text-[16px] font-semibold text-[#111] mt-1 mb-2 leading-snug">{tour.title}</h3>
                 <div className="flex items-center gap-1.5 mb-3">
-                  <span className="text-[13px] font-semibold text-[#111]">★ {exp.rating}</span>
-                  <span className="text-[12px] text-[#999]">({exp.reviews} avaliações)</span>
+                  <span className="text-[13px] font-semibold text-[#111]">★ 4.9</span>
+                  <span className="text-[12px] text-[#999]">(avaliações verificadas)</span>
                   <span className="text-[#bbb] mx-1">·</span>
-                  <span className="text-[12px] text-[#888]">{exp.duration}</span>
+                  <span className="text-[12px] text-[#888]">{tour.duration}</span>
                 </div>
                 <div className="border-t border-[#f0f0f0] pt-3 flex justify-between items-center">
                   <div>
-                    <span className="text-[20px] font-bold text-[#111]">R$ {exp.price}</span>
+                    <span className="text-[20px] font-bold text-[#111]">R$ {tour.price}</span>
                     <span className="text-[13px] text-[#888] ml-1">/ pessoa</span>
                   </div>
+                  <span className="text-xs font-semibold text-[#111] bg-gray-100 px-3 py-1.5 rounded-full group-hover:bg-[#111] group-hover:text-white transition-colors">
+                    Ver →
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

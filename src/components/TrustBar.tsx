@@ -14,7 +14,7 @@ const items = [
 
 export default function TrustBar() {
   return (
-    <div className="w-full overflow-hidden py-3 border-y border-[#041610]/8" style={{ backgroundColor: "var(--tps-white)" }}>
+    <div className="w-full overflow-hidden py-3 border-y border-black/6 bg-white">
       <div className="flex gap-10 animate-marquee whitespace-nowrap">
         {items.map((item, i) => (
           <span key={i} className="inline-flex items-center gap-2 text-sm text-[#041610]/60 flex-shrink-0">

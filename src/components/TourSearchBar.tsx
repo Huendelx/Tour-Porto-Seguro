@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { Navigation, CalendarDays, Users } from "lucide-react";
 
 // ─── ICONS ───
@@ -290,9 +291,10 @@ interface SearchProps {
   date: Date | null; setDate: (d: Date | null) => void;
   adults: number; setAdults: (n: number) => void;
   kids: number; setKids: (n: number) => void;
+  onSearch: () => void;
 }
 
-function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, kids, setKids }: SearchProps) {
+function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, kids, setKids, onSearch }: SearchProps) {
   const [active, setActive] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   useClickOutside(ref, () => setActive(null));
@@ -338,7 +340,7 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
           </div>
         ))}
         <button
-          onClick={() => setActive(null)}
+          onClick={() => { setActive(null); onSearch(); }}
           style={{
             width: 52, height: 52, borderRadius: 26, background: "#111", border: "none",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
@@ -388,7 +390,7 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
 // ═══════════════════════════════════════════
 // MOBILE SEARCH
 // ═══════════════════════════════════════════
-function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, kids, setKids }: SearchProps) {
+function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, kids, setKids, onSearch }: SearchProps) {
   const [open, setOpen] = useState(false);
   const [activeStep, setActiveStep] = useState("onde");
   const [subPage, setSubPage] = useState<string | null>(null);
@@ -453,7 +455,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
             </span>
           </div>
         ) : (
-          <span style={{ fontSize: 16, fontWeight: 400, color: "#111" }}>Pesquisar passeios</span>
+          <span style={{ fontSize: 16, fontWeight: 400, color: "#111" }}>Iniciar pesquisa</span>
         )}
         <ArrowBtn />
       </button>
@@ -580,7 +582,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
           Limpar tudo
         </button>
         <button
-          onClick={() => setOpen(false)}
+          onClick={() => { setOpen(false); onSearch(); }}
           style={{ display: "flex", alignItems: "center", gap: 8, background: "#111", color: "#fff", border: "none", borderRadius: 12, padding: "14px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
         >
           <SearchIcon /> Buscar
@@ -596,12 +598,22 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
 // ═══════════════════════════════════════════
 export default function TourSearchBar() {
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const router = useRouter();
   const [destino, setDestino] = useState<Destino | null>(null);
   const [date, setDate] = useState<Date | null>(null);
   const [adults, setAdults] = useState(1);
   const [kids, setKids] = useState(0);
 
-  const props = { destino, setDestino, date, setDate, adults, setAdults, kids, setKids };
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (destino) params.set("destino", destino.id);
+    if (date) params.set("data", date.toISOString().split("T")[0]);
+    if (adults > 0) params.set("adultos", String(adults));
+    if (kids > 0) params.set("criancas", String(kids));
+    router.push(`/buscar?${params.toString()}`);
+  };
+
+  const props = { destino, setDestino, date, setDate, adults, setAdults, kids, setKids, onSearch: handleSearch };
 
   return isMobile ? <MobileSearch {...props} /> : <DesktopSearch {...props} />;
 }

@@ -15,7 +15,7 @@ export default function Hero() {
       />
 
       <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-24 mb-auto">
-        <h1 className="text-4xl md:text-6xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
+        <h1 className="text-4xl md:text-7xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
           Passeie pelo Brasil
         </h1>
         <p className="text-sm text-white/75 text-center max-w-[17rem] md:max-w-md -mt-4">
