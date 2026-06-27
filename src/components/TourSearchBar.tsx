@@ -620,9 +620,18 @@ export default function TourSearchBar() {
   const [kids, setKids] = useState<number>(saved?.kids ?? 0);
 
   const persist = (patch: object) =>
-    saveSearch({ destino, date: date?.toISOString() ?? null, adults, kids, ...patch });
+    saveSearch({
+      destino: destino ? { id: destino.id, name: destino.name } : null,
+      date: date?.toISOString() ?? null,
+      adults,
+      kids,
+      ...patch,
+    });
 
-  const setDestinoP = (d: Destino | null) => { setDestino(d); persist({ destino: d }); };
+  const setDestinoP = (d: Destino | null) => {
+    setDestino(d);
+    persist({ destino: d ? { id: d.id, name: d.name } : null });
+  };
   const setDateP = (d: Date | null) => { setDate(d); persist({ date: d?.toISOString() ?? null }); };
   const setAdultsP = (n: number) => { setAdults(n); persist({ adults: n }); };
   const setKidsP = (n: number) => { setKids(n); persist({ kids: n }); };
