@@ -428,30 +428,31 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         onClick={() => { setOpen(true); setActiveStep("onde"); }}
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          width: "85%", background: "#fff", border: "none", borderRadius: 60,
+          width: "fit-content", minWidth: "60%", maxWidth: "91%",
+          background: "#fff", border: "none", borderRadius: 60,
           padding: "8px 8px 8px 20px", cursor: "pointer",
           boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
         }}
       >
         {hasValues ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 16, flex: 1 }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
-              <Navigation size={15} strokeWidth={2} />
-              <span style={{ fontSize: 14, fontWeight: 500 }}>{destino?.name?.split(",")[0] || "Destino"}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, minWidth: 0 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", minWidth: 0, flexShrink: 1 }}>
+              <Navigation size={15} strokeWidth={2} style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "22vw" }}>{destino?.name?.split(",")[0] || "Destino"}</span>
             </span>
             {shortDate && (
               <>
-                <span style={{ color: "#ddd" }}>|</span>
-                <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
+                <span style={{ color: "#ddd", flexShrink: 0 }}>|</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", flexShrink: 0 }}>
                   <CalendarDays size={15} strokeWidth={2} />
-                  <span style={{ fontSize: 14, fontWeight: 500 }}>{shortDate}</span>
+                  <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap" }}>{shortDate}</span>
                 </span>
               </>
             )}
-            <span style={{ color: "#ddd" }}>|</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#111" }}>
+            <span style={{ color: "#ddd", flexShrink: 0 }}>|</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", flexShrink: 0 }}>
               <Users size={15} strokeWidth={2} />
-              <span style={{ fontSize: 14, fontWeight: 500 }}>{guestCount}</span>
+              <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap" }}>{guestCount}</span>
             </span>
           </div>
         ) : (
