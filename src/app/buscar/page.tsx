@@ -122,7 +122,8 @@ function SearchResults() {
               <input
                 type="range" min={50} max={500} step={10} value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-[#111]"
+                className="w-full"
+                style={{ accentColor: "#111", cursor: "pointer" }}
               />
               <p className="text-sm text-[#111] mt-1 font-medium">Até R${maxPrice}</p>
             </div>
