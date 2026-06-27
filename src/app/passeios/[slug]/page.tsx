@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Info, Star, CheckCircle, Lightbulb, AlertCircle, Tag, XCircle, Ban, Heart } from "lucide-react";
 import { tours, categoryLabel, categoryColor } from "@/data/tours";
 import WhatsAppBooking from "@/components/WhatsAppBooking";
 
@@ -111,14 +112,14 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
           {/* Descrição */}
           <section className="mb-8">
-            <h2 className="text-xl font-bold text-[#111] mb-3">Sobre o passeio</h2>
+            <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><Info size={20} strokeWidth={1.75} className="text-[#888]" />Sobre o passeio</h2>
             <p className="text-[#444] leading-relaxed text-[15px]">{tour.description}</p>
           </section>
 
           {/* Destaques */}
           {tour.highlights.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-xl font-bold text-[#111] mb-3">Destaques</h2>
+              <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><Star size={20} strokeWidth={1.75} className="text-[#888]" />Destaques</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {tour.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-2 text-[15px] text-[#444]">
@@ -132,7 +133,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
           {/* O que inclui */}
           <section className="mb-8">
-            <h2 className="text-xl font-bold text-[#111] mb-3">O que está incluso</h2>
+            <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><CheckCircle size={20} strokeWidth={1.75} className="text-[#888]" />O que está incluso</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {tour.includes.map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-[15px] text-[#333]">
@@ -152,7 +153,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           {/* Dicas */}
           {tour.tips && (
             <section className="mb-8">
-              <h2 className="text-xl font-bold text-[#111] mb-3">Dicas para o passeio</h2>
+              <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><Lightbulb size={20} strokeWidth={1.75} className="text-[#888]" />Dicas para o passeio</h2>
               <div className="p-5 rounded-2xl bg-amber-50 border border-amber-100">
                 <p className="text-[#666] leading-relaxed text-[15px]">{tour.tips}</p>
               </div>
@@ -162,7 +163,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           {/* Informações importantes */}
           {tour.importantInfo && (
             <section className="mb-8">
-              <h2 className="text-xl font-bold text-[#111] mb-3">Informações importantes</h2>
+              <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><AlertCircle size={20} strokeWidth={1.75} className="text-[#888]" />Informações importantes</h2>
               <p className="text-[#666] leading-relaxed text-[15px]">{tour.importantInfo}</p>
             </section>
           )}
@@ -170,7 +171,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           {/* Preços detalhados */}
           {tour.prices.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-xl font-bold text-[#111] mb-3">Tarifas</h2>
+              <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><Tag size={20} strokeWidth={1.75} className="text-[#888]" />Tarifas</h2>
               <div className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
                 {tour.prices.map((p, i) => (
                   <div key={i} className="flex items-center justify-between px-5 py-4">
@@ -199,7 +200,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
           {/* Política de cancelamento */}
           <section className="mb-8">
-            <h2 className="text-xl font-bold text-[#111] mb-3">Política de cancelamento</h2>
+            <h2 className="text-xl font-bold text-[#111] mb-3 flex items-center gap-2"><Ban size={20} strokeWidth={1.75} className="text-[#888]" />Política de cancelamento</h2>
             <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
               {tour.cancellationPolicy.split("\n").map((line, i) => (
                 <p key={i} className="text-[#666] text-[14px] leading-relaxed">{line}</p>
@@ -253,7 +254,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
       {/* ── Passeios relacionados ── */}
       {related.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 md:px-6 pb-16">
-          <h2 className="text-xl font-bold text-[#111] mb-6">Você também pode gostar</h2>
+          <h2 className="text-xl font-bold text-[#111] mb-6 flex items-center gap-2"><Heart size={20} strokeWidth={1.75} className="text-[#888]" />Você também pode gostar</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {related.map((t) => (
               <Link key={t.id} href={`/passeios/${t.slug}`} className="group block rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
