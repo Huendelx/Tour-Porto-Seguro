@@ -56,6 +56,7 @@ export interface Tour {
   cancellationPolicy: string;
   hasTransfer?: boolean;
   trackable?: boolean;
+  destinos: string[];
 }
 
 const OPERATOR: TourOperator = {
@@ -79,6 +80,7 @@ export const tours: Tour[] = [
   {
     id: "trancoso",
     slug: "trancoso",
+    destinos: ["trancoso"],
     title: "Trancoso",
     subtitle: "Praia dos Coqueiros + Quadrado de Trancoso",
     description:
@@ -118,6 +120,7 @@ export const tours: Tour[] = [
   {
     id: "arraial-da-ajuda",
     slug: "arraial-da-ajuda",
+    destinos: ["arraial"],
     title: "Arraial d'Ajuda",
     subtitle: "Praia e Vilarejo",
     description:
@@ -155,6 +158,7 @@ export const tours: Tour[] = [
   {
     id: "praia-do-espelho",
     slug: "praia-do-espelho",
+    destinos: ["praia-espelho"],
     title: "Praia do Espelho",
     subtitle: "Praia + Vale Verde",
     description:
@@ -194,6 +198,7 @@ export const tours: Tour[] = [
   {
     id: "coroa-vermelha",
     slug: "coroa-vermelha",
+    destinos: ["porto-seguro"],
     title: "Coroa Vermelha",
     subtitle: "Praia + Aldeia Indígena",
     description:
@@ -231,6 +236,7 @@ export const tours: Tour[] = [
   {
     id: "caraiva",
     slug: "caraiva",
+    destinos: ["caraiva"],
     title: "Caraíva",
     subtitle: "Praia + Rio + Vila",
     description:
@@ -270,6 +276,7 @@ export const tours: Tour[] = [
   {
     id: "trancoso-espelho",
     slug: "trancoso-espelho",
+    destinos: ["trancoso", "praia-espelho"],
     title: "Trancoso + Praia do Espelho",
     subtitle: "Praia do Espelho + Quadrado de Trancoso",
     description:
@@ -308,6 +315,7 @@ export const tours: Tour[] = [
   {
     id: "caraiva-espelho",
     slug: "caraiva-espelho",
+    destinos: ["caraiva", "praia-espelho"],
     title: "Caraíva + Praia do Espelho",
     subtitle: "Duas experiências inesquecíveis em um dia",
     description:
@@ -346,6 +354,7 @@ export const tours: Tour[] = [
   {
     id: "rota-da-redescoberta",
     slug: "rota-da-redescoberta",
+    destinos: ["porto-seguro"],
     title: "Rota da Redescoberta",
     subtitle: "Aldeia Indígena + Praia + City Tour",
     description:
@@ -382,6 +391,7 @@ export const tours: Tour[] = [
   {
     id: "by-night-arraial",
     slug: "by-night-arraial",
+    destinos: ["arraial"],
     title: "By Night Arraial",
     subtitle: "Vilarejo + Rua Mucugê",
     description:
@@ -419,6 +429,7 @@ export const tours: Tour[] = [
   {
     id: "fluvial-coroa-alta",
     slug: "fluvial-coroa-alta",
+    destinos: ["porto-seguro"],
     title: "Fluvial Coroa Alta",
     subtitle: "Passeio de Escuna",
     description:
@@ -454,6 +465,7 @@ export const tours: Tour[] = [
   {
     id: "recife-de-fora",
     slug: "recife-de-fora",
+    destinos: ["porto-seguro"],
     title: "Recife de Fora",
     subtitle: "Escuna + Piscinas Naturais",
     description:
@@ -490,6 +502,7 @@ export const tours: Tour[] = [
   {
     id: "recife-de-fora-com-transfer",
     slug: "recife-de-fora-com-transfer",
+    destinos: ["porto-seguro"],
     title: "Recife de Fora + Transfer",
     subtitle: "Escuna + Piscinas Naturais com transfer incluso",
     description:
@@ -526,6 +539,7 @@ export const tours: Tour[] = [
   {
     id: "mergulho",
     slug: "mergulho",
+    destinos: ["porto-seguro"],
     title: "Mergulho",
     subtitle: "Mergulho guiado com instructor",
     description:
@@ -560,6 +574,7 @@ export const tours: Tour[] = [
   {
     id: "quadriciclo-acai",
     slug: "quadriciclo-acai",
+    destinos: ["porto-seguro"],
     title: "Quadriciclo Rota do Açaí",
     subtitle: "Trilha + Cascata + Degustação",
     description:
@@ -595,6 +610,7 @@ export const tours: Tour[] = [
   {
     id: "quadriciclo-aldeia",
     slug: "quadriciclo-aldeia",
+    destinos: ["porto-seguro"],
     title: "Quadriciclo Rota da Aldeia",
     subtitle: "Trilha por aldeia indígena",
     description:

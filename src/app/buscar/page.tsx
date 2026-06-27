@@ -17,6 +17,15 @@ const categoryIcon: Record<string, React.ReactNode> = {
   noturno:    <Moon     size={15} strokeWidth={1.75} />,
 };
 
+const DESTINO_LABELS: Record<string, string> = {
+  "porto-seguro": "Porto Seguro",
+  "arraial": "Arraial d'Ajuda",
+  "trancoso": "Trancoso",
+  "caraiva": "Caraíva",
+  "praia-espelho": "Praia do Espelho",
+  "perto": "Perto de você",
+};
+
 function SearchResults() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -31,17 +40,22 @@ function SearchResults() {
 
   const filtered = useMemo(() => {
     let result = [...tours];
+    if (destino && destino !== "perto") result = result.filter((t) => t.destinos.includes(destino));
     if (catFilter !== "todos") result = result.filter((t) => t.category === catFilter);
     result = result.filter((t) => t.price <= maxPrice);
     if (sortBy === "price_asc") result.sort((a, b) => a.price - b.price);
     if (sortBy === "price_desc") result.sort((a, b) => b.price - a.price);
     if (sortBy === "relevance") result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
     return result;
-  }, [catFilter, maxPrice, sortBy]);
+  }, [destino, catFilter, maxPrice, sortBy]);
 
-  const destinoLabel = destino
-    ? tours[0]?.operator?.name ?? "Porto Seguro"
-    : "Porto Seguro";
+  const destinoLabel = DESTINO_LABELS[destino] ?? "";
+
+  const clearParam = (key: string) => {
+    const p = new URLSearchParams(searchParams.toString());
+    p.delete(key);
+    router.push(`/buscar?${p.toString()}`);
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -60,9 +74,29 @@ function SearchResults() {
           <div className="h-4 w-px bg-gray-200" />
           <p className="text-sm text-[#111]">
             <span className="font-semibold">{filtered.length} passeios</span>{" "}
-            {destino ? `em ${destinoLabel}` : "disponíveis"}
-            {adultos > 0 && ` • ${adultos} adulto${adultos > 1 ? "s" : ""}${criancas > 0 ? `, ${criancas} criança${criancas > 1 ? "s" : ""}` : ""}`}
+            {destinoLabel ? `em ${destinoLabel}` : "disponíveis"}
           </p>
+          {/* Pills ativos */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {destino && destino !== "perto" && destinoLabel && (
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#111] text-white px-3 py-1.5 rounded-full">
+                {destinoLabel}
+                <button onClick={() => clearParam("destino")} className="ml-0.5 opacity-70 hover:opacity-100">✕</button>
+              </span>
+            )}
+            {adultos > 1 && (
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
+                {adultos} adultos
+                <button onClick={() => clearParam("adultos")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
+              </span>
+            )}
+            {criancas > 0 && (
+              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
+                {criancas} criança{criancas > 1 ? "s" : ""}
+                <button onClick={() => clearParam("criancas")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
