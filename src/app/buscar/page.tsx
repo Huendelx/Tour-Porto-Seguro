@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Anchor, Car, Mountain, Landmark, Moon, LayoutGrid } from "lucide-react";
+import { Anchor, Car, Mountain, Landmark, Moon, LayoutGrid, Star, ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import { tours, categoryLabel, categoryColor, Tour } from "@/data/tours";
 
 const CATEGORIES = ["nautico", "terrestre", "aventura", "cultural", "noturno"] as const;
@@ -95,9 +95,9 @@ function SearchResults() {
 
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Ordenar por</p>
             <div className="space-y-1">
-              <FilterBtn active={sortBy === "relevance"} onClick={() => setSortBy("relevance")}>Mais relevantes</FilterBtn>
-              <FilterBtn active={sortBy === "price_asc"} onClick={() => setSortBy("price_asc")}>Menor preço</FilterBtn>
-              <FilterBtn active={sortBy === "price_desc"} onClick={() => setSortBy("price_desc")}>Maior preço</FilterBtn>
+              <FilterBtn active={sortBy === "relevance"} onClick={() => setSortBy("relevance")} icon={<Star size={15} strokeWidth={1.75} />}>Mais relevantes</FilterBtn>
+              <FilterBtn active={sortBy === "price_asc"} onClick={() => setSortBy("price_asc")} icon={<ArrowDownNarrowWide size={15} strokeWidth={1.75} />}>Menor preço</FilterBtn>
+              <FilterBtn active={sortBy === "price_desc"} onClick={() => setSortBy("price_desc")} icon={<ArrowUpNarrowWide size={15} strokeWidth={1.75} />}>Maior preço</FilterBtn>
             </div>
           </div>
         </aside>
