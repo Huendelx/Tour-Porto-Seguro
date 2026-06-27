@@ -4,9 +4,18 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Anchor, Car, Mountain, Landmark, Moon, LayoutGrid } from "lucide-react";
 import { tours, categoryLabel, categoryColor, Tour } from "@/data/tours";
 
 const CATEGORIES = ["nautico", "terrestre", "aventura", "cultural", "noturno"] as const;
+
+const categoryIcon: Record<string, React.ReactNode> = {
+  nautico:    <Anchor   size={15} strokeWidth={1.75} />,
+  terrestre:  <Car      size={15} strokeWidth={1.75} />,
+  aventura:   <Mountain size={15} strokeWidth={1.75} />,
+  cultural:   <Landmark size={15} strokeWidth={1.75} />,
+  noturno:    <Moon     size={15} strokeWidth={1.75} />,
+};
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -64,11 +73,11 @@ function SearchResults() {
           <div className="sticky top-32">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Categoria</p>
             <div className="space-y-1 mb-6">
-              <FilterBtn active={catFilter === "todos"} onClick={() => setCatFilter("todos")}>
+              <FilterBtn active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={15} strokeWidth={1.75} />}>
                 Todos os passeios
               </FilterBtn>
               {CATEGORIES.map((c) => (
-                <FilterBtn key={c} active={catFilter === c} onClick={() => setCatFilter(c)}>
+                <FilterBtn key={c} active={catFilter === c} onClick={() => setCatFilter(c)} icon={categoryIcon[c]}>
                   {categoryLabel[c]}
                 </FilterBtn>
               ))}
@@ -96,9 +105,9 @@ function SearchResults() {
         {/* ── Filtros mobile (horizontal) ── */}
         <div className="lg:hidden w-full mb-6">
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            <MobileFilterChip active={catFilter === "todos"} onClick={() => setCatFilter("todos")}>Todos</MobileFilterChip>
+            <MobileFilterChip active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={14} strokeWidth={1.75} />}>Todos</MobileFilterChip>
             {CATEGORIES.map((c) => (
-              <MobileFilterChip key={c} active={catFilter === c} onClick={() => setCatFilter(c)}>
+              <MobileFilterChip key={c} active={catFilter === c} onClick={() => setCatFilter(c)} icon={categoryIcon[c]}>
                 {categoryLabel[c]}
               </MobileFilterChip>
             ))}
@@ -183,27 +192,29 @@ function TourResultCard({ tour }: { tour: Tour }) {
   );
 }
 
-function FilterBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function FilterBtn({ active, onClick, icon, children }: { active: boolean; onClick: () => void; icon?: React.ReactNode; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left text-sm px-3 py-2 rounded-xl transition-colors ${
+      className={`w-full text-left text-sm px-3 py-2 rounded-xl transition-colors flex items-center gap-2 ${
         active ? "bg-[#111] text-white font-semibold" : "text-[#444] hover:bg-gray-50"
       }`}
     >
+      {icon && <span className="flex-shrink-0 opacity-70">{icon}</span>}
       {children}
     </button>
   );
 }
 
-function MobileFilterChip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function MobileFilterChip({ active, onClick, icon, children }: { active: boolean; onClick: () => void; icon?: React.ReactNode; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
-      className={`flex-shrink-0 text-sm px-4 py-2 rounded-full border transition-colors whitespace-nowrap ${
+      className={`flex-shrink-0 text-sm px-4 py-2 rounded-full border transition-colors whitespace-nowrap flex items-center gap-1.5 ${
         active ? "bg-[#111] text-white border-[#111]" : "text-[#444] border-gray-200 hover:border-gray-400"
       }`}
     >
+      {icon && <span className="flex-shrink-0 opacity-80">{icon}</span>}
       {children}
     </button>
   );
