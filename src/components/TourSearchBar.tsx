@@ -597,13 +597,35 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
 // ═══════════════════════════════════════════
 // MAIN EXPORT
 // ═══════════════════════════════════════════
+const STORAGE_KEY = "passeador_search";
+
+function loadSearch() {
+  if (typeof window === "undefined") return null;
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null"); } catch { return null; }
+}
+
+function saveSearch(data: object) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
 export default function TourSearchBar() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
-  const [destino, setDestino] = useState<Destino | null>(null);
-  const [date, setDate] = useState<Date | null>(null);
-  const [adults, setAdults] = useState(1);
-  const [kids, setKids] = useState(0);
+
+  const saved = loadSearch();
+  const [destino, setDestino] = useState<Destino | null>(saved?.destino ?? null);
+  const [date, setDate] = useState<Date | null>(saved?.date ? new Date(saved.date) : null);
+  const [adults, setAdults] = useState<number>(saved?.adults ?? 1);
+  const [kids, setKids] = useState<number>(saved?.kids ?? 0);
+
+  const persist = (patch: object) =>
+    saveSearch({ destino, date: date?.toISOString() ?? null, adults, kids, ...patch });
+
+  const setDestinoP = (d: Destino | null) => { setDestino(d); persist({ destino: d }); };
+  const setDateP = (d: Date | null) => { setDate(d); persist({ date: d?.toISOString() ?? null }); };
+  const setAdultsP = (n: number) => { setAdults(n); persist({ adults: n }); };
+  const setKidsP = (n: number) => { setKids(n); persist({ kids: n }); };
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -614,7 +636,13 @@ export default function TourSearchBar() {
     router.push(`/buscar?${params.toString()}`);
   };
 
-  const props = { destino, setDestino, date, setDate, adults, setAdults, kids, setKids, onSearch: handleSearch };
+  const props = {
+    destino, setDestino: setDestinoP,
+    date, setDate: setDateP,
+    adults, setAdults: setAdultsP,
+    kids, setKids: setKidsP,
+    onSearch: handleSearch,
+  };
 
   return isMobile ? <MobileSearch {...props} /> : <DesktopSearch {...props} />;
 }
