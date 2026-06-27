@@ -131,9 +131,7 @@ export default function Header() {
             <div
               className="relative w-7 h-7 flex-shrink-0 transition-all"
               style={{
-                filter: passeiosOpen || mobileMenuOpen || isScrolled
-                  ? "brightness(0)"
-                  : "none"
+                filter: dark ? "brightness(0)" : "none"
               }}
             >
               <Image src="/logo-passeador.svg" alt="Passeador" fill className="object-contain" priority />
