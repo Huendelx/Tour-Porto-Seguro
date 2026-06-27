@@ -37,7 +37,7 @@ function SearchResults() {
   return (
     <div className="min-h-screen bg-white">
       {/* ── Header barra ── */}
-      <div className="sticky top-14 z-30 bg-white border-b border-gray-100 px-4 py-3">
+      <div className="sticky top-14 z-30 bg-white border-b border-gray-100 px-4 py-3 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center gap-4">
           <button
             onClick={() => router.back()}
@@ -57,7 +57,7 @@ function SearchResults() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-12 flex flex-col lg:flex-row gap-8">
 
         {/* ── Filtros sidebar desktop ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0">
@@ -120,7 +120,7 @@ function SearchResults() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 scroll-mt-32">
               {filtered.map((tour) => (
                 <TourResultCard key={tour.id} tour={tour} />
               ))}

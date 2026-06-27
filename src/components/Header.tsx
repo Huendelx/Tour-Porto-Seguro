@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
 import { CircleHelp } from "lucide-react";
 import MobileMenu from "./MobileMenu";
@@ -52,6 +53,8 @@ const passeiosItems = {
 };
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -90,7 +93,7 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const dark = isScrolled || passeiosOpen || mobileMenuOpen;
+  const dark = !isHomePage || isScrolled || passeiosOpen || mobileMenuOpen;
 
   const linkCls = `text-[14px] font-[450] transition-colors ${
     dark ? "text-[#1a1a1a] hover:text-[#1a1a1a]/60" : "text-white hover:text-white/70"
@@ -113,13 +116,13 @@ export default function Header() {
 
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-colors duration-200 ${
-          passeiosOpen || mobileMenuOpen
+          !isHomePage || passeiosOpen || mobileMenuOpen
             ? "bg-white"
             : isScrolled
               ? "bg-white/80"
               : "bg-transparent"
         }`}
-        style={isScrolled && !passeiosOpen && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
+        style={isHomePage && isScrolled && !passeiosOpen && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
       >
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
 
