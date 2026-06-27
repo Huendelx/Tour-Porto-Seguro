@@ -163,7 +163,7 @@ export default function Header() {
             <a href="#guia" className={`${linkCls} hidden md:block mr-1 whitespace-nowrap`}>
               Torne-se um guia
             </a>
-            <div className="relative hidden md:block" ref={langMenuRef}>
+            <div className="relative" ref={langMenuRef}>
               <button
                 className={pillCls}
                 aria-label="Idioma"
