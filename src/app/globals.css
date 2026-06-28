@@ -114,6 +114,13 @@ body {
   letter-spacing: normal;
   color: #111;
 }
+.hl-sub {
+  font-size: 16px;
+  color: #666;
+  margin-top: 12px;
+  max-width: 480px;
+  line-height: 1.6;
+}
 
 .hl-track {
   position: relative;
