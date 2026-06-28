@@ -187,7 +187,7 @@ export default function NossosDestaques() {
   return (
     <section className="hl-section">
       <div className="hl-head">
-        <h2>Nossos destaques.</h2>
+        <h2>Nossos destaques</h2>
         <p className="hl-sub">Os destinos mais amados pelos viajantes que passaram por aqui.</p>
       </div>
 
