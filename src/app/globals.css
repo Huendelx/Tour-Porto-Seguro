@@ -106,7 +106,7 @@ body {
   background: #fff;
 }
 .hl-head {
-  padding: 0 max(20px, calc((100vw - min(1260px, 92vw)) / 2)) 28px;
+  padding: 0 max(24px, calc((100vw - 1200px) / 2)) 28px;
 }
 .hl-head h2 {
   font-size: 32px;
@@ -132,10 +132,10 @@ body {
   scrollbar-width: none;
 }
 .hl-track::-webkit-scrollbar { display: none; }
-.hl-track-pad { flex: 0 0 max(20px, calc((100vw - min(1260px, 92vw)) / 2)); }
+.hl-track-pad { flex: 0 0 max(24px, calc((100vw - 1200px) / 2)); }
 
 .hl-card {
-  flex: 0 0 min(1260px, 92vw);
+  flex: 0 0 min(1200px, calc(100vw - 48px));
   scroll-snap-align: center;
   cursor: pointer;
   position: relative;
