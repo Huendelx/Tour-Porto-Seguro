@@ -227,7 +227,7 @@ body {
   background: rgba(255,255,255,0.55);
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
-  border: 1px solid rgba(255,255,255,0.7);
+  border: none;
   border-radius: 999px;
   height: 56px;
   box-sizing: border-box;
