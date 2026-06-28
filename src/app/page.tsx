@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import NossosDestaques from "@/components/NossosDestaques";
 import TrustBar from "@/components/TrustBar";
 import DestinosSection from "@/components/DestinosSection";
 import ExperienciasSection from "@/components/ExperienciasSection";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <NossosDestaques />
       <TrustBar />
       <DestinosSection />
       <ExperienciasSection />
