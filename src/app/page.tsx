@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import DestinosSection from "@/components/DestinosSection";
 import ExperienciasSection from "@/components/ExperienciasSection";
+import PasseiosProximos from "@/components/PasseiosProximos";
 import ComoFunciona from "@/components/ComoFunciona";
 import CategoriasSection from "@/components/CategoriasSection";
 import ProvaSocial from "@/components/ProvaSocial";
@@ -14,6 +15,7 @@ export default function Home() {
       <TrustBar />
       <DestinosSection />
       <ExperienciasSection />
+      <PasseiosProximos />
       <ComoFunciona />
       <CategoriasSection />
       <ProvaSocial />
