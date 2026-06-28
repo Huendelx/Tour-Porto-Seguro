@@ -111,6 +111,7 @@ body {
 .hl-head h2 {
   font-size: 32px;
   font-weight: 700;
+  line-height: 1.25;
   letter-spacing: normal;
   color: #111;
 }
