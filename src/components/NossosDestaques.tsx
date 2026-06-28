@@ -6,12 +6,12 @@ const AUTOPLAY_MS = 5000;
 const SCROLL_MS = 2200;
 
 const SLIDES = [
-  { id: "arraial",  title: "Onde o mar encontra o asfalto.",        label: "Arraial d'Ajuda",   img: "/images/arraial.webp" },
-  { id: "espelho",  title: "A praia mais bonita do Brasil.",         label: "Praia do Espelho",  img: "/images/espelho.webp" },
-  { id: "caraiva",  title: "Sem carros. Sem barulho. Só você.",      label: "Caraíva",           img: "/images/caraiva.webp" },
-  { id: "coroa",    title: "Uma piscina natural no meio do oceano.",  label: "Coroa Vermelha",    img: "/images/coroa.webp" },
-  { id: "morro",    title: "Beleza que não cabe em foto.",            label: "Morro de Brejo",    img: "/images/morro.webp" },
-  { id: "recife",   title: "O recife mais vivo do Nordeste.",         label: "Recife de Fora",    img: "/images/recife.webp" },
+  { id: "buggy", title: "Aventura nas Dunas", label: "Passeio de Buggy", img: "/images/buggy.webp" },
+  { id: "helicoptero", title: "Voe sobre o paraíso.", label: "Voo Panorâmico", img: "/images/helicopter.webp" },
+  { id: "barco", title: "Navegue em águas cristalinas.", label: "Passeio de Lancha", img: "/images/boat.webp" },
+  { id: "mergulho", title: "O oceano de outro mundo.", label: "Mergulho de Cilindro", img: "/images/mergulho.webp" },
+  { id: "quadriciclo", title: "Adrenalina com vista pro mar.", label: "Trilha de Quadriciclo", img: "/images/quadriciclo.webp" },
+  { id: "escuna", title: "Festa e alegria no mar.", label: "Passeio de Escuna", img: "/images/escuna.webp" },
 ];
 
 function CardFrost({ src }: { src: string }) {
