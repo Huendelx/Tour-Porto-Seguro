@@ -114,21 +114,29 @@ export default function PasseiosProximos() {
           ))}
         </div>
 
-        {/* Dots — só mobile */}
-        <div className="flex justify-center gap-2.5 mt-6 lg:hidden">
+        {/* Timeline dots */}
+        <div className="relative flex items-center justify-between mt-8 lg:mt-6">
+          {/* linha de fundo */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-[#ddd]" />
+          {/* linha de progresso */}
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-[#111] transition-all duration-300"
+            style={{ width: `${(active / (CARDS.length - 1)) * 100}%` }}
+          />
           {CARDS.map((_, i) => (
             <button
               key={i}
               onClick={() => scrollTo(i)}
-              className="transition-all"
+              className="relative z-10 transition-all duration-200"
               style={{
-                width: active === i ? 28 : 8,
-                height: 8,
-                borderRadius: 99,
-                background: active === i ? "#111" : "#ddd",
-                border: "none",
+                width: active === i ? 14 : 10,
+                height: active === i ? 14 : 10,
+                borderRadius: "50%",
+                background: active === i ? "#111" : "#fff",
+                border: `2px solid ${active === i ? "#111" : "#bbb"}`,
                 cursor: "pointer",
                 padding: 0,
+                flexShrink: 0,
               }}
             />
           ))}
