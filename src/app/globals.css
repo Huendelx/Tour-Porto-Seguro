@@ -103,16 +103,16 @@ body {
 .hl-section {
   position: relative;
   padding: 72px 0 0;
-  background: linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 60%, #111 100%);
+  background: #fff;
 }
 .hl-head {
   padding: 0 max(20px, calc((100vw - min(1260px, 92vw)) / 2)) 28px;
 }
 .hl-head h2 {
-  font-size: 44px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: #f4f4f4;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: normal;
+  color: #111;
 }
 
 .hl-track {
@@ -289,7 +289,7 @@ body {
 @media (max-width: 768px) {
   .hl-section { padding: 46px 0 0; }
   .hl-head { padding: 0 24px 18px; }
-  .hl-head h2 { font-size: 30px; }
+  .hl-head h2 { font-size: 22px; }
   .hl-card { flex-basis: 88vw; }
   .hl-track-pad { flex: 0 0 calc((100vw - 88vw) / 2); }
   .hl-card-body { aspect-ratio: 4 / 5; }
