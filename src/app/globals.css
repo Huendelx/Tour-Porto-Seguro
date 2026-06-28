@@ -224,13 +224,14 @@ body {
 
 .hl-loader-pill,
 .hl-play-pill {
-  background: rgba(0,0,0,0.28);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: none;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.7);
   border-radius: 999px;
   height: 56px;
   box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
 .hl-loader-pill {
   display: inline-flex;
@@ -257,16 +258,16 @@ body {
 }
 .hl-dot-bg {
   position: absolute; inset: 0;
-  background: rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.18);
   border-radius: 999px;
   transition: background 0.4s ease;
 }
-.hl-dot.is-done .hl-dot-bg { background: rgba(255,255,255,0.35); }
+.hl-dot.is-done .hl-dot-bg { background: rgba(0,0,0,0.35); }
 .hl-dot.is-active { width: 48px; }
-.hl-dot.is-active .hl-dot-bg { background: rgba(255,255,255,0.12); }
+.hl-dot.is-active .hl-dot-bg { background: rgba(0,0,0,0.10); }
 .hl-dot-fill {
   position: absolute; inset: 0;
-  background: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.80);
   border-radius: 999px;
   transform-origin: left center;
   transform: scaleX(0);
@@ -278,7 +279,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.85);
+  color: rgba(0,0,0,0.75);
   padding: 0;
   overflow: hidden;
   cursor: pointer;
