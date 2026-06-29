@@ -15,7 +15,9 @@ const SLIDES = [
   { id: "escuna",      title: "Festa e alegria no mar.",        label: "Passeio de Escuna",      img: "/images/escuna.webp",      operator: "Escuna Sol Mar",       color: "#e67e22", slug: "caraiva" },
 ];
 
-function CardFrost({ src }: { src: string }) {
+type Slide = typeof SLIDES[0];
+
+function SlideCard({ item }: { item: Slide }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const frostRef = useRef<HTMLDivElement>(null);
 
@@ -45,8 +47,25 @@ function CardFrost({ src }: { src: string }) {
 
   return (
     <div className="hl-card-body">
-      <img ref={imgRef} src={src} alt="" onLoad={applyFrost} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      <img ref={imgRef} src={item.img} alt={item.title} onLoad={applyFrost} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       <div ref={frostRef} className="hl-card-frost" style={{ "--hl-fc": "0,0,0" } as React.CSSProperties} />
+      {/* Vinheta inferior */}
+      <div className="hl-card-veil" />
+      {/* Título */}
+      <div className="hl-card-head">
+        <h3>{item.title}</h3>
+        <span className="hl-card-label">{item.label}</span>
+      </div>
+      {/* Rodapé */}
+      <div className="hl-card-footer">
+        <div className="hl-card-operator">
+          <div className="hl-card-avatar" style={{ background: item.color }}>{item.operator.charAt(0)}</div>
+          <span className="hl-card-op-name">{item.operator}</span>
+        </div>
+        <Link href={`/passeios/${item.slug}`} className="hl-card-cta" onClick={(e) => e.stopPropagation()}>
+          Ver passeio
+        </Link>
+      </div>
     </div>
   );
 }
@@ -202,27 +221,7 @@ export default function NossosDestaques() {
               className={`hl-card${i === active ? " hl-card-active" : ""}`}
               onClick={() => goTo(i)}
             >
-              <CardFrost src={item.img} />
-              <div className="hl-card-head">
-                <h3>{item.title}</h3>
-                <span className="hl-card-label">{item.label}</span>
-              </div>
-              {/* Rodapé do card */}
-              <div className="hl-card-footer">
-                <div className="hl-card-operator">
-                  <div className="hl-card-avatar" style={{ background: item.color }}>
-                    {item.operator.charAt(0)}
-                  </div>
-                  <span className="hl-card-op-name">{item.operator}</span>
-                </div>
-                <Link
-                  href={`/passeios/${item.slug}`}
-                  className="hl-card-cta"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Ver passeio
-                </Link>
-              </div>
+              <SlideCard item={item} />
             </article>
           ))}
           <div className="hl-track-pad" />
