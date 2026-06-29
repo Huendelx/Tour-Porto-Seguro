@@ -14,7 +14,7 @@ export default function Hero() {
         style={{ backgroundImage: "url('/hero-bg-desktop.webp')" }}
       />
 
-      <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-[66px] mb-auto">
+      <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-[56px] mb-auto">
         <h1 className="text-4xl md:text-7xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
           Passeie pelo Brasil
         </h1>
