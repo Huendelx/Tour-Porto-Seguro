@@ -174,6 +174,54 @@ body {
   opacity: 0.85;
 }
 
+/* card footer */
+.hl-card-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 24px; right: 24px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hl-card-operator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hl-card-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.hl-card-op-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+.hl-card-cta {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+.hl-card-cta:hover {
+  background: rgba(255,255,255,0.30);
+}
+
 /* frost morphism */
 .hl-card-frost {
   position: absolute;
