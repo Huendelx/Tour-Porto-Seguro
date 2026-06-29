@@ -511,7 +511,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         }}>
           {activeStep === "onde" ? (
             <div style={{ padding: "24px 20px" }}>
-              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 16 }}>Onde?</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}><Navigation size={20} strokeWidth={2} color="#888" />Onde?</div>
               <div
                 onClick={() => setSubPage("destinos")}
                 style={{ display: "flex", alignItems: "center", gap: 10, border: "1px solid #ddd", borderRadius: 12, padding: "14px 16px", cursor: "pointer" }}
@@ -527,7 +527,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
               onClick={() => setActiveStep("onde")}
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 20px", background: "none", border: "none", cursor: "pointer" }}
             >
-              <span style={{ fontSize: 14, color: "#888" }}>Onde</span>
+              <span style={{ fontSize: 14, color: "#888", display: "flex", alignItems: "center", gap: 6 }}><Navigation size={14} strokeWidth={2} />Onde</span>
               <span style={{ fontSize: 14, fontWeight: 600, color: "#111" }}>{destino?.name?.split(",")[0] || "Qualquer lugar"}</span>
             </button>
           )}
@@ -540,7 +540,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         }}>
           {activeStep === "quando" ? (
             <div style={{ padding: "24px 20px" }}>
-              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 16 }}>Quando?</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}><CalendarDays size={20} strokeWidth={2} color="#888" />Quando?</div>
               <QuickDates onSelect={(d) => { setDate(d); setActiveStep("quem"); }} />
               <Calendar selected={date} onSelect={(d) => { setDate(d); setActiveStep("quem"); }} monthsToShow={1} />
             </div>
@@ -549,7 +549,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
               onClick={() => setActiveStep("quando")}
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 20px", background: "none", border: "none", cursor: "pointer" }}
             >
-              <span style={{ fontSize: 14, color: "#888" }}>Quando</span>
+              <span style={{ fontSize: 14, color: "#888", display: "flex", alignItems: "center", gap: 6 }}><CalendarDays size={14} strokeWidth={2} />Quando</span>
               <span style={{ fontSize: 14, fontWeight: 600, color: "#111" }}>{formatDate(date) || "Adicionar datas"}</span>
             </button>
           )}
@@ -562,7 +562,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         }}>
           {activeStep === "quem" ? (
             <div style={{ padding: "24px 20px" }}>
-              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 8 }}>Quem?</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#111", marginBottom: 8, display: "flex", alignItems: "center", gap: 10 }}><Users size={20} strokeWidth={2} color="#888" />Quem?</div>
               <GuestPicker adults={adults} kids={kids} onChangeAdults={setAdults} onChangeKids={setKids} />
             </div>
           ) : (
@@ -570,7 +570,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
               onClick={() => setActiveStep("quem")}
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 20px", background: "none", border: "none", cursor: "pointer" }}
             >
-              <span style={{ fontSize: 14, color: "#888" }}>Quem</span>
+              <span style={{ fontSize: 14, color: "#888", display: "flex", alignItems: "center", gap: 6 }}><Users size={14} strokeWidth={2} />Quem</span>
               <span style={{ fontSize: 14, fontWeight: 600, color: "#111" }}>{formatGuests(adults, kids) || "Adicionar participantes"}</span>
             </button>
           )}

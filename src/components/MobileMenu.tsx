@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon, Compass, Info, ChatCircle } from "@phosphor-icons/react";
+import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -53,10 +53,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 className="w-full flex items-center justify-between py-2 text-[#041610]"
                 onClick={() => setPasseiosOpen(!passeiosOpen)}
               >
-                <span className="flex items-center gap-3 text-2xl font-light tracking-tight">
-                  <Compass size={22} weight="duotone" className="text-[#041610]/50" />
-                  Passeios
-                </span>
+                <span className="text-2xl font-light tracking-tight">Passeios</span>
                 <ChevronDown
                   className={`text-[#041610]/50 transition-transform duration-300 ${
                     passeiosOpen ? "rotate-180" : ""
@@ -83,16 +80,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </div>
 
             <a href="#sobre" onClick={onClose} className="block py-2 text-[#041610] border-b border-[#041610]/10 pb-4">
-              <span className="flex items-center gap-3 text-2xl font-light tracking-tight">
-                <Info size={22} weight="duotone" className="text-[#041610]/50" />
-                Sobre
-              </span>
+              <span className="text-2xl font-light tracking-tight">Sobre</span>
             </a>
             <a href="#contato" onClick={onClose} className="block py-2 text-[#041610] border-b border-[#041610]/10 pb-4">
-              <span className="flex items-center gap-3 text-2xl font-light tracking-tight">
-                <ChatCircle size={22} weight="duotone" className="text-[#041610]/50" />
-                Contato
-              </span>
+              <span className="text-2xl font-light tracking-tight">Contato</span>
             </a>
           </nav>
 
