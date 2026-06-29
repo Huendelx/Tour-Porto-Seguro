@@ -439,9 +439,9 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
       >
         {hasValues ? (
           <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, minWidth: 0 }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", minWidth: 0, flexShrink: 1 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", flex: 1, minWidth: 0 }}>
               <Navigation size={15} strokeWidth={2} style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "22vw" }}>{destino?.name?.split(",")[0] || "Destino"}</span>
+              <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{destino?.name?.split(",")[0] || "Destino"}</span>
             </span>
             {shortDate && (
               <>
