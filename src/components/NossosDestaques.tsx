@@ -7,12 +7,12 @@ const AUTOPLAY_MS = 5000;
 const SCROLL_MS = 2200;
 
 const SLIDES = [
-  { id: "buggy",       title: "Aventura nas Dunas",            label: "Passeio de Buggy",      img: "/images/buggy.webp",       operator: "Porto Brasil Turismo", color: "#006994", slug: "quadriciclo-acai" },
-  { id: "helicoptero", title: "Voe sobre o paraíso.",           label: "Voo Panorâmico",         img: "/images/helicopter.webp",  operator: "Hélio Sul",            color: "#c0392b", slug: "trancoso" },
-  { id: "barco",       title: "Navegue em águas cristalinas.",  label: "Passeio de Lancha",      img: "/images/boat.webp",        operator: "Porto Brasil Turismo", color: "#006994", slug: "recife-de-fora" },
-  { id: "mergulho",    title: "O oceano de outro mundo.",       label: "Mergulho de Cilindro",   img: "/images/mergulho.webp",    operator: "Dive Porto Seguro",    color: "#1a6b3a", slug: "mergulho" },
-  { id: "quadriciclo", title: "Adrenalina com vista pro mar.",  label: "Trilha de Quadriciclo",  img: "/images/quadriciclo.webp", operator: "Porto Brasil Turismo", color: "#006994", slug: "quadriciclo-aldeia" },
-  { id: "escuna",      title: "Festa e alegria no mar.",        label: "Passeio de Escuna",      img: "/images/escuna.webp",      operator: "Escuna Sol Mar",       color: "#e67e22", slug: "caraiva" },
+  { id: "buggy",       title: "Aventura nas Dunas",            label: "Passeio de Buggy",      img: "/images/buggy.webp",       operator: "Porto Brasil Turismo", color: "#6366f1", slug: "quadriciclo-acai" },
+  { id: "helicoptero", title: "Voe sobre o paraíso.",           label: "Voo Panorâmico",         img: "/images/helicopter.webp",  operator: "Hélio Sul",            color: "#f43f5e", slug: "trancoso" },
+  { id: "barco",       title: "Navegue em águas cristalinas.",  label: "Passeio de Lancha",      img: "/images/boat.webp",        operator: "Porto Brasil Turismo", color: "#0ea5e9", slug: "recife-de-fora" },
+  { id: "mergulho",    title: "O oceano de outro mundo.",       label: "Mergulho de Cilindro",   img: "/images/mergulho.webp",    operator: "Dive Porto Seguro",    color: "#10b981", slug: "mergulho" },
+  { id: "quadriciclo", title: "Adrenalina com vista pro mar.",  label: "Trilha de Quadriciclo",  img: "/images/quadriciclo.webp", operator: "Porto Brasil Turismo", color: "#f97316", slug: "quadriciclo-aldeia" },
+  { id: "escuna",      title: "Festa e alegria no mar.",        label: "Passeio de Escuna",      img: "/images/escuna.webp",      operator: "Escuna Sol Mar",       color: "#a855f7", slug: "caraiva" },
 ];
 
 type Slide = typeof SLIDES[0];
