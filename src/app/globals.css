@@ -215,21 +215,19 @@ body {
   text-shadow: 0 1px 6px rgba(0,0,0,0.4);
 }
 .hl-card-cta {
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
+  background: #fff;
+  border: none;
+  color: #111;
   font-size: 13px;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 999px;
   text-decoration: none;
-  transition: background 0.2s ease;
+  transition: opacity 0.2s ease;
   white-space: nowrap;
 }
 .hl-card-cta:hover {
-  background: rgba(255,255,255,0.30);
+  opacity: 0.88;
 }
 
 /* frost morphism */
