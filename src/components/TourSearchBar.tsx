@@ -453,7 +453,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
               </>
             )}
             <span style={{ color: "#ddd", flexShrink: 0 }}>|</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", flexShrink: 0, paddingRight: 8 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 5, color: "#111", flexShrink: 0, paddingRight: 12 }}>
               <Users size={15} strokeWidth={2} />
               <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: "nowrap" }}>{guestCount}</span>
             </span>
