@@ -188,7 +188,7 @@ function QuickDates({ onSelect }: { onSelect: (d: Date) => void }) {
   ];
 
   return (
-    <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap", justifyContent: "center" }}>
       {pills.map((p, i) => (
         <button
           key={i}
