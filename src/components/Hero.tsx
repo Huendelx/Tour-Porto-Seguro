@@ -10,7 +10,7 @@ export default function Hero() {
       />
       {/* Desktop */}
       <div
-        className="absolute inset-0 bg-cover bg-top hidden md:block"
+        className="absolute inset-0 bg-cover bg-center hidden md:block"
         style={{ backgroundImage: "url('/hero-bg-desktop.webp')" }}
       />
 
