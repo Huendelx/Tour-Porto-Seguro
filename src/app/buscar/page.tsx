@@ -95,30 +95,28 @@ function SearchResults() {
 
       {/* ── Barra de filtros ── */}
       <div className="sticky top-14 z-30 bg-white border-b border-gray-100">
-        <div className="px-4 md:px-6 py-3 flex items-center justify-center gap-2 overflow-x-auto scrollbar-hide">
 
-          {/* Pills de categoria */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <Pill active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={14} strokeWidth={1.75} />}>
-              Todos
-            </Pill>
+        {/* Mobile: pills scrolláveis centrados */}
+        <div className="md:hidden flex justify-center py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 px-4">
+            <Pill active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={14} strokeWidth={1.75} />}>Todos</Pill>
             {CATEGORIES.map((c) => (
-              <Pill key={c} active={catFilter === c} onClick={() => setCatFilter(c)} icon={categoryIcon[c]}>
-                {categoryLabel[c]}
-              </Pill>
+              <Pill key={c} active={catFilter === c} onClick={() => setCatFilter(c)} icon={categoryIcon[c]}>{categoryLabel[c]}</Pill>
             ))}
           </div>
+        </div>
 
-          {/* Separador */}
-          <div className="hidden md:block w-px h-6 bg-gray-200 flex-shrink-0" />
-
-          {/* Botão Filtros — desktop only (mobile fica no header) */}
+        {/* Desktop: pills + separador + botão filtros, tudo centrado */}
+        <div className="hidden md:flex items-center justify-center gap-2 px-6 py-3">
+          <Pill active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={14} strokeWidth={1.75} />}>Todos</Pill>
+          {CATEGORIES.map((c) => (
+            <Pill key={c} active={catFilter === c} onClick={() => setCatFilter(c)} icon={categoryIcon[c]}>{categoryLabel[c]}</Pill>
+          ))}
+          <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
           <button
             onClick={() => setFilterOpen(true)}
-            className={`hidden md:flex flex-shrink-0 items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors whitespace-nowrap ${
-              hasActiveFilters
-                ? "bg-[#111] text-white border-[#111]"
-                : "text-[#444] border-gray-200 hover:border-gray-400 bg-white"
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors whitespace-nowrap ${
+              hasActiveFilters ? "bg-[#111] text-white border-[#111]" : "text-[#444] border-gray-200 hover:border-gray-400 bg-white"
             }`}
           >
             <SlidersHorizontal size={14} strokeWidth={2} />
@@ -130,6 +128,7 @@ function SearchResults() {
             )}
           </button>
         </div>
+      </div>
 
         {/* Linha de contexto */}
         {(destinoLabel || adultos > 1 || criancas > 0) && (
@@ -145,7 +144,7 @@ function SearchResults() {
       </div>
 
       {/* ── Grid ── */}
-      <div className="px-4 md:px-6 pt-6 pb-12">
+      <div className="px-4 md:px-6 pt-8 pb-12">
         {filtered.length === 0 ? (
           <div className="text-center py-24">
             <p className="text-4xl mb-4">🔍</p>
