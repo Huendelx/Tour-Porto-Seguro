@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
 import { CircleHelp } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { Suspense } from "react";
+import HeaderSearchBar from "./HeaderSearchBar";
 
 const ChevronDown = ({ className }: { className?: string }) => (
   <svg className={className} width="10" height="10" viewBox="0 0 12 12" fill="none">
@@ -142,22 +144,30 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* CENTER — Passeios + Restaurantes */}
+          {/* CENTER — nav links (home) ou search bar compacta (outras páginas) */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-            <button
-              className={`flex items-center gap-1 px-3 py-2 ${linkCls} ${passeiosOpen ? "hover:!text-[#1a1a1a]" : ""}`}
-              onMouseEnter={() => setPasseiosOpen(true)}
-            >
-              Passeios
-              <ChevronDown className={`transition-transform ${passeiosOpen ? "rotate-180" : ""}`} />
-            </button>
-            <a
-              href="#restaurantes"
-              className={`px-3 py-2 ${linkCls} ${passeiosOpen ? "opacity-50" : ""}`}
-              onMouseEnter={() => setPasseiosOpen(false)}
-            >
-              Promoções
-            </a>
+            {isHomePage ? (
+              <>
+                <button
+                  className={`flex items-center gap-1 px-3 py-2 ${linkCls} ${passeiosOpen ? "hover:!text-[#1a1a1a]" : ""}`}
+                  onMouseEnter={() => setPasseiosOpen(true)}
+                >
+                  Passeios
+                  <ChevronDown className={`transition-transform ${passeiosOpen ? "rotate-180" : ""}`} />
+                </button>
+                <a
+                  href="#restaurantes"
+                  className={`px-3 py-2 ${linkCls} ${passeiosOpen ? "opacity-50" : ""}`}
+                  onMouseEnter={() => setPasseiosOpen(false)}
+                >
+                  Promoções
+                </a>
+              </>
+            ) : (
+              <Suspense fallback={null}>
+                <HeaderSearchBar />
+              </Suspense>
+            )}
           </div>
 
           {/* RIGHT — Torne-se um guia + globe pill + hamburger pill */}

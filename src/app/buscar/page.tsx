@@ -59,52 +59,11 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* ── Header barra ── */}
-      <div className="sticky top-14 z-30 bg-white border-b border-gray-100 px-4 py-3 shadow-sm">
-        <div className="max-w-none flex items-center gap-4">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#111] transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-            Voltar
-          </button>
-          <div className="h-4 w-px bg-gray-200" />
-          <p className="text-sm text-[#111]">
-            <span className="font-semibold">{filtered.length} passeios</span>{" "}
-            {destinoLabel ? `em ${destinoLabel}` : "disponíveis"}
-          </p>
-          {/* Pills ativos */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {destino && destino !== "perto" && destinoLabel && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-[#111] text-white px-3 py-1.5 rounded-full">
-                {destinoLabel}
-                <button onClick={() => clearParam("destino")} className="ml-0.5 opacity-70 hover:opacity-100">✕</button>
-              </span>
-            )}
-            {adultos > 1 && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
-                {adultos} adultos
-                <button onClick={() => clearParam("adultos")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
-              </span>
-            )}
-            {criancas > 0 && (
-              <span className="flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-[#111] px-3 py-1.5 rounded-full">
-                {criancas} criança{criancas > 1 ? "s" : ""}
-                <button onClick={() => clearParam("criancas")} className="ml-0.5 opacity-50 hover:opacity-100">✕</button>
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-none px-4 pt-24 pb-12 flex flex-col lg:flex-row gap-8">
+      <div className="max-w-none px-4 pt-8 pb-12 flex flex-col lg:flex-row gap-8">
 
         {/* ── Filtros sidebar desktop ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0">
-          <div className="sticky top-32">
+          <div className="sticky top-20">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Categoria</p>
             <div className="space-y-1 mb-6">
               <FilterBtn active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={15} strokeWidth={1.75} />}>
