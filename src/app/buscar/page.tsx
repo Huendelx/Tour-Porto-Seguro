@@ -143,7 +143,7 @@ function SearchResults() {
       </div>
 
       {/* ── Grid ── */}
-      <div className="px-4 md:px-6 pt-8 pb-12">
+      <div className="px-4 md:px-6 pt-20 pb-12">
         {filtered.length === 0 ? (
           <div className="text-center py-24">
             <p className="text-4xl mb-4">🔍</p>
