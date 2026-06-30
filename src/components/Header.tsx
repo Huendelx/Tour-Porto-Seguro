@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, SlidersHorizontal } from "lucide-react";
 import MobileMenu from "./MobileMenu";
-import { Suspense } from "react";
 import HeaderSearchBar from "./HeaderSearchBar";
 
 const ChevronDown = ({ className }: { className?: string }) => (
@@ -57,7 +56,9 @@ const passeiosItems = {
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const isHomePage = pathname === "/";
+  const isBuscar = pathname.startsWith("/buscar");
   const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -128,6 +129,35 @@ export default function Header() {
         style={isHomePage && isScrolled && !passeiosOpen && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
       >
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
+
+          {/* MOBILE NON-HOME — back + search + filtros */}
+          {!isHomePage && (
+            <div className="md:hidden absolute inset-0 flex items-center px-3 gap-2 bg-white z-10">
+              <button
+                onClick={() => router.back()}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
+                aria-label="Voltar"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+                </svg>
+              </button>
+              <div className="flex-1 min-w-0">
+                <Suspense fallback={null}>
+                  <HeaderSearchBar />
+                </Suspense>
+              </div>
+              {isBuscar && (
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent("passeador:open-filter"))}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
+                  aria-label="Filtros"
+                >
+                  <SlidersHorizontal size={20} strokeWidth={1.75} />
+                </button>
+              )}
+            </div>
+          )}
 
           {/* LEFT — logo + nome */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 cursor-pointer">

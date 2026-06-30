@@ -39,6 +39,12 @@ function SearchResults() {
   const [sortBy, setSortBy]       = useState<"relevance" | "price_asc" | "price_desc">("relevance");
   const [filterOpen, setFilterOpen] = useState(false);
 
+  useEffect(() => {
+    const handler = () => setFilterOpen(true);
+    window.addEventListener("passeador:open-filter", handler);
+    return () => window.removeEventListener("passeador:open-filter", handler);
+  }, []);
+
   // temp state inside drawer so user can cancel
   const [draftPrice, setDraftPrice]   = useState(maxPrice);
   const [draftSort,  setDraftSort]    = useState(sortBy);
@@ -104,12 +110,12 @@ function SearchResults() {
           </div>
 
           {/* Separador */}
-          <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
+          <div className="hidden md:block w-px h-6 bg-gray-200 flex-shrink-0" />
 
-          {/* Botão Filtros */}
+          {/* Botão Filtros — desktop only (mobile fica no header) */}
           <button
             onClick={() => setFilterOpen(true)}
-            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors whitespace-nowrap ${
+            className={`hidden md:flex flex-shrink-0 items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors whitespace-nowrap ${
               hasActiveFilters
                 ? "bg-[#111] text-white border-[#111]"
                 : "text-[#444] border-gray-200 hover:border-gray-400 bg-white"
