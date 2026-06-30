@@ -215,20 +215,15 @@ export default function HeaderSearchBar() {
                 background: active === f.id ? "#f5f5f5" : "transparent",
                 border: "none", cursor: "pointer", textAlign: "left",
                 transition: "background 0.15s", outline: "none",
-                display: "flex", flexDirection: "column", justifyContent: "center",
+                display: "flex", alignItems: "center", gap: 6,
               }}
               onMouseEnter={(e) => { if (active !== f.id) e.currentTarget.style.background = "#fafafa"; }}
               onMouseLeave={(e) => { if (active !== f.id) e.currentTarget.style.background = "transparent"; }}
             >
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#888", letterSpacing: "0.04em", textTransform: "uppercase", lineHeight: 1 }}>
-                {f.label}
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 3 }}>
-                <span style={{ color: f.value ? "#111" : "#ccc", flexShrink: 0, lineHeight: 1 }}>{f.icon}</span>
-                <span style={{ fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: f.value ? "#111" : "#aaa", fontWeight: f.value ? 500 : 400, maxWidth: 110, lineHeight: 1 }}>
-                  {f.value || f.placeholder}
-                </span>
-              </div>
+              <span style={{ color: f.value ? "#111" : "#ccc", flexShrink: 0, lineHeight: 1 }}>{f.icon}</span>
+              <span style={{ fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: f.value ? "#111" : "#aaa", fontWeight: f.value ? 500 : 400, maxWidth: 110, lineHeight: 1 }}>
+                {f.value || f.placeholder}
+              </span>
             </button>
             {i < fields.length - 1 && (
               <div style={{ width: 1, height: 20, background: "#e8e8e8", flexShrink: 0 }} />
