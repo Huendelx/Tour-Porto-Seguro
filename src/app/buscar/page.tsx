@@ -128,7 +128,6 @@ function SearchResults() {
             )}
           </button>
         </div>
-      </div>
 
         {/* Linha de contexto */}
         {(destinoLabel || adultos > 1 || criancas > 0) && (
