@@ -47,7 +47,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[1200px] mx-auto">
             {tour.badge && (
               <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-white text-[#111] mb-3">
                 {tour.badge}
@@ -62,7 +62,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* ── Content + Sidebar ── */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 flex flex-col lg:flex-row gap-12">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6 py-10 flex flex-col lg:flex-row gap-12">
 
         {/* ── Left — content ── */}
         <div className="flex-1 min-w-0">
@@ -253,7 +253,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
       {/* ── Passeios relacionados ── */}
       {related.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 md:px-6 pb-16">
+        <section className="max-w-[1200px] mx-auto px-4 md:px-6 pb-16">
           <h2 className="text-xl font-bold text-[#111] mb-6 flex items-center gap-2"><Heart size={20} strokeWidth={1.75} className="text-[#888]" />Você também pode gostar</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {related.map((t) => (
