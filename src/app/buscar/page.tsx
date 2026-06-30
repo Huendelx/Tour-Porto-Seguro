@@ -92,7 +92,7 @@ function SearchResults() {
         <div className="px-4 md:px-6 py-3 flex items-center gap-2">
 
           {/* Pills de categoria */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1 min-w-0">
+          <div className="flex items-center justify-center gap-2 overflow-x-auto scrollbar-hide flex-1 min-w-0">
             <Pill active={catFilter === "todos"} onClick={() => setCatFilter("todos")} icon={<LayoutGrid size={14} strokeWidth={1.75} />}>
               Todos
             </Pill>
