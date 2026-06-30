@@ -59,8 +59,9 @@ function MiniCalendar({ selected, onSelect }: { selected: Date | null; onSelect:
       {/* Quick pills */}
       <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
         {[
-          { label: "Hoje",   date: today },
-          { label: "Amanhã", date: (() => { const d = new Date(today); d.setDate(d.getDate() + 1); return d; })() },
+          { label: "Hoje",        date: today },
+          { label: "Amanhã",      date: (() => { const d = new Date(today); d.setDate(d.getDate() + 1); return d; })() },
+          { label: "Fim de sem.", date: (() => { const d = new Date(today); d.setDate(d.getDate() + ((6 - today.getDay() + 7) % 7 || 7)); return d; })() },
         ].map((p) => (
           <button key={p.label} onClick={() => onSelect(p.date)}
             style={{ background: "none", border: "1px solid #ddd", borderRadius: 20, padding: "6px 14px", cursor: "pointer", fontSize: 13, color: "#111" }}
