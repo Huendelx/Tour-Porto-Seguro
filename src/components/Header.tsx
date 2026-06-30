@@ -8,6 +8,7 @@ import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunH
 import { CircleHelp, SlidersHorizontal } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import HeaderSearchBar from "./HeaderSearchBar";
+import { useHeaderContext } from "@/context/HeaderContext";
 
 const ChevronDown = ({ className }: { className?: string }) => (
   <svg className={className} width="10" height="10" viewBox="0 0 12 12" fill="none">
@@ -57,8 +58,10 @@ const passeiosItems = {
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { mobileTitle } = useHeaderContext();
   const isHomePage = pathname === "/";
   const isBuscar = pathname.startsWith("/buscar");
+  const isDetalhes = pathname.startsWith("/passeios/");
   const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -130,9 +133,10 @@ export default function Header() {
       >
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
 
-          {/* MOBILE NON-HOME — back + search + filtros */}
+          {/* MOBILE NON-HOME overlay */}
           {!isHomePage && (
             <div className="md:hidden absolute inset-0 flex items-center px-3 gap-2 bg-white z-10">
+              {/* Back button — always */}
               <button
                 onClick={() => router.back()}
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
@@ -142,19 +146,49 @@ export default function Header() {
                   <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
                 </svg>
               </button>
-              <div className="flex-1 min-w-0">
-                <Suspense fallback={null}>
-                  <HeaderSearchBar />
-                </Suspense>
-              </div>
-              {isBuscar && (
-                <button
-                  onClick={() => window.dispatchEvent(new CustomEvent("passeador:open-filter"))}
-                  className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
-                  aria-label="Filtros"
-                >
-                  <SlidersHorizontal size={20} strokeWidth={1.75} />
-                </button>
+
+              {/* DETALHE: título centrado + share + heart */}
+              {isDetalhes ? (
+                <>
+                  <p className="flex-1 text-center text-[13px] font-semibold text-[#111] truncate px-1">
+                    {mobileTitle}
+                  </p>
+                  <button
+                    onClick={() => { if (navigator.share) navigator.share({ url: window.location.href }); }}
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
+                    aria-label="Compartilhar"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
+                    </svg>
+                  </button>
+                  <button
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
+                    aria-label="Favoritar"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                  </button>
+                </>
+              ) : (
+                /* BUSCAR: search bar + filtros */
+                <>
+                  <div className="flex-1 min-w-0">
+                    <Suspense fallback={null}>
+                      <HeaderSearchBar />
+                    </Suspense>
+                  </div>
+                  {isBuscar && (
+                    <button
+                      onClick={() => window.dispatchEvent(new CustomEvent("passeador:open-filter"))}
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
+                      aria-label="Filtros"
+                    >
+                      <SlidersHorizontal size={20} strokeWidth={1.75} />
+                    </button>
+                  )}
+                </>
               )}
             </div>
           )}

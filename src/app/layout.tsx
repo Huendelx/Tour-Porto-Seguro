@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { HeaderProvider } from "@/context/HeaderContext";
 
 export const metadata: Metadata = {
   title: "Passeador — Passeios e experiências em Porto Seguro",
@@ -21,8 +22,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </head>
       <body className="min-h-full flex flex-col">
-        <Header />
-        {children}
+        <HeaderProvider>
+          <Header />
+          {children}
+        </HeaderProvider>
         <Footer />
       </body>
     </html>

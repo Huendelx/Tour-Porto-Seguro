@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Info, Star, CheckCircle, Lightbulb, AlertCircle, Tag, XCircle, Ban, Heart } from "lucide-react";
 import { tours, categoryLabel, categoryColor } from "@/data/tours";
 import WhatsAppBooking from "@/components/WhatsAppBooking";
+import SetHeaderTitle from "@/components/SetHeaderTitle";
 
 export async function generateStaticParams() {
   return tours.map((t) => ({ slug: t.slug }));
@@ -36,6 +37,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-white">
+      <SetHeaderTitle title={`${tour.title} · ${catLabel}`} />
       {/* ── Hero image ── */}
       <div className="relative w-full h-[55vw] max-h-[520px] min-h-[260px] bg-gray-100">
         <Image
