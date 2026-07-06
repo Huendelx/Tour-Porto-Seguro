@@ -7,12 +7,12 @@ const AUTOPLAY_MS = 5000;
 const SCROLL_MS = 2200;
 
 const SLIDES = [
-  { id: "buggy",       title: "Aventura nas Dunas",            label: "Passeio de Buggy",      img: "/images/buggy.webp",       operator: "Porto Brasil Turismo", color: "#6366f1", slug: "quadriciclo-acai" },
-  { id: "helicoptero", title: "Voe sobre o paraíso.",           label: "Voo Panorâmico",         img: "/images/helicopter.webp",  operator: "Hélio Sul",            color: "#f43f5e", slug: "trancoso" },
-  { id: "barco",       title: "Navegue em águas cristalinas.",  label: "Passeio de Lancha",      img: "/images/boat.webp",        operator: "Porto Brasil Turismo", color: "#0ea5e9", slug: "recife-de-fora" },
-  { id: "mergulho",    title: "O oceano de outro mundo.",       label: "Mergulho de Cilindro",   img: "/images/mergulho.webp",    operator: "Dive Porto Seguro",    color: "#10b981", slug: "mergulho" },
-  { id: "quadriciclo", title: "Adrenalina com vista pro mar.",  label: "Trilha de Quadriciclo",  img: "/images/quadriciclo.webp", operator: "Porto Brasil Turismo", color: "#f97316", slug: "quadriciclo-aldeia" },
-  { id: "escuna",      title: "Festa e alegria no mar.",        label: "Passeio de Escuna",      img: "/images/escuna.webp",      operator: "Escuna Sol Mar",       color: "#a855f7", slug: "caraiva" },
+  { id: "buggy",       title: "Aventura nas Dunas",            label: "Passeio de Buggy",      img: "/images/buggy.webp",       operator: "Porto Brasil Turismo", color: "#6366f1", slug: "quadriciclo-acai",   rating: "4,9", desc: "Dunas, trilhas de areia e vento no rosto — o litoral do jeito mais divertido de conhecer." },
+  { id: "helicoptero", title: "Voe sobre o paraíso.",           label: "Voo Panorâmico",         img: "/images/helicopter.webp",  operator: "Hélio Sul",            color: "#f43f5e", slug: "trancoso",           rating: "5,0", desc: "A Costa do Descobrimento vista de cima: falésias, recifes e quilômetros de praia deserta." },
+  { id: "barco",       title: "Navegue em águas cristalinas.",  label: "Passeio de Lancha",      img: "/images/boat.webp",        operator: "Porto Brasil Turismo", color: "#0ea5e9", slug: "recife-de-fora",     rating: "4,9", desc: "Piscinas naturais, paradas para banho e mar transparente a poucos minutos do pier." },
+  { id: "mergulho",    title: "O oceano de outro mundo.",       label: "Mergulho de Cilindro",   img: "/images/mergulho.webp",    operator: "Dive Porto Seguro",    color: "#10b981", slug: "mergulho",           rating: "4,8", desc: "Batismo com instrutor exclusivo por dupla e visibilidade de até 30 metros." },
+  { id: "quadriciclo", title: "Adrenalina com vista pro mar.",  label: "Trilha de Quadriciclo",  img: "/images/quadriciclo.webp", operator: "Porto Brasil Turismo", color: "#f97316", slug: "quadriciclo-aldeia", rating: "4,9", desc: "15km de Mata Atlântica, cascatas e uma aldeia Pataxó no fim da trilha." },
+  { id: "escuna",      title: "Festa e alegria no mar.",        label: "Passeio de Escuna",      img: "/images/escuna.webp",      operator: "Escuna Sol Mar",       color: "#a855f7", slug: "caraiva",            rating: "4,8", desc: "Música a bordo, paradas para banho e o pôr do sol mais bonito da costa." },
 ];
 
 type Slide = typeof SLIDES[0];
@@ -51,11 +51,15 @@ function SlideCard({ item }: { item: Slide }) {
       <div ref={frostRef} className="hl-card-frost" style={{ "--hl-fc": "0,0,0" } as React.CSSProperties} />
       {/* Vinheta inferior */}
       <div className="hl-card-veil" />
+      {/* Nota */}
+      <span className="hl-card-rating">★ {item.rating}</span>
       {/* Título */}
       <div className="hl-card-head">
         <h3>{item.title}</h3>
         <span className="hl-card-label">{item.label}</span>
       </div>
+      {/* Descrição */}
+      <p className="hl-card-desc">{item.desc}</p>
       {/* Rodapé */}
       <div className="hl-card-footer">
         <div className="hl-card-operator">

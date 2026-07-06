@@ -1,37 +1,56 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { tours, categoryLabel } from "@/data/tours";
+import { ArrowRight } from "lucide-react";
+import { tours, Tour } from "@/data/tours";
 
-const CARDS = [
-  { tour: tours[0], departure: "Saída em 5 min" },
-  { tour: tours[1], departure: null },
-  { tour: tours[2], departure: null },
-  { tour: tours[3], departure: null },
-];
+const ABBR = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+function runsOn(day: number, t: Tour): boolean {
+  const f = t.schedule.frequency;
+  if (f === "daily") return true;
+  const d = t.schedule.days ?? "";
+  if (f === "tide_based") return d ? d.includes("Seg a Sáb") ? day >= 1 : d.includes(ABBR[day]) : day >= 1;
+  if (d.includes("Seg a Sáb")) return day >= 1;
+  return d.includes(ABBR[day]);
+}
+
+function departureMinutes(t: Tour): number {
+  const s = t.schedule.departureStart;
+  if (!s) return 24 * 60;
+  const m = s.match(/(\d+)h(\d+)?/);
+  return m ? Number(m[1]) * 60 + Number(m[2] ?? 0) : 24 * 60;
+}
+
+function freqShort(t: Tour): string {
+  if (t.schedule.frequency === "daily") return "todos os dias";
+  if (t.schedule.frequency === "tide_based") return "conforme a maré";
+  return t.schedule.days?.toLowerCase() ?? "";
+}
 
 export default function PasseiosProximos() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
+  // antes de montar: lista neutra (diários), sem rótulo de dia — evita mismatch de hidratação
+  const [dayLabel, setDayLabel] = useState<string | null>(null);
+  const [list, setList] = useState<Tour[]>(
+    tours.filter((t) => t.schedule.frequency === "daily").sort((a, b) => departureMinutes(a) - departureMinutes(b)).slice(0, 5)
+  );
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const idx = Math.round(el.scrollLeft / el.offsetWidth * CARDS.length);
-      setActive(Math.min(idx, CARDS.length - 1));
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    const now = new Date();
+    let day = now.getDay();
+    let label = "hoje";
+    // depois das 9h as saídas do dia já partiram — mostra as de amanhã
+    if (now.getHours() >= 9) {
+      day = (day + 1) % 7;
+      label = "amanhã";
+    }
+    setList(
+      tours.filter((t) => runsOn(day, t)).sort((a, b) => departureMinutes(a) - departureMinutes(b)).slice(0, 5)
+    );
+    setDayLabel(label);
   }, []);
-
-  const scrollTo = (i: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollTo({ left: (el.offsetWidth / CARDS.length) * i, behavior: "smooth" });
-  };
 
   return (
     <section className="py-20 bg-white">
@@ -39,9 +58,13 @@ export default function PasseiosProximos() {
         {/* Header */}
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-[32px] font-bold text-[#111] leading-tight">Passeios próximos</h2>
-            <p className="text-base text-[#666] mt-3 max-w-lg leading-relaxed">
-              Passeios saindo hoje — garanta sua vaga agora.
+            <h2 className="text-[32px] font-bold text-[#111] leading-tight">Próximas saídas</h2>
+            <p className="text-base text-[#666] mt-3 max-w-lg leading-relaxed flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+              </span>
+              Saídas confirmadas{dayLabel ? ` para ${dayLabel}` : ""} — garanta sua vaga.
             </p>
           </div>
           <Link href="/buscar" className="text-[14px] font-semibold text-[#111] underline whitespace-nowrap mb-2">
@@ -49,96 +72,47 @@ export default function PasseiosProximos() {
           </Link>
         </div>
 
-        {/* Cards — scroll mobile, grid desktop */}
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-4 lg:overflow-visible"
-          style={{ scrollPaddingLeft: "1.5rem" }}
-        >
-          {CARDS.map(({ tour, departure }, i) => (
-            <div
+        {/* Painel de saídas */}
+        <div className="rounded-3xl border border-gray-100 divide-y divide-gray-100 overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
+          {list.map((tour) => (
+            <Link
               key={tour.id}
-              className="snap-start flex-shrink-0 w-[78vw] sm:w-[44vw] lg:w-auto bg-white rounded-2xl overflow-hidden border border-[#eee] flex flex-col"
-              style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}
+              href={`/passeios/${tour.slug}`}
+              className="group flex items-center gap-4 md:gap-6 px-5 md:px-8 py-5 hover:bg-gray-50 transition-colors"
             >
-              {/* Imagem */}
-              <div className="relative h-[200px] overflow-hidden bg-[#e0e0e0]">
-                <Image
-                  src={tour.image}
-                  alt={tour.title}
-                  fill
-                  sizes="(max-width: 768px) 80vw, 25vw"
-                  className="object-cover"
-                />
-                {tour.badge && (
-                  <span className="absolute top-3 left-3 bg-[#111] text-white text-[11px] font-semibold px-3 py-1 rounded-full">
-                    {tour.badge}
-                  </span>
-                )}
-                <span className="absolute top-3 right-3 bg-white text-[#555] text-[11px] font-medium px-3 py-1 rounded-full">
-                  {categoryLabel[tour.category] ?? tour.category}
-                </span>
+              {/* Horário */}
+              <div className="w-[64px] md:w-[76px] flex-shrink-0 text-center">
+                <p className="text-[19px] md:text-[22px] font-bold text-[#111] tabular-nums leading-none">
+                  {tour.schedule.departureStart ?? "—"}
+                </p>
+                <p className="text-[10px] md:text-[11px] text-gray-400 mt-1.5 leading-tight">{freqShort(tour)}</p>
               </div>
 
-              {/* Conteúdo */}
-              <div className="p-4 flex flex-col flex-1">
-                <p className="text-[12px] text-[#999]">{tour.operator.name}</p>
-
-                <div className="flex items-center justify-between mt-1 mb-2">
-                  <h3 className="text-[16px] font-semibold text-[#111] leading-snug">{tour.title}</h3>
-                  {departure && (
-                    <span className="flex-shrink-0 ml-2 text-[11px] font-bold bg-[#111] text-white px-2.5 py-1 rounded-full whitespace-nowrap">
-                      {departure}
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-3 text-[12px] text-[#888] mb-4">
-                  <span className="flex items-center gap-1">
-                    <span className="text-[#111] font-semibold">★ 4.9</span>
-                    <span className="text-[#bbb]">(avaliações verificadas)</span>
-                  </span>
-                  <span className="text-[#ddd]">·</span>
-                  <span>{tour.duration}</span>
-                </div>
-
-                {/* Botão */}
-                <Link
-                  href={`/passeios/${tour.slug}`}
-                  className="mt-auto block w-full text-center bg-[#111] text-white font-semibold text-[14px] py-3 rounded-full hover:bg-[#333] transition-colors"
-                >
-                  Participar
-                </Link>
+              {/* Miniatura */}
+              <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 hidden sm:block">
+                <Image src={tour.image} alt={tour.title} fill sizes="56px" className="object-cover" />
               </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Timeline dots */}
-        <div className="relative flex items-center justify-between mt-8 lg:mt-6">
-          {/* linha de fundo */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-[#ddd]" />
-          {/* linha de progresso */}
-          <div
-            className="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-[#111] transition-all duration-300"
-            style={{ width: `${(active / (CARDS.length - 1)) * 100}%` }}
-          />
-          {CARDS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollTo(i)}
-              className="relative z-10 transition-all duration-200"
-              style={{
-                width: active === i ? 14 : 10,
-                height: active === i ? 14 : 10,
-                borderRadius: "50%",
-                background: active === i ? "#111" : "#fff",
-                border: `2px solid ${active === i ? "#111" : "#bbb"}`,
-                cursor: "pointer",
-                padding: 0,
-                flexShrink: 0,
-              }}
-            />
+              {/* Título */}
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-[15px] text-[#111] leading-snug line-clamp-1">{tour.title}</p>
+                <p className="text-[13px] text-gray-500 mt-0.5 line-clamp-1">
+                  {tour.duration} · {tour.groupSize}
+                </p>
+              </div>
+
+              {/* Preço */}
+              <div className="text-right flex-shrink-0">
+                <p className="text-[11px] text-gray-400">a partir de</p>
+                <p className="font-bold text-[15px] text-[#111]">R$ {tour.price}</p>
+              </div>
+
+              <ArrowRight
+                size={18}
+                strokeWidth={1.75}
+                className="flex-shrink-0 text-gray-300 group-hover:text-[#111] group-hover:translate-x-0.5 transition-all hidden sm:block"
+              />
+            </Link>
           ))}
         </div>
       </div>

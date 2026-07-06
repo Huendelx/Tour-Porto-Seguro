@@ -74,44 +74,53 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
           {/* Galeria 2x2 */}
           <div>
-            <div className="hidden md:grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
-              {gallery.slice(0, 4).map((img, i) => (
-                <div key={img} className="relative aspect-square bg-gray-100">
-                  <Image
-                    src={img}
-                    alt={i === 0 ? tour.title : `${tour.title} — foto ${i + 1}`}
-                    fill
-                    priority={i === 0}
-                    sizes="330px"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+            <div className="relative">
+              <div className="hidden md:grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
+                {gallery.slice(0, 4).map((img, i) => (
+                  <div key={img} className="relative aspect-square bg-gray-100">
+                    <Image
+                      src={img}
+                      alt={i === 0 ? tour.title : `${tour.title} — foto ${i + 1}`}
+                      fill
+                      priority={i === 0}
+                      sizes="330px"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="md:hidden relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
+                <Image src={gallery[0]} alt={tour.title} fill priority sizes="100vw" className="object-cover" />
+              </div>
+
+              {/* Pills sobre a galeria */}
+              {tour.badge && (
+                <span className="absolute top-4 left-4 text-[12px] font-semibold px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[#111] shadow-sm">
+                  {tour.badge}
+                </span>
+              )}
+              <span className="absolute top-4 right-4 flex items-center gap-1 text-[12px] font-semibold px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[#111] shadow-sm">
+                <Star size={12} className="fill-[#111] text-[#111]" />
+                4,9
+                <span className="font-normal text-gray-500 hidden sm:inline">· avaliações verificadas</span>
+              </span>
+              <span className="absolute bottom-4 right-4 text-[12px] font-medium px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[#111] shadow-sm">
+                {gallery.length} fotos
+              </span>
             </div>
-            <div className="md:hidden relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
-              <Image src={gallery[0]} alt={tour.title} fill priority sizes="100vw" className="object-cover" />
-            </div>
+
+            {/* Legenda */}
+            <p className="text-[13px] text-gray-400 mt-3 text-center">{tour.subtitle}</p>
           </div>
 
           {/* Título + fatos */}
           <div className="lg:pt-2">
             <div className="text-center">
-              {tour.badge && (
-                <span className="inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#111] text-white mb-3">
-                  {tour.badge}
-                </span>
-              )}
               <h1 className="text-[26px] md:text-[32px] font-bold text-[#111] leading-tight">{tour.title}</h1>
               <p className="text-gray-500 mt-3 text-[15px] leading-relaxed">
                 {tour.summary ?? tour.subtitle}
               </p>
-
-              <div className="flex items-center justify-center gap-1.5 mt-4 text-[13px] flex-wrap">
-                <Star size={14} className="fill-[#111] text-[#111]" />
-                <span className="font-semibold text-[#111]">4.9</span>
-                <span className="text-gray-400">(avaliações verificadas)</span>
-              </div>
-              <p className="text-[13px] text-gray-500 mt-2">
+              <p className="text-[13px] text-gray-500 mt-4">
                 {destinoLabel} <span className="text-gray-300 mx-1">·</span> {catLabel}
               </p>
 

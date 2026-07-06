@@ -13,7 +13,7 @@ export default function TourResultCard({ tour }: { tour: Tour }) {
   return (
     <Link href={`/passeios/${tour.slug}`} className="group block">
       {/* Foto com pills */}
-      <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
+      <div className="relative aspect-square rounded-[24px] overflow-hidden bg-gray-100">
         <Image
           src={tour.image}
           alt={tour.title}
