@@ -2,10 +2,9 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useState, useMemo, useRef, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { Anchor, Car, Mountain, Landmark, Moon, LayoutGrid, Star, ArrowDownNarrowWide, ArrowUpNarrowWide, SlidersHorizontal, X } from "lucide-react";
-import { tours, categoryLabel, categoryColor, Tour } from "@/data/tours";
+import { tours, categoryLabel } from "@/data/tours";
+import TourResultCard from "@/components/TourResultCard";
 
 const CATEGORIES = ["nautico", "terrestre", "aventura", "cultural", "noturno"] as const;
 
@@ -267,52 +266,6 @@ function Pill({ active, onClick, icon, children }: { active: boolean; onClick: (
       {icon && <span className="opacity-80">{icon}</span>}
       {children}
     </button>
-  );
-}
-
-function TourResultCard({ tour }: { tour: Tour }) {
-  const catColor = categoryColor[tour.category] ?? "#111";
-  const catLabel = categoryLabel[tour.category] ?? tour.category;
-
-  return (
-    <Link href={`/passeios/${tour.slug}`} className="group block rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 bg-white">
-      <div className="relative h-48 overflow-hidden">
-        <Image
-          src={tour.image}
-          alt={tour.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        {tour.badge && (
-          <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white text-[#111] shadow-sm">
-            {tour.badge}
-          </span>
-        )}
-        <span className="absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full text-white" style={{ backgroundColor: catColor }}>
-          {catLabel}
-        </span>
-      </div>
-      <div className="p-4">
-        <p className="font-semibold text-[#111] leading-snug mb-1">{tour.title}</p>
-        <p className="text-xs text-gray-400 mb-3">{tour.subtitle}</p>
-        <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
-          <span>⏱ {tour.duration}</span>
-          {tour.schedule.frequency === "daily" && <span>📅 Todos os dias</span>}
-          {tour.schedule.frequency === "specific_days" && tour.schedule.days && <span>📅 {tour.schedule.days}</span>}
-          {tour.schedule.frequency === "tide_based" && <span>🌊 Tábua de marés</span>}
-        </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-xs text-gray-400">A partir de </span>
-            <span className="text-lg font-bold text-[#111]">R${tour.price}</span>
-            <span className="text-xs text-gray-400"> /pessoa</span>
-          </div>
-          <span className="text-xs font-semibold text-[#111] bg-gray-100 px-3 py-1.5 rounded-full group-hover:bg-[#111] group-hover:text-white transition-colors">
-            Ver →
-          </span>
-        </div>
-      </div>
-    </Link>
   );
 }
 
