@@ -82,7 +82,7 @@ export default async function DestinoPage({ params }: { params: Promise<{ slug: 
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-x-5 gap-y-9">
           {destinoTours.map((tour) => (
             <TourResultCard key={tour.id} tour={tour} />
           ))}
