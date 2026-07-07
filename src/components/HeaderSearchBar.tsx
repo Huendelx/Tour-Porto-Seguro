@@ -230,11 +230,12 @@ export default function HeaderSearchBar() {
             )}
           </div>
         ))}
-        {/* Search button */}
+        {/* Search button — some no mobile pra economizar espaço, campos já buscam ao selecionar */}
         <button onClick={onSearch}
+          className="hidden md:flex"
           style={{
             width: 36, height: 36, borderRadius: 20, background: "#111", border: "none",
-            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", alignItems: "center", justifyContent: "center",
             marginRight: 3, flexShrink: 0, color: "#fff", transition: "transform 0.15s",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
