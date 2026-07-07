@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { CircleHelp, SlidersHorizontal } from "lucide-react";
+import { CircleHelp } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import HeaderSearchBar from "./HeaderSearchBar";
 import { useHeaderContext } from "@/context/HeaderContext";
@@ -35,7 +35,6 @@ export default function Header() {
   const router = useRouter();
   const { mobileTitle } = useHeaderContext();
   const isHomePage = pathname === "/";
-  const isBuscar = pathname.startsWith("/buscar");
   const isDetalhes = pathname.startsWith("/passeios/");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -139,23 +138,12 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                /* BUSCAR: search bar + filtros */
-                <>
-                  <div className="flex-1 min-w-0">
-                    <Suspense fallback={null}>
-                      <HeaderSearchBar />
-                    </Suspense>
-                  </div>
-                  {isBuscar && (
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent("passeador:open-filter"))}
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 text-[#111]"
-                      aria-label="Filtros"
-                    >
-                      <SlidersHorizontal size={20} strokeWidth={1.75} />
-                    </button>
-                  )}
-                </>
+                /* BUSCAR/DETALHES: search bar (filtros já ficam na barra abaixo, em /buscar) */
+                <div className="flex-1 min-w-0">
+                  <Suspense fallback={null}>
+                    <HeaderSearchBar />
+                  </Suspense>
+                </div>
               )}
             </div>
           )}
