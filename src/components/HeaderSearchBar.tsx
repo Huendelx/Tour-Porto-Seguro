@@ -22,13 +22,12 @@ const DAYS_PT      = ["D","S","T","Q","Q","S","S"];
 
 function formatDate(d: Date | null) {
   if (!d) return "";
-  return `${d.getDate()} de ${MONTHS_SHORT[d.getMonth()].toLowerCase()}.`;
+  return `${d.getDate()}-${d.getMonth() + 1}`;
 }
 function formatGuests(adults: number, kids: number) {
-  if (adults === 0 && kids === 0) return "";
-  let s = `${adults} adulto${adults > 1 ? "s" : ""}`;
-  if (kids > 0) s += `, ${kids} criança${kids > 1 ? "s" : ""}`;
-  return s;
+  const total = adults + kids;
+  if (total === 0) return "";
+  return String(total);
 }
 
 // ─── CALENDAR ───
@@ -202,8 +201,8 @@ export default function HeaderSearchBar() {
       <div style={{
         display: "flex", alignItems: "center",
         background: "#fff", borderRadius: 40,
-        border: active ? "1.5px solid #111" : "1.5px solid #e5e5e5",
-        boxShadow: active ? "0 4px 20px rgba(0,0,0,0.13)" : "0 1px 6px rgba(0,0,0,0.07)",
+        border: "none",
+        boxShadow: "none",
         transition: "all 0.2s", overflow: "hidden",
         height: 42,
       }}>

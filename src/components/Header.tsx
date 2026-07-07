@@ -4,17 +4,10 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
 import { CircleHelp, SlidersHorizontal } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import HeaderSearchBar from "./HeaderSearchBar";
 import { useHeaderContext } from "@/context/HeaderContext";
-
-const ChevronDown = ({ className }: { className?: string }) => (
-  <svg className={className} width="10" height="10" viewBox="0 0 12 12" fill="none">
-    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 
 const GlobeIcon = () => (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,24 +30,6 @@ const CloseIcon = () => (
   </svg>
 );
 
-const passeiosItems = {
-  left: [
-    { title: "Passeio de Lancha", desc: "Ilhas, recifes e praias paradisíacas", icon: Boat },
-    { title: "Mergulho", desc: "Snorkel e mergulho nos recifes de corais", icon: Fish },
-    { title: "Passeio de Buggy", desc: "Aventura pelas dunas e praias", icon: CarProfile },
-    { title: "Passeio de Helicóptero", desc: "Vista panorâmica do litoral de cima", icon: AirplaneInFlight },
-  ],
-  right: [
-    { title: "Trilha na Mata", desc: "Natureza e Mata Atlântica preservada", icon: TreeEvergreen },
-    { title: "Passeio Cultural", desc: "Centro Histórico e cultura local", icon: Building },
-    { title: "Pôr do Sol", desc: "Passeio ao entardecer pelo litoral", icon: SunHorizon },
-  ],
-  preview: {
-    title: "Passeios em Porto Seguro",
-    desc: "Experiências únicas na Costa do Descobrimento",
-  },
-};
-
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -62,7 +37,6 @@ export default function Header() {
   const isHomePage = pathname === "/";
   const isBuscar = pathname.startsWith("/buscar");
   const isDetalhes = pathname.startsWith("/passeios/");
-  const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -100,7 +74,7 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const dark = !isHomePage || isScrolled || passeiosOpen || mobileMenuOpen;
+  const dark = !isHomePage || isScrolled || mobileMenuOpen;
 
   const linkCls = `text-[14px] font-[450] transition-colors ${
     dark ? "text-[#1a1a1a] hover:text-[#1a1a1a]/60" : "text-white hover:text-white/70"
@@ -114,22 +88,15 @@ export default function Header() {
 
   return (
     <>
-      {passeiosOpen && (
-        <div
-          className="hidden md:block fixed inset-0 bg-black/50 z-40"
-          onClick={() => setPasseiosOpen(false)}
-        />
-      )}
-
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-colors duration-200 ${
-          !isHomePage || passeiosOpen || mobileMenuOpen
+          !isHomePage || mobileMenuOpen
             ? "bg-white"
             : isScrolled
               ? "bg-white/80"
               : "bg-transparent"
         }`}
-        style={isHomePage && isScrolled && !passeiosOpen && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
+        style={isHomePage && isScrolled && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
       >
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
 
@@ -208,26 +175,9 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* CENTER — nav links (home) ou search bar compacta (outras páginas) */}
+          {/* CENTER — search bar compacta (some no topo da home, aparece ao sair da hero) */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-            {isHomePage ? (
-              <>
-                <button
-                  className={`flex items-center gap-1 px-3 py-2 ${linkCls} ${passeiosOpen ? "hover:!text-[#1a1a1a]" : ""}`}
-                  onMouseEnter={() => setPasseiosOpen(true)}
-                >
-                  Passeios
-                  <ChevronDown className={`transition-transform ${passeiosOpen ? "rotate-180" : ""}`} />
-                </button>
-                <a
-                  href="#restaurantes"
-                  className={`px-3 py-2 ${linkCls} ${passeiosOpen ? "opacity-50" : ""}`}
-                  onMouseEnter={() => setPasseiosOpen(false)}
-                >
-                  Promoções
-                </a>
-              </>
-            ) : (
+            {(!isHomePage || isScrolled) && (
               <Suspense fallback={null}>
                 <HeaderSearchBar />
               </Suspense>
@@ -321,61 +271,6 @@ export default function Header() {
             </div>
           </div>
         </nav>
-
-        {/* Megamenu Passeios */}
-        <div
-          className={`hidden md:block absolute top-14 left-0 right-0 bg-white transition-opacity duration-200 ${
-            passeiosOpen ? "opacity-100 visible shadow-xl" : "opacity-0 invisible pointer-events-none"
-          }`}
-          onMouseLeave={() => setPasseiosOpen(false)}
-        >
-          <div className="w-full pl-[38px] pr-8 lg:pr-10 py-8">
-            <div className="flex gap-24 lg:gap-32">
-              <div className="flex gap-20 lg:gap-24 flex-shrink-0">
-                <div className="space-y-8 animate-slide-in-1">
-                  {passeiosItems.left.map((item, i) => (
-                    <a key={i} href="#passeios" className="block group">
-                      <h3 className="flex items-center gap-1.5 text-sm text-[#1a1a1a] font-medium">
-                        <item.icon size={15} weight="duotone" className="opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                        {item.title}
-                      </h3>
-                      <p className="text-xs text-[#1a1a1a]/60 mt-1 ml-[21px] group-hover:text-[#1a1a1a] transition-colors">{item.desc}</p>
-                    </a>
-                  ))}
-                </div>
-                <div className="space-y-8 animate-slide-in-2">
-                  {passeiosItems.right.map((item, i) => (
-                    <a key={i} href="#passeios" className="block group">
-                      <h3 className="flex items-center gap-1.5 text-sm text-[#1a1a1a] font-medium">
-                        <item.icon size={15} weight="duotone" className="opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                        {item.title}
-                      </h3>
-                      <p className="text-xs text-[#1a1a1a]/60 mt-1 ml-[21px] group-hover:text-[#1a1a1a] transition-colors">{item.desc}</p>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div className="w-[360px] ml-auto flex-shrink-0 animate-slide-in-3">
-                <div className="bg-black/5 border border-black/8 rounded-xl overflow-hidden h-[270px] flex flex-col hover:bg-black/8 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="w-20 h-20 bg-black/8 rounded-lg flex items-center justify-center border border-black/8">
-                      <svg className="w-10 h-10 text-black/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="p-4 flex items-center justify-between border-t border-black/8">
-                    <div>
-                      <h4 className="text-[#1a1a1a] text-sm font-medium">{passeiosItems.preview.title}</h4>
-                      <p className="text-[#1a1a1a]/60 text-xs mt-1">{passeiosItems.preview.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </header>
 
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />

@@ -75,7 +75,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           {/* Galeria 2x2 */}
           <div>
             <div className="relative">
-              <div className="hidden md:grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
+              <div className="hidden md:grid grid-cols-2 gap-2 rounded-[28px] overflow-hidden">
                 {gallery.slice(0, 4).map((img, i) => (
                   <div key={img} className="relative aspect-square bg-gray-100">
                     <Image
@@ -89,7 +89,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
                   </div>
                 ))}
               </div>
-              <div className="md:hidden relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
+              <div className="md:hidden relative aspect-[4/3] rounded-[28px] overflow-hidden bg-gray-100">
                 <Image src={gallery[0]} alt={tour.title} fill priority sizes="100vw" className="object-cover" />
               </div>
 
@@ -251,7 +251,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           {/* Perfil do operador */}
           <section className="mb-4">
             <h2 className="text-[22px] font-bold text-[#111] mb-6">Sobre o operador</h2>
-            <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <div>
                 <div className="rounded-3xl border border-gray-100 p-8 text-center" style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
                   <div className="w-20 h-20 rounded-full bg-[#111] text-white flex items-center justify-center text-3xl font-bold mx-auto">

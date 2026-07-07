@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 const destinos = [
-  { name: "Porto Seguro", slug: "porto-seguro", count: 15, image: "/images/recife.webp" },
-  { name: "Arraial d'Ajuda", slug: "arraial-da-ajuda", count: 3, image: "/images/arraial.webp" },
-  { name: "Trancoso", slug: "trancoso", count: 4, image: "/images/espelho.webp" },
-  { name: "Caraíva", slug: "caraiva", count: 2, image: "/images/caraiva.webp" },
-  { name: "Praia do Espelho", slug: "praia-do-espelho", count: 3, image: "/images/espelho.webp" },
+  { name: "Porto Seguro", slug: "porto-seguro", count: 15, image: "/images/porto-seguro-illust.png" },
+  { name: "Arraial d'Ajuda", slug: "arraial-da-ajuda", count: 3, image: "/images/arraial-illust.png" },
+  { name: "Trancoso", slug: "trancoso", count: 4, image: "/images/trancoso-illust.png" },
+  { name: "Caraíva", slug: "caraiva", count: 2, image: "/images/caraiva-illust.png" },
+  { name: "Praia do Espelho", slug: "praia-do-espelho", count: 3, image: "/images/espelho-illust.png" },
 ];
 
 export default function DestinosSection() {
