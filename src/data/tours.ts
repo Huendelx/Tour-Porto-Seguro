@@ -63,6 +63,10 @@ export interface Tour {
   operator: TourOperator;
   schedule: TourSchedule;
   meetingPoint?: string;
+  /** Idiomas oferecidos pelo guia — sem valor, assume ["Português"]. Cadastrado no admin. */
+  languages?: string[];
+  /** Recursos de acessibilidade — sem valor, assume []. Cadastrado no admin. */
+  accessibility?: string[];
   cancellationPolicy: string;
   hasTransfer?: boolean;
   trackable?: boolean;
