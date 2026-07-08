@@ -5,30 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { tours, Tour } from "@/data/tours";
-
-const ABBR = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-
-function runsOn(day: number, t: Tour): boolean {
-  const f = t.schedule.frequency;
-  if (f === "daily") return true;
-  const d = t.schedule.days ?? "";
-  if (f === "tide_based") return d ? d.includes("Seg a Sáb") ? day >= 1 : d.includes(ABBR[day]) : day >= 1;
-  if (d.includes("Seg a Sáb")) return day >= 1;
-  return d.includes(ABBR[day]);
-}
-
-function departureMinutes(t: Tour): number {
-  const s = t.schedule.departureStart;
-  if (!s) return 24 * 60;
-  const m = s.match(/(\d+)h(\d+)?/);
-  return m ? Number(m[1]) * 60 + Number(m[2] ?? 0) : 24 * 60;
-}
-
-function freqShort(t: Tour): string {
-  if (t.schedule.frequency === "daily") return "todos os dias";
-  if (t.schedule.frequency === "tide_based") return "conforme a maré";
-  return t.schedule.days?.toLowerCase() ?? "";
-}
+import { runsOn, departureMinutes, frequencyShort } from "@/lib/schedule";
 
 export default function PasseiosProximos() {
   // antes de montar: lista neutra (diários), sem rótulo de dia — evita mismatch de hidratação
@@ -85,7 +62,7 @@ export default function PasseiosProximos() {
                 <p className="text-[19px] md:text-[22px] font-bold text-[#111] tabular-nums leading-none">
                   {tour.schedule.departureStart ?? "—"}
                 </p>
-                <p className="text-[10px] md:text-[11px] text-gray-400 mt-1.5 leading-tight">{freqShort(tour)}</p>
+                <p className="text-[10px] md:text-[11px] text-gray-400 mt-1.5 leading-tight">{frequencyShort(tour)}</p>
               </div>
 
               {/* Miniatura */}

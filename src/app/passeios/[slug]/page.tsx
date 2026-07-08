@@ -330,14 +330,12 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
           <p className="text-xs text-gray-400">A partir de</p>
           <p className="text-xl font-bold text-[#111]">R${tour.price}<span className="text-sm font-normal text-gray-400"> /pessoa</span></p>
         </div>
-        <a
-          href={`https://wa.me/${tour.operator.whatsapp}?text=${encodeURIComponent(`Olá! Tenho interesse no passeio "${tour.title}". Pode me passar mais informações?`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={`/reserva/${tour.slug}`}
           className="flex-1 max-w-[200px] bg-[#111] text-white font-semibold text-sm rounded-full py-3 text-center"
         >
           Reservar
-        </a>
+        </Link>
       </div>
       <div className="lg:hidden h-20" />
 

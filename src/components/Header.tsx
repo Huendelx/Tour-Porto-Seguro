@@ -36,6 +36,7 @@ export default function Header() {
   const { mobileTitle } = useHeaderContext();
   const isHomePage = pathname === "/";
   const isDetalhes = pathname.startsWith("/passeios/");
+  const isReserva = pathname.startsWith("/reserva/");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -137,8 +138,13 @@ export default function Header() {
                     </svg>
                   </button>
                 </>
+              ) : isReserva ? (
+                /* RESERVA: só título */
+                <p className="flex-1 text-center text-[13px] font-semibold text-[#111] truncate px-1 mr-9">
+                  Confirmar e pagar
+                </p>
               ) : (
-                /* BUSCAR/DETALHES: search bar (filtros já ficam na barra abaixo, em /buscar) */
+                /* BUSCAR: search bar (filtros já ficam na barra abaixo) */
                 <div className="flex-1 min-w-0">
                   <Suspense fallback={null}>
                     <HeaderSearchBar />
@@ -163,9 +169,9 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* CENTER — search bar compacta (some no topo da home, aparece ao sair da hero) */}
+          {/* CENTER — search bar compacta (some no topo da home e no checkout) */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-            {(!isHomePage || isScrolled) && (
+            {!isReserva && (!isHomePage || isScrolled) && (
               <Suspense fallback={null}>
                 <HeaderSearchBar />
               </Suspense>
