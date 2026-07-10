@@ -7,6 +7,8 @@ import { tours, categoryLabel } from "@/data/tours";
 import WhatsAppBooking from "@/components/WhatsAppBooking";
 import SetHeaderTitle from "@/components/SetHeaderTitle";
 import TourItinerary from "@/components/TourItinerary";
+import TourReviews from "@/components/TourReviews";
+import { reviewsForTour } from "@/data/reviews";
 
 const DESTINO_LABELS: Record<string, string> = {
   "porto-seguro": "Porto Seguro",
@@ -201,6 +203,9 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
           {/* Roteiro */}
           {tour.itinerary && <TourItinerary steps={tour.itinerary} />}
+
+          {/* Avaliações */}
+          <TourReviews reviews={reviewsForTour(tour)} />
 
           {/* O que inclui */}
           <section className="pb-10 mb-10 border-b border-gray-100">

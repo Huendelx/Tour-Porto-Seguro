@@ -20,10 +20,10 @@ export default function DestinosSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-4 gap-y-6">
           {destinos.map((d) => (
             <Link key={d.slug} href={`/destinos/${d.slug}`} className="cursor-pointer group block">
-              <div className="relative h-[280px] bg-[#e5e5e5] rounded-xl overflow-hidden">
+              <div className="relative aspect-[21/9] md:aspect-auto md:h-[280px] bg-[#e5e5e5] rounded-xl overflow-hidden">
                 <Image
                   src={d.image}
                   alt={d.name}
@@ -32,7 +32,7 @@ export default function DestinosSection() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <span className="absolute bottom-4 left-4 text-white font-semibold text-lg z-10">
+                <span className="absolute bottom-4 left-4 text-xl md:text-lg text-white font-semibold z-10">
                   {d.name}
                 </span>
               </div>
