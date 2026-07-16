@@ -257,9 +257,9 @@ export default function Header() {
 
                   <div className="h-px bg-black/8 mx-1 my-1" />
 
-                  <a href="#entrar" className="block px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors">
+                  <Link href="/entrar" className="block px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors">
                     Entrar ou cadastrar-se
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
