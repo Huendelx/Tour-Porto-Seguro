@@ -117,6 +117,9 @@ export async function getTourBySlug(slug: string): Promise<Tour | null> {
     .eq("is_active", true)
     .single();
 
-  if (error || !data) return null;
+  if (error || !data) {
+    if (error) console.error(`getTourBySlug(${slug}):`, error.message, error.code ?? "");
+    return null;
+  }
   return mapRow(data as unknown as TourRow);
 }
