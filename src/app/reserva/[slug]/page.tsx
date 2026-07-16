@@ -3,6 +3,9 @@ import { Suspense } from "react";
 import { getTourBySlug } from "@/lib/tours-data";
 import ReservaClient from "./ReservaClient";
 
+// Sempre por request — o passeio vem do Supabase.
+export const dynamic = "force-dynamic";
+
 export default async function ReservaPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const tour = await getTourBySlug(slug);

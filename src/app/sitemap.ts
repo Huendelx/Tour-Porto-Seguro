@@ -3,6 +3,9 @@ import { getAllTours } from "@/lib/tours-data";
 
 const BASE = "https://passeador.com.br";
 
+// Sempre por request — o catálogo vem do Supabase.
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tours = await getAllTours();
   const tourRoutes = tours.map((t) => ({

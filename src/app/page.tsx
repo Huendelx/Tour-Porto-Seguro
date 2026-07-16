@@ -10,6 +10,9 @@ import ProvaSocial from "@/components/ProvaSocial";
 import CtaOperadores from "@/components/CtaOperadores";
 import { getAllTours } from "@/lib/tours-data";
 
+// Sempre por request — o catálogo vem do Supabase.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const tours = await getAllTours();
 

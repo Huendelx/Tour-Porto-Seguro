@@ -37,9 +37,8 @@ const DESTINOS: Record<string, { name: string; description: string; image: strin
   },
 };
 
-export async function generateStaticParams() {
-  return Object.keys(DESTINOS).map((slug) => ({ slug }));
-}
+// Sempre por request — a lista de passeios vem do Supabase.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

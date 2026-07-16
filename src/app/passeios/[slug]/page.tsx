@@ -19,10 +19,9 @@ const DESTINO_LABELS: Record<string, string> = {
   "praia-espelho": "Praia do Espelho",
 };
 
-export async function generateStaticParams() {
-  const tours = await getAllTours();
-  return tours.map((t) => ({ slug: t.slug }));
-}
+// Sempre renderiza por request — o catálogo vem do Supabase e muda com o tempo
+// (e o ambiente de build não tem acesso ao banco pra pré-gerar essas páginas).
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
