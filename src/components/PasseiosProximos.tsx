@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { tours, Tour } from "@/data/tours";
+import type { Tour } from "@/lib/tours-data";
 import { runsOn, departureMinutes, frequencyShort } from "@/lib/schedule";
 
-export default function PasseiosProximos() {
+export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
   // antes de montar: lista neutra (diários), sem rótulo de dia — evita mismatch de hidratação
   const [dayLabel, setDayLabel] = useState<string | null>(null);
   const [list, setList] = useState<Tour[]>(

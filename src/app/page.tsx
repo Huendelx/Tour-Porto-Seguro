@@ -8,8 +8,11 @@ import ComoFunciona from "@/components/ComoFunciona";
 import CategoriasSection from "@/components/CategoriasSection";
 import ProvaSocial from "@/components/ProvaSocial";
 import CtaOperadores from "@/components/CtaOperadores";
+import { getAllTours } from "@/lib/tours-data";
 
-export default function Home() {
+export default async function Home() {
+  const tours = await getAllTours();
+
   return (
     <main>
       <Hero />
@@ -17,7 +20,7 @@ export default function Home() {
       <NossosDestaques />
       <DestinosSection />
       <ExperienciasSection />
-      <PasseiosProximos />
+      <PasseiosProximos tours={tours} />
       <ComoFunciona />
       <CategoriasSection />
       <ProvaSocial />

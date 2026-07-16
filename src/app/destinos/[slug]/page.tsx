@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { tours } from "@/data/tours";
+import { getAllTours } from "@/lib/tours-data";
 import TourResultCard from "@/components/TourResultCard";
 
 const DESTINOS: Record<string, { name: string; description: string; image: string }> = {
@@ -57,7 +57,7 @@ export default async function DestinoPage({ params }: { params: Promise<{ slug: 
   const destino = DESTINOS[slug];
   if (!destino) notFound();
 
-  const destinoTours = tours;
+  const destinoTours = await getAllTours();
 
   return (
     <main className="min-h-screen bg-white">

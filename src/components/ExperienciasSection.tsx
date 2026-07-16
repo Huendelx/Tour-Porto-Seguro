@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { tours } from "@/data/tours";
+import { getAllTours } from "@/lib/tours-data";
 import TourResultCard from "@/components/TourResultCard";
 
-const featured = tours.filter((t) => t.featured).slice(0, 4);
+export default async function ExperienciasSection() {
+  const tours = await getAllTours();
+  const featured = tours.filter((t) => t.featured).slice(0, 4);
 
-export default function ExperienciasSection() {
   return (
     <section className="py-20 bg-[#fafafa]">
       <div className="max-w-[1200px] mx-auto px-6">

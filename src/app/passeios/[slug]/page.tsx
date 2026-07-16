@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, Lightbulb, AlertCircle, CalendarX, BadgeCheck, Clock, Users, CalendarDays, Waves, MapPin, Share, Heart } from "lucide-react";
-import { tours, categoryLabel } from "@/data/tours";
+import { categoryLabel } from "@/data/tours";
+import { getAllTours, getTourBySlug } from "@/lib/tours-data";
 import WhatsAppBooking from "@/components/WhatsAppBooking";
 import SetHeaderTitle from "@/components/SetHeaderTitle";
 import TourItinerary from "@/components/TourItinerary";
@@ -19,12 +20,13 @@ const DESTINO_LABELS: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
+  const tours = await getAllTours();
   return tours.map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const tour = tours.find((t) => t.slug === slug);
+  const tour = await getTourBySlug(slug);
   if (!tour) return { title: "Passeio não encontrado" };
   return {
     title: `${tour.title} — Passeador`,
@@ -51,10 +53,11 @@ function FactRow({ icon, title, sub }: { icon: React.ReactNode; title: string; s
 
 export default async function PasSeioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const tour = tours.find((t) => t.slug === slug);
+  const tour = await getTourBySlug(slug);
   if (!tour) notFound();
 
-  const related = tours.filter((t) => t.slug !== slug && t.category === tour.category).slice(0, 3);
+  const allTours = await getAllTours();
+  const related = allTours.filter((t) => t.slug !== slug && t.category === tour.category).slice(0, 3);
   const catLabel = categoryLabel[tour.category] ?? tour.category;
   const destinoLabel = DESTINO_LABELS[tour.destinos[0]] ?? "Porto Seguro";
 

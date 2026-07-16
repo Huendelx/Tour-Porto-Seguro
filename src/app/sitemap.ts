@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
-import { tours } from "@/data/tours";
+import { getAllTours } from "@/lib/tours-data";
 
 const BASE = "https://passeador.com.br";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const tours = await getAllTours();
   const tourRoutes = tours.map((t) => ({
     url: `${BASE}/passeios/${t.slug}`,
     lastModified: new Date(),
