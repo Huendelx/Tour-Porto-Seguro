@@ -182,26 +182,25 @@ function QuickDates({ onSelect }: { onSelect: (d: Date) => void }) {
   weekend.setDate(today.getDate() + daysToSat);
 
   const pills = [
-    { label: "Hoje", sub: `${today.getDate()} de ${MONTHS_SHORT[today.getMonth()].toLowerCase()}.`, date: today },
-    { label: "Amanhã", sub: `${tomorrow.getDate()} de ${MONTHS_SHORT[tomorrow.getMonth()].toLowerCase()}.`, date: tomorrow },
-    { label: "Este fim de semana", sub: `${weekend.getDate()} de ${MONTHS_SHORT[weekend.getMonth()].toLowerCase()}.`, date: weekend },
+    { label: "Hoje", date: today },
+    { label: "Amanhã", date: tomorrow },
+    { label: "Fim de sem.", date: weekend },
   ];
 
   return (
-    <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap", justifyContent: "center" }}>
+    <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap", justifyContent: "center" }}>
       {pills.map((p, i) => (
         <button
           key={i}
           onClick={() => onSelect(p.date)}
           style={{
-            background: "none", border: "1px solid #ddd", borderRadius: 12,
-            padding: "10px 16px", cursor: "pointer", textAlign: "left",
+            background: "none", border: "1px solid #ddd", borderRadius: 20,
+            padding: "6px 14px", cursor: "pointer", fontSize: 13, color: "#111",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#111")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ddd")}
         >
-          <div style={{ fontSize: 14, fontWeight: 600, color: "#111" }}>{p.label}</div>
-          <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>{p.sub}</div>
+          {p.label}
         </button>
       ))}
     </div>

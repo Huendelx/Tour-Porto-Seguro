@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil } from "lucide-react";
+import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
 import { runsOn, nextValidDate, fromISODate, formatDatePt } from "@/lib/schedule";
 
@@ -31,6 +31,12 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
   const emailValido = /^\S+@\S+\.\S+$/.test(email);
   const zapValido = whatsapp.replace(/\D/g, "").length >= 10;
 
+  // Transfer — só faz sentido oferecer em passeios que não já incluem busca no pacote
+  const ofereceTransfer = !tour.hasTransfer;
+  const [querTransfer, setQuerTransfer] = useState(false);
+  const [enderecoTransfer, setEnderecoTransfer] = useState("");
+  const enderecoValido = enderecoTransfer.trim().length >= 5;
+
   const adultPrice = tour.prices.find((p) => p.category === "adult");
   const childPrice = tour.prices.find((p) => p.category === "child");
   const adultUnit = adultPrice?.priceMin ?? tour.price;
@@ -38,7 +44,10 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
   const total = adults * adultUnit + children * childUnit;
   const feeNotes = [...new Set(tour.prices.map((p) => p.notes).filter(Boolean))] as string[];
 
+  const podeConfirmar = dadosOk && (!querTransfer || enderecoValido);
+
   const confirmar = () => {
+    if (!podeConfirmar) return;
     const msg =
       `Olá! Quero confirmar minha reserva pelo Passeador.\n\n` +
       `*${tour.title}*\n` +
@@ -47,7 +56,8 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
         ? `Saída: ${tour.schedule.departureStart}${tour.schedule.departureEnd ? `–${tour.schedule.departureEnd}` : ""}\n`
         : `Horário: conforme tábua de marés\n`) +
       `Adultos: ${adults}${children > 0 ? `\nCrianças: ${children}` : ""}\n` +
-      `Total estimado: R$ ${total}\n\n` +
+      `Total estimado: R$ ${total}\n` +
+      (querTransfer ? `\nTransfer: sim — buscar em ${enderecoTransfer.trim()} (valor a confirmar)\n` : "\n") +
       `Nome: ${nome.trim()}\n` +
       `E-mail: ${email.trim()}\n` +
       `WhatsApp: ${whatsapp.trim()}`;
@@ -141,6 +151,44 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
               )}
             </section>
 
+            {/* Transfer — opcional */}
+            {ofereceTransfer && (
+              <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
+                <button
+                  onClick={() => setQuerTransfer((v) => !v)}
+                  className="w-full flex items-start gap-3.5 text-left"
+                >
+                  <span
+                    className={`w-6 h-6 rounded-md border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      querTransfer ? "bg-[#111] border-[#111]" : "border-gray-300"
+                    }`}
+                  >
+                    {querTransfer && <Check size={14} strokeWidth={3} className="text-white" />}
+                  </span>
+                  <span className="flex-1">
+                    <span className="flex items-center gap-2 text-[15px] font-semibold text-[#111]">
+                      <Car size={17} strokeWidth={1.75} className="text-gray-400" />
+                      Adicionar busca no hotel ou pousada
+                    </span>
+                    <span className="block text-[13px] text-gray-500 mt-1">
+                      O operador confirma disponibilidade e valor do transfer pelo WhatsApp.
+                    </span>
+                  </span>
+                </button>
+                {querTransfer && (
+                  <div className="mt-4 pl-9">
+                    <input
+                      type="text"
+                      placeholder="Nome e endereço do hotel/pousada"
+                      value={enderecoTransfer}
+                      onChange={(e) => setEnderecoTransfer(e.target.value)}
+                      className={inputCls(false)}
+                    />
+                  </div>
+                )}
+              </section>
+            )}
+
             {/* 2. Pagamento */}
             <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
               <h2 className="text-[18px] font-bold text-[#111]">2. Pagamento</h2>
@@ -168,7 +216,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
               </p>
               <button
                 onClick={confirmar}
-                disabled={!dadosOk}
+                disabled={!podeConfirmar}
                 className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-4 rounded-full bg-[#111] text-white text-[15px] font-semibold hover:bg-[#333] transition-colors disabled:opacity-40"
               >
                 <MessageCircle size={17} strokeWidth={2} />
@@ -260,6 +308,15 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                 {feeNotes.map((n) => (
                   <p key={n} className="text-[12px] text-amber-600">{n}</p>
                 ))}
+                {querTransfer && (
+                  <div className="flex items-center justify-between text-[14px] text-gray-500">
+                    <span className="flex items-center gap-1.5">
+                      <Car size={14} strokeWidth={1.75} className="text-gray-400" />
+                      Transfer do hotel
+                    </span>
+                    <span className="text-gray-400">a combinar</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between pt-3 mt-1 border-t border-gray-100">
                   <span className="text-[15px] font-bold text-[#111]">Total estimado</span>
                   <span className="text-[17px] font-bold text-[#111]">R$ {total}</span>

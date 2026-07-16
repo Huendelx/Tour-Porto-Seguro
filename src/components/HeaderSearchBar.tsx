@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Navigation, CalendarDays, Users } from "lucide-react";
+import { fromISODate } from "@/lib/schedule";
 
 // ─── SHARED DATA ───
 interface Destino { id: string; name: string; sub: string; icon?: ReactNode; emoji?: string; }
@@ -157,19 +158,24 @@ export default function HeaderSearchBar() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Pre-populate from URL
-  const initDestino = DESTINOS.find((d) => d.id === searchParams.get("destino")) ?? null;
-  const initDate = searchParams.get("data") ? new Date(searchParams.get("data")!) : null;
-  const initAdults = Number(searchParams.get("adultos") ?? 1);
-  const initKids = Number(searchParams.get("criancas") ?? 0);
-
-  const [destino, setDestino] = useState<Destino | null>(initDestino);
-  const [date, setDate] = useState<Date | null>(initDate);
-  const [adults, setAdults] = useState(initAdults);
-  const [kids, setKids] = useState(initKids);
+  const [destino, setDestino] = useState<Destino | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
+  const [adults, setAdults] = useState(1);
+  const [kids, setKids] = useState(0);
   const [active, setActive] = useState<"onde" | "quando" | "quem" | null>(null);
 
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  // Sincroniza com a URL sempre que ela mudar — o Header persiste entre
+  // navegações (não remonta), então sem isso os campos ficavam presos
+  // nos valores de quando o componente montou pela primeira vez.
+  useEffect(() => {
+    setDestino(DESTINOS.find((d) => d.id === searchParams.get("destino")) ?? null);
+    const data = searchParams.get("data");
+    setDate(data ? fromISODate(data) : null);
+    setAdults(Number(searchParams.get("adultos") ?? 1));
+    setKids(Number(searchParams.get("criancas") ?? 0));
+  }, [searchParams]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
