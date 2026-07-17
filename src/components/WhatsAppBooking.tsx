@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Sunrise, Waves, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sunrise, Waves, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Tour } from "@/data/tours";
 import { runsOn, nextValidDate, toISODate, formatDatePt } from "@/lib/schedule";
 
@@ -79,7 +79,7 @@ function TourCalendar({ tour, selected, onSelect }: { tour: Tour; selected: Date
 
 export default function WhatsAppBooking({ tour }: { tour: Tour }) {
   const router = useRouter();
-  const [tab, setTab] = useState<"data" | "pessoas">("data");
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [date, setDate] = useState<Date>(() => nextValidDate(tour));
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -111,29 +111,78 @@ export default function WhatsAppBooking({ tour }: { tour: Tour }) {
         <p className="text-[13px] font-semibold text-[#2d7d46] mt-1">Cancelamento gratuito</p>
       )}
 
-      {/* Abas */}
-      <div className="mt-5 flex rounded-full bg-gray-100 p-1">
-        {([
-          { id: "data" as const, label: "Data" },
-          { id: "pessoas" as const, label: "Pessoas" },
-        ]).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`flex-1 py-2 rounded-full text-[13px] font-semibold transition-colors ${
-              tab === t.id ? "bg-[#111] text-white" : "text-[#444] hover:text-[#111]"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      {/* Pessoas */}
+      <div className="mt-5 space-y-5">
+        <Counter
+          label="Adultos"
+          sub={adultPrice ? `R$ ${adultPrice.priceMin} cada` : undefined}
+          value={adults}
+          min={1}
+          onChange={setAdults}
+        />
+        {childPrice && (
+          <Counter
+            label="Crianças"
+            sub={childPrice.label.replace("Criança ", "")}
+            value={children}
+            min={0}
+            onChange={setChildren}
+          />
+        )}
+        {!childPrice && (
+          <p className="text-[13px] text-gray-400">Este passeio não possui tarifa infantil.</p>
+        )}
       </div>
 
-      {/* Conteúdo da aba */}
-      <div className="mt-5 min-h-[280px]">
-        {tab === "data" ? (
-          <div>
-            <TourCalendar tour={tour} selected={date} onSelect={setDate} />
+      {/* Resumo da seleção */}
+      <div className="mt-5 pt-4 border-t border-gray-100 space-y-1.5">
+        <button
+          onClick={() => setCalendarOpen(true)}
+          className="flex items-center justify-between text-[13px] w-full text-left"
+        >
+          <span className="text-gray-500">Data</span>
+          <span className="font-medium text-[#111] capitalize underline underline-offset-2 decoration-gray-300">
+            {formatDatePt(date)}
+          </span>
+        </button>
+        <div className="flex items-center justify-between text-[13px]">
+          <span className="text-gray-500">Pessoas</span>
+          <span className="font-medium text-[#111]">
+            {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? ` · ${children} criança${children > 1 ? "s" : ""}` : ""}
+          </span>
+        </div>
+        <div className="flex items-center justify-between pt-2">
+          <span className="text-[14px] text-gray-500">Total estimado</span>
+          <span className="text-[17px] font-bold text-[#111]">R$ {total}</span>
+        </div>
+      </div>
+
+      {/* Popup do calendário */}
+      {calendarOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4"
+          onClick={() => setCalendarOpen(false)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 w-full max-w-[360px]"
+            style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-semibold text-[15px] text-[#111]">Escolha a data</p>
+              <button
+                onClick={() => setCalendarOpen(false)}
+                className="text-gray-400 hover:text-[#111] transition-colors"
+                aria-label="Fechar"
+              >
+                <X size={18} strokeWidth={1.75} />
+              </button>
+            </div>
+            <TourCalendar
+              tour={tour}
+              selected={date}
+              onSelect={(d) => { setDate(d); setCalendarOpen(false); }}
+            />
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 text-[13px] text-gray-500">
               {tour.schedule.frequency === "tide_based" ? (
                 <>
@@ -150,48 +199,8 @@ export default function WhatsAppBooking({ tour }: { tour: Tour }) {
               )}
             </div>
           </div>
-        ) : (
-          <div className="space-y-5 pt-2">
-            <Counter
-              label="Adultos"
-              sub={adultPrice ? `R$ ${adultPrice.priceMin} cada` : undefined}
-              value={adults}
-              min={1}
-              onChange={setAdults}
-            />
-            {childPrice && (
-              <Counter
-                label="Crianças"
-                sub={childPrice.label.replace("Criança ", "")}
-                value={children}
-                min={0}
-                onChange={setChildren}
-              />
-            )}
-            {!childPrice && (
-              <p className="text-[13px] text-gray-400">Este passeio não possui tarifa infantil.</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Resumo da seleção */}
-      <div className="mt-5 pt-4 border-t border-gray-100 space-y-1.5">
-        <div className="flex items-center justify-between text-[13px]">
-          <span className="text-gray-500">Data</span>
-          <span className="font-medium text-[#111] capitalize">{formatDatePt(date)}</span>
         </div>
-        <div className="flex items-center justify-between text-[13px]">
-          <span className="text-gray-500">Pessoas</span>
-          <span className="font-medium text-[#111]">
-            {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? ` · ${children} criança${children > 1 ? "s" : ""}` : ""}
-          </span>
-        </div>
-        <div className="flex items-center justify-between pt-2">
-          <span className="text-[14px] text-gray-500">Total estimado</span>
-          <span className="text-[17px] font-bold text-[#111]">R$ {total}</span>
-        </div>
-      </div>
+      )}
 
       {/* CTA */}
       <button
