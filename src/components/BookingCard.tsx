@@ -27,7 +27,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setCardInView(entry.isIntersecting),
-      { rootMargin: "-64px 0px 0px 0px" }
+      { rootMargin: "-64px 0px -40% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
