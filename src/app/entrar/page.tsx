@@ -12,7 +12,7 @@ export default function EntrarPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const emailValido = /^\S+@\S+\.\S+$/.test(email);
-  const codeValido = /^\d{6}$/.test(code);
+  const codeValido = /^\d{6,8}$/.test(code);
 
   const enviar = async () => {
     if (!emailValido) return;
@@ -81,19 +81,19 @@ export default function EntrarPage() {
             </div>
             <h1 className="text-[22px] font-bold text-[#111]">Digite o código</h1>
             <p className="text-[14px] text-gray-500 mt-2 leading-relaxed">
-              Mandamos um código de 6 dígitos pra <span className="font-medium text-[#111]">{email}</span>.
+              Mandamos um código pra <span className="font-medium text-[#111]">{email}</span>.
             </p>
 
             <input
               type="text"
               inputMode="numeric"
               autoFocus
-              maxLength={6}
-              placeholder="000000"
+              maxLength={8}
+              placeholder="00000000"
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
               onKeyDown={(e) => e.key === "Enter" && confirmar()}
-              className="w-full mt-6 py-3.5 rounded-xl border border-gray-300 text-[24px] text-center tracking-[0.4em] text-[#111] outline-none focus:border-[#111] transition-colors"
+              className="w-full mt-6 py-3.5 rounded-xl border border-gray-300 text-[24px] text-center tracking-[0.3em] text-[#111] outline-none focus:border-[#111] transition-colors"
             />
 
             {errorMsg && <p className="mt-3 text-[13px] text-red-500">{errorMsg}</p>}
