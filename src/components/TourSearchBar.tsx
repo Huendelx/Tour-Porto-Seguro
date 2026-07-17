@@ -415,9 +415,9 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
 
   const ArrowBtn = () => (
     <span style={{
-      width: 48, height: 48, borderRadius: "50%", background: "#111",
+      width: 48, height: 48, borderRadius: "50%", background: "var(--tps-accent)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      flexShrink: 0, color: "#fff",
+      flexShrink: 0, color: "#111",
     }}>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />

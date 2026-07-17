@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Star, Lightbulb, AlertCircle, CalendarX, BadgeCheck, Clock, Users, CalendarDays, Waves, MapPin, Share, Heart } from "lucide-react";
 import { categoryLabel } from "@/data/tours";
 import { getAllTours, getTourBySlug } from "@/lib/tours-data";
-import WhatsAppBooking from "@/components/WhatsAppBooking";
+import BookingCard from "@/components/BookingCard";
 import SetHeaderTitle from "@/components/SetHeaderTitle";
 import TourItinerary from "@/components/TourItinerary";
 import TourReviews from "@/components/TourReviews";
@@ -295,9 +295,7 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
 
         {/* ── Direita — card flutuante ── */}
         <div className="lg:w-[390px] flex-shrink-0">
-          <div className="lg:sticky lg:top-20">
-            <WhatsAppBooking tour={tour} />
-          </div>
+          <BookingCard tour={tour} />
         </div>
       </div>
 
@@ -331,23 +329,6 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
         </section>
       </div>
 
-      {/* ── Mobile booking bar ── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-xs text-gray-400">A partir de</p>
-          <p className="text-[22px] font-bold text-[#111] leading-tight">R${tour.price}<span className="text-sm font-normal text-gray-400"> /pessoa</span></p>
-          {/cancelamento gratuito/i.test(tour.cancellationPolicy) && (
-            <p className="text-xs font-semibold text-[#2d7d46]">Cancelamento gratuito</p>
-          )}
-        </div>
-        <Link
-          href={`/reserva/${tour.slug}`}
-          className="flex-1 max-w-[200px] bg-[var(--tps-accent)] hover:bg-[var(--tps-accent-hover)] text-[#111] font-semibold text-sm rounded-full py-3 text-center transition-colors"
-        >
-          Reservar
-        </Link>
-      </div>
-      <div className="lg:hidden h-20" />
 
       {/* ── Passeios relacionados ── */}
       {related.length > 0 && (
