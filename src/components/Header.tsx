@@ -268,7 +268,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
                   {profile ? (
                     <>
-                      <Link href="/minha-conta" className="flex items-center gap-3 px-4 py-3 hover:bg-black/5 transition-colors">
+                      <Link href={profile.role === "operador" ? "/operador" : "/minha-conta"} className="flex items-center gap-3 px-4 py-3 hover:bg-black/5 transition-colors">
                         <span className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
                           {profile.role === "operador"
                             ? <Building2 size={15} strokeWidth={1.75} className="text-[#1a1a1a]" />
