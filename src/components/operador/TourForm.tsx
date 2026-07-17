@@ -12,7 +12,7 @@ const CATEGORIES: { value: Tour["category"]; label: string }[] = [
   { value: "noturno", label: "Noturno" },
 ];
 
-type ItineraryStep = { time: string; title: string; description: string };
+type ItineraryStep = { time: string; title: string; description: string; image: string };
 
 export interface TourFormInitial {
   title: string;
@@ -67,12 +67,12 @@ export default function TourForm({
   const values = { ...EMPTY, ...initial };
   const [frequency, setFrequency] = useState(values.frequency);
   const [itinerary, setItinerary] = useState<ItineraryStep[]>(
-    values.itinerary.length > 0 ? values.itinerary : []
+    values.itinerary.map((s) => ({ time: s.time ?? "", title: s.title, description: s.description, image: s.image ?? "" }))
   );
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const addStep = () => setItinerary((prev) => [...prev, { time: "", title: "", description: "" }]);
+  const addStep = () => setItinerary((prev) => [...prev, { time: "", title: "", description: "", image: "" }]);
   const removeStep = (i: number) => setItinerary((prev) => prev.filter((_, idx) => idx !== i));
   const updateStep = (i: number, patch: Partial<ItineraryStep>) =>
     setItinerary((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
@@ -211,6 +211,7 @@ export default function TourForm({
               <input placeholder="Título da etapa" value={step.title} onChange={(e) => updateStep(i, { title: e.target.value })} className={inputCls} />
             </div>
             <textarea placeholder="Descrição" value={step.description} onChange={(e) => updateStep(i, { description: e.target.value })} rows={2} className={`${inputCls} resize-none`} />
+            <input placeholder="URL da foto dessa etapa (opcional)" value={step.image} onChange={(e) => updateStep(i, { image: e.target.value })} className={inputCls} />
           </div>
         ))}
       </section>

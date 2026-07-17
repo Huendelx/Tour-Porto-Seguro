@@ -77,7 +77,7 @@ function linesToArray(raw: FormDataEntryValue | null): string[] {
     .filter(Boolean);
 }
 
-type ItineraryStepInput = { time?: string; title: string; description: string };
+type ItineraryStepInput = { time?: string; title: string; description: string; image?: string };
 
 function buildTourRow(formData: FormData, operatorId: string, slug: string) {
   const price = Number(formData.get("price") ?? 0);
