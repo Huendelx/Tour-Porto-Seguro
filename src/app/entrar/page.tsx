@@ -7,10 +7,12 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 export default function EntrarPage() {
   const [role, setRole] = useState<"turista" | "operador">("turista");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
+  const [code, setCode] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "sent" | "verifying" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   const emailValido = /^\S+@\S+\.\S+$/.test(email);
+  const codeValido = /^\d{6}$/.test(code);
 
   const enviar = async () => {
     if (!emailValido) return;
@@ -22,7 +24,7 @@ export default function EntrarPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          shouldCreateUser: true,
           data: { intended_role: role },
         },
       });
@@ -37,26 +39,80 @@ export default function EntrarPage() {
     } catch (e) {
       console.error("signInWithOtp threw:", e);
       setStatus("error");
-      setErrorMsg("Falha de rede ao tentar enviar o link — confere o console do navegador.");
+      setErrorMsg("Falha de rede ao tentar enviar o código — confere o console do navegador.");
+    }
+  };
+
+  const confirmar = async () => {
+    if (!codeValido) return;
+    setStatus("verifying");
+    setErrorMsg("");
+
+    const supabase = createSupabaseBrowserClient();
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: code.trim(),
+        type: "email",
+      });
+
+      if (error) {
+        console.error("verifyOtp error:", error.status, error.code, error.message, error);
+        setStatus("sent");
+        setErrorMsg(error.message || "Código inválido ou expirado — pede um novo.");
+        return;
+      }
+
+      window.location.href = "/minha-conta";
+    } catch (e) {
+      console.error("verifyOtp threw:", e);
+      setStatus("sent");
+      setErrorMsg("Falha de rede ao confirmar o código — confere o console do navegador.");
     }
   };
 
   return (
     <main className="min-h-screen bg-white pt-14 flex items-center justify-center px-4">
       <div className="w-full max-w-[420px] py-16">
-        {status === "sent" ? (
+        {status === "sent" || status === "verifying" ? (
           <div className="text-center">
             <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-5">
               <CheckCircle2 size={26} strokeWidth={1.75} className="text-[#2d7d46]" />
             </div>
-            <h1 className="text-[22px] font-bold text-[#111]">Confira seu e-mail</h1>
+            <h1 className="text-[22px] font-bold text-[#111]">Digite o código</h1>
             <p className="text-[14px] text-gray-500 mt-2 leading-relaxed">
-              Mandamos um link de acesso pra <span className="font-medium text-[#111]">{email}</span>.
-              Clica nele pra entrar — não precisa de senha.
+              Mandamos um código de 6 dígitos pra <span className="font-medium text-[#111]">{email}</span>.
             </p>
+
+            <input
+              type="text"
+              inputMode="numeric"
+              autoFocus
+              maxLength={6}
+              placeholder="000000"
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              onKeyDown={(e) => e.key === "Enter" && confirmar()}
+              className="w-full mt-6 py-3.5 rounded-xl border border-gray-300 text-[24px] text-center tracking-[0.4em] text-[#111] outline-none focus:border-[#111] transition-colors"
+            />
+
+            {errorMsg && <p className="mt-3 text-[13px] text-red-500">{errorMsg}</p>}
+
             <button
-              onClick={() => setStatus("idle")}
-              className="mt-6 text-[13px] font-semibold text-[#111] underline underline-offset-2"
+              onClick={confirmar}
+              disabled={!codeValido || status === "verifying"}
+              className="mt-4 w-full py-3.5 rounded-full bg-[#111] text-white text-[15px] font-semibold hover:bg-[#333] transition-colors disabled:opacity-40"
+            >
+              {status === "verifying" ? "Confirmando..." : "Confirmar código"}
+            </button>
+
+            <button
+              onClick={() => {
+                setStatus("idle");
+                setCode("");
+                setErrorMsg("");
+              }}
+              className="mt-4 text-[13px] font-semibold text-[#111] underline underline-offset-2"
             >
               Usar outro e-mail
             </button>
@@ -65,7 +121,7 @@ export default function EntrarPage() {
           <>
             <h1 className="text-[26px] font-bold text-[#111] text-center leading-tight">Entrar no Passeador</h1>
             <p className="text-[14px] text-gray-500 text-center mt-2">
-              Sem senha — a gente manda um link no seu e-mail.
+              Sem senha — a gente manda um código no seu e-mail.
             </p>
 
             {/* Turista / Operador */}
@@ -108,7 +164,7 @@ export default function EntrarPage() {
               disabled={!emailValido || status === "loading"}
               className="mt-4 w-full py-3.5 rounded-full bg-[#111] text-white text-[15px] font-semibold hover:bg-[#333] transition-colors disabled:opacity-40"
             >
-              {status === "loading" ? "Enviando..." : "Enviar link de acesso"}
+              {status === "loading" ? "Enviando..." : "Enviar código de acesso"}
             </button>
 
             <p className="mt-6 text-[12px] text-gray-400 text-center leading-relaxed">
