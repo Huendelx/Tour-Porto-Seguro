@@ -299,7 +299,8 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
     if (cats.length > 0) result = result.filter((t) => cats.includes(t.category));
     if (horario.length > 0) result = result.filter((t) => tourBuckets(t).some((b) => horario.includes(b)));
     result = result.filter((t) => {
-      const d = t.durationMinutes ?? 0;
+      if (t.durationMinutes == null) return true; // duração desconhecida — não exclui da busca
+      const d = t.durationMinutes;
       const lo = DUR_STOPS[durIdx[0]].v;
       const hi = durIdx[1] === DUR_STOPS.length - 1 ? Infinity : DUR_STOPS[durIdx[1]].v;
       return d >= lo && d <= hi;

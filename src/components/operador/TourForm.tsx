@@ -170,7 +170,8 @@ export default function TourForm({
           </div>
           <div>
             <label className={labelCls}>Duração em minutos</label>
-            <input name="duration_minutes" type="number" min={0} defaultValue={values.duration_minutes ?? ""} className={inputCls} />
+            <input name="duration_minutes" type="number" min={1} required defaultValue={values.duration_minutes ?? ""} className={inputCls} />
+            <p className="text-[12px] text-gray-400 mt-1.5">Usado pro filtro de duração na busca — sem isso o passeio não aparece.</p>
           </div>
         </div>
         <div>
