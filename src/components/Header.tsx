@@ -99,13 +99,10 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
     <>
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-colors duration-200 ${
-          !isHomePage || mobileMenuOpen
+          !isHomePage || mobileMenuOpen || isScrolled
             ? "bg-white"
-            : isScrolled
-              ? "bg-white/80"
-              : "bg-transparent"
+            : "bg-transparent"
         }`}
-        style={isHomePage && isScrolled && !mobileMenuOpen ? { backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } : {}}
       >
         <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
 
