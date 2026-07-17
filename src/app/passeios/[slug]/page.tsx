@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function FactRow({ icon, title, sub }: { icon: React.ReactNode; title: string; sub?: string }) {
   return (
     <div className="flex items-start gap-4">
-      <span className="text-[#111] mt-0.5 flex-shrink-0">{icon}</span>
+      <span className="w-10 h-10 flex items-center justify-center text-[#111] flex-shrink-0">{icon}</span>
       <div className="min-w-0">
         <p className="font-semibold text-[#111] text-[15px] leading-snug">{title}</p>
         {sub && <p className="text-gray-500 text-[13px] mt-0.5">{sub}</p>}
