@@ -11,6 +11,10 @@
   --tps-dark: #1a1a1a;
   --tps-gray: #6b7280;
 
+  /* Testando cor de acento — só nos CTAs comerciais (busca, reservar, confirmar) */
+  --tps-accent: #ffc629;
+  --tps-accent-hover: #f4b400;
+
   --background: var(--tps-white);
   --foreground: var(--tps-dark);
 }

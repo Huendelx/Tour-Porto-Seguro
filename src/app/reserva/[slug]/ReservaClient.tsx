@@ -217,7 +217,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
               <button
                 onClick={confirmar}
                 disabled={!podeConfirmar}
-                className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-4 rounded-full bg-[#111] text-white text-[15px] font-semibold hover:bg-[#333] transition-colors disabled:opacity-40"
+                className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-4 rounded-full bg-[var(--tps-accent)] text-[#111] text-[15px] font-semibold hover:bg-[var(--tps-accent-hover)] transition-colors disabled:opacity-40"
               >
                 <MessageCircle size={17} strokeWidth={2} />
                 Confirmar reserva pelo WhatsApp

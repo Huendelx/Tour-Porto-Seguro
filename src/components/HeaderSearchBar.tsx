@@ -239,12 +239,12 @@ export default function HeaderSearchBar() {
         {/* Search button */}
         <button onClick={onSearch}
           style={{
-            width: 36, height: 36, borderRadius: 20, background: "#111", border: "none",
+            width: 36, height: 36, borderRadius: 20, background: "var(--tps-accent)", border: "none",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            marginRight: 3, flexShrink: 0, color: "#fff", transition: "transform 0.15s",
+            marginRight: 3, flexShrink: 0, color: "#111", transition: "transform 0.15s, background 0.15s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.07)"; e.currentTarget.style.background = "var(--tps-accent-hover)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.background = "var(--tps-accent)"; }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -274,7 +274,7 @@ export default function HeaderSearchBar() {
               <MiniGuestPicker adults={adults} kids={kids} onA={setAdults} onK={setKids} />
               <button onClick={onSearch}
                 style={{
-                  marginTop: 16, width: "100%", background: "#111", color: "#fff",
+                  marginTop: 16, width: "100%", background: "var(--tps-accent)", color: "#111",
                   border: "none", borderRadius: 12, padding: "12px 0",
                   fontSize: 14, fontWeight: 600, cursor: "pointer",
                 }}

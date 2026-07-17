@@ -196,7 +196,7 @@ export default function WhatsAppBooking({ tour }: { tour: Tour }) {
       {/* CTA */}
       <button
         onClick={() => router.push(reservaUrl)}
-        className="mt-5 flex items-center justify-center gap-2 w-full bg-[#111] hover:bg-[#333] text-white font-semibold py-4 rounded-full transition-colors text-[15px]"
+        className="mt-5 flex items-center justify-center gap-2 w-full bg-[var(--tps-accent)] hover:bg-[var(--tps-accent-hover)] text-[#111] font-semibold py-4 rounded-full transition-colors text-[15px]"
       >
         Reservar agora
       </button>

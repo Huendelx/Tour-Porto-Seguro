@@ -344,12 +344,12 @@ function DesktopSearch({ destino, setDestino, date, setDate, adults, setAdults, 
         <button
           onClick={() => { setActive(null); onSearch(); }}
           style={{
-            width: 52, height: 52, borderRadius: 26, background: "#111", border: "none",
+            width: 52, height: 52, borderRadius: 26, background: "var(--tps-accent)", border: "none",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            marginRight: 6, flexShrink: 0, color: "#fff",
+            marginRight: 6, flexShrink: 0, color: "#111",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.background = "var(--tps-accent-hover)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.background = "var(--tps-accent)"; }}
         >
           <SearchIcon />
         </button>
@@ -586,7 +586,7 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
         </button>
         <button
           onClick={() => { setOpen(false); onSearch(); }}
-          style={{ display: "flex", alignItems: "center", gap: 8, background: "#111", color: "#fff", border: "none", borderRadius: 12, padding: "14px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
+          style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--tps-accent)", color: "#111", border: "none", borderRadius: 12, padding: "14px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
         >
           <SearchIcon /> Buscar
         </button>
