@@ -107,6 +107,7 @@ function buildTourRow(formData: FormData, operatorId: string, slug: string) {
     tips: String(formData.get("tips") ?? "").trim() || null,
     important_info: String(formData.get("important_info") ?? "").trim() || null,
     category: String(formData.get("category") ?? "terrestre"),
+    destinos: formData.getAll("destinos").map((d) => String(d)),
     transport_type: String(formData.get("transport_type") ?? "").trim(),
     duration: String(formData.get("duration") ?? "").trim(),
     duration_minutes: Number(formData.get("duration_minutes") ?? 0) || null,

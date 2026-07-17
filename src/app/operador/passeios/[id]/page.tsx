@@ -33,6 +33,7 @@ export default async function EditarPasseioPage({
     tips: tour.tips ?? "",
     important_info: tour.important_info ?? "",
     category: tour.category,
+    destinos: tour.destinos ?? [],
     transport_type: tour.transport_type ?? "",
     duration: tour.duration ?? "",
     duration_minutes: tour.duration_minutes,

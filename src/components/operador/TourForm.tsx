@@ -12,6 +12,14 @@ const CATEGORIES: { value: Tour["category"]; label: string }[] = [
   { value: "noturno", label: "Noturno" },
 ];
 
+const DESTINOS = [
+  { id: "porto-seguro", label: "Porto Seguro" },
+  { id: "arraial", label: "Arraial d'Ajuda" },
+  { id: "trancoso", label: "Trancoso" },
+  { id: "caraiva", label: "Caraíva" },
+  { id: "praia-espelho", label: "Praia do Espelho" },
+] as const;
+
 type ItineraryStep = { time: string; title: string; description: string; image: string };
 
 export interface TourFormInitial {
@@ -22,6 +30,7 @@ export interface TourFormInitial {
   tips: string;
   important_info: string;
   category: Tour["category"];
+  destinos: string[];
   transport_type: string;
   duration: string;
   duration_minutes: number | null;
@@ -45,7 +54,7 @@ export interface TourFormInitial {
 
 const EMPTY: TourFormInitial = {
   title: "", subtitle: "", summary: "", description: "", tips: "", important_info: "",
-  category: "terrestre", transport_type: "", duration: "", duration_minutes: null,
+  category: "terrestre", destinos: [], transport_type: "", duration: "", duration_minutes: null,
   group_size: "", price: 0, price_max: null, includes: [], excludes: [],
   image: "", images: [], meeting_point: "", cancellation_policy: "", is_active: false,
   frequency: "daily", days: "", departureStart: "", departureEnd: "", returnTime: "",
@@ -125,6 +134,29 @@ export default function TourForm({
             <label className={labelCls}>Tipo de transporte</label>
             <input name="transport_type" defaultValue={values.transport_type} className={inputCls} placeholder="Van climatizada" />
           </div>
+        </div>
+        <div>
+          <label className={labelCls}>Destino(s) — onde esse passeio acontece</label>
+          <div className="flex flex-wrap gap-2">
+            {DESTINOS.map((d) => (
+              <label
+                key={d.id}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-300 text-[13px] text-[#111] cursor-pointer has-[:checked]:border-[#111] has-[:checked]:bg-gray-50"
+              >
+                <input
+                  type="checkbox"
+                  name="destinos"
+                  value={d.id}
+                  defaultChecked={values.destinos.includes(d.id)}
+                  className="accent-[#111]"
+                />
+                {d.label}
+              </label>
+            ))}
+          </div>
+          <p className="text-[12px] text-gray-400 mt-1.5">
+            Precisa marcar pelo menos um — senão o passeio não aparece na busca por destino.
+          </p>
         </div>
       </section>
 
