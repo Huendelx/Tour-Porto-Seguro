@@ -4,10 +4,12 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, LogOut, User, Building2 } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import HeaderSearchBar from "./HeaderSearchBar";
 import { useHeaderContext } from "@/context/HeaderContext";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import type { CurrentProfile } from "@/lib/auth";
 
 const GlobeIcon = () => (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,9 +32,16 @@ const CloseIcon = () => (
   </svg>
 );
 
-export default function Header() {
+export default function Header({ profile }: { profile: CurrentProfile | null }) {
   const pathname = usePathname();
   const router = useRouter();
+
+  const handleLogout = async () => {
+    const supabase = createSupabaseBrowserClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  };
   const { mobileTitle } = useHeaderContext();
   const isHomePage = pathname === "/";
   const isDetalhes = pathname.startsWith("/passeios/");
@@ -257,9 +266,36 @@ export default function Header() {
 
                   <div className="h-px bg-black/8 mx-1 my-1" />
 
-                  <Link href="/entrar" className="block px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors">
-                    Entrar ou cadastrar-se
-                  </Link>
+                  {profile ? (
+                    <>
+                      <Link href="/minha-conta" className="flex items-center gap-3 px-4 py-3 hover:bg-black/5 transition-colors">
+                        <span className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
+                          {profile.role === "operador"
+                            ? <Building2 size={15} strokeWidth={1.75} className="text-[#1a1a1a]" />
+                            : <User size={15} strokeWidth={1.75} className="text-[#1a1a1a]" />}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-semibold text-[#1a1a1a] truncate">
+                            {profile.fullName || profile.email}
+                          </span>
+                          <span className="block text-xs text-[#1a1a1a]/60">
+                            {profile.role === "operador" ? "Conta de operador" : "Conta de turista"}
+                          </span>
+                        </span>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#1a1a1a] hover:bg-black/5 transition-colors"
+                      >
+                        <LogOut size={16} strokeWidth={1.5} className="text-[#1a1a1a]" />
+                        Sair
+                      </button>
+                    </>
+                  ) : (
+                    <Link href="/entrar" className="block px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors">
+                      Entrar ou cadastrar-se
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
@@ -267,7 +303,7 @@ export default function Header() {
         </nav>
       </header>
 
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} profile={profile} onLogout={handleLogout} />
     </>
   );
 }

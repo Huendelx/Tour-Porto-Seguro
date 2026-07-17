@@ -3,10 +3,13 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Boat, Fish, CarProfile, AirplaneInFlight, TreeEvergreen, Building, SunHorizon } from "@phosphor-icons/react";
+import type { CurrentProfile } from "@/lib/auth";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  profile: CurrentProfile | null;
+  onLogout: () => void;
 }
 
 const ChevronDown = ({ className }: { className?: string }) => (
@@ -25,7 +28,7 @@ const passeiosItems = [
   { title: "Pôr do Sol", desc: "Passeio ao entardecer pelo litoral", icon: SunHorizon },
 ];
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose, profile, onLogout }: MobileMenuProps) {
   const [passeiosOpen, setPasseiosOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -88,13 +91,31 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </nav>
 
           <div className="mt-8 animate-slide-in-2">
-            <a
-              href="/entrar"
-              onClick={onClose}
-              className="flex items-center justify-center w-full py-4 bg-[#1a1a1a] text-white rounded-lg text-lg font-medium hover:bg-black/80 transition-colors"
-            >
-              Entrar
-            </a>
+            {profile ? (
+              <>
+                <a
+                  href="/minha-conta"
+                  onClick={onClose}
+                  className="flex items-center justify-center w-full py-4 bg-[#1a1a1a] text-white rounded-lg text-lg font-medium hover:bg-black/80 transition-colors"
+                >
+                  {profile.fullName || profile.email}
+                </a>
+                <button
+                  onClick={() => { onClose(); onLogout(); }}
+                  className="w-full text-center py-3 text-[#041610]/70 text-sm mt-2 underline"
+                >
+                  Sair
+                </button>
+              </>
+            ) : (
+              <a
+                href="/entrar"
+                onClick={onClose}
+                className="flex items-center justify-center w-full py-4 bg-[#1a1a1a] text-white rounded-lg text-lg font-medium hover:bg-black/80 transition-colors"
+              >
+                Entrar
+              </a>
+            )}
             <p className="text-center text-[#041610]/60 text-xs mt-6">
               &copy; 2026 Passeador
             </p>

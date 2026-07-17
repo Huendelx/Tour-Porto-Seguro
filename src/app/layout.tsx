@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { HeaderProvider } from "@/context/HeaderContext";
+import { getCurrentProfile } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Passeador — Passeios e experiências em Porto Seguro",
@@ -11,11 +12,13 @@ export const metadata: Metadata = {
   keywords: ["passeios porto seguro", "turismo bahia", "arraial d'ajuda", "trancoso", "passeador"],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const profile = await getCurrentProfile();
+
   return (
     <html lang="pt-BR" className="h-full">
       <head>
@@ -23,7 +26,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <HeaderProvider>
-          <Header />
+          <Header profile={profile} />
           {children}
         </HeaderProvider>
         <Footer />
