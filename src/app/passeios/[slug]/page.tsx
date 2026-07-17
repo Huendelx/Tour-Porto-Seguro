@@ -335,11 +335,14 @@ export default async function PasSeioPage({ params }: { params: Promise<{ slug: 
       <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between gap-4">
         <div>
           <p className="text-xs text-gray-400">A partir de</p>
-          <p className="text-xl font-bold text-[#111]">R${tour.price}<span className="text-sm font-normal text-gray-400"> /pessoa</span></p>
+          <p className="text-[22px] font-bold text-[#111] leading-tight">R${tour.price}<span className="text-sm font-normal text-gray-400"> /pessoa</span></p>
+          {/cancelamento gratuito/i.test(tour.cancellationPolicy) && (
+            <p className="text-xs font-semibold text-[#2d7d46]">Cancelamento gratuito</p>
+          )}
         </div>
         <Link
           href={`/reserva/${tour.slug}`}
-          className="flex-1 max-w-[200px] bg-[#111] text-white font-semibold text-sm rounded-full py-3 text-center"
+          className="flex-1 max-w-[200px] bg-[var(--tps-accent)] hover:bg-[var(--tps-accent-hover)] text-[#111] font-semibold text-sm rounded-full py-3 text-center transition-colors"
         >
           Reservar
         </Link>

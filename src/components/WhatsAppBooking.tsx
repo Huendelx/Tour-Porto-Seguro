@@ -110,6 +110,9 @@ export default function WhatsAppBooking({ tour }: { tour: Tour }) {
       {tour.priceMax && tour.priceMax > tour.price && (
         <p className="text-[12px] text-gray-400 mt-1">Alta temporada: até R$ {tour.priceMax} por pessoa</p>
       )}
+      {/cancelamento gratuito/i.test(tour.cancellationPolicy) && (
+        <p className="text-[13px] font-semibold text-[#2d7d46] mt-1">Cancelamento gratuito</p>
+      )}
 
       {/* Abas */}
       <div className="mt-5 flex rounded-full bg-gray-100 p-1">
