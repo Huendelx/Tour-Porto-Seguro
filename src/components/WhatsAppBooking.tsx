@@ -164,7 +164,7 @@ export default function WhatsAppBooking({ tour }: { tour: Tour }) {
           onClick={() => setCalendarOpen(false)}
         >
           <div
-            className="bg-white rounded-3xl p-6 w-full max-w-[360px]"
+            className="bg-white rounded-3xl p-6 w-[320px] max-w-[calc(100vw-2rem)]"
             style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}
             onClick={(e) => e.stopPropagation()}
           >
