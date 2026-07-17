@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, ReactNode } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Navigation, CalendarDays, Users } from "lucide-react";
 import { fromISODate } from "@/lib/schedule";
+import { loadSearch, saveSearch } from "@/lib/searchStorage";
 
 // ─── SHARED DATA ───
 interface Destino { id: string; name: string; sub: string; icon?: ReactNode; emoji?: string; }
@@ -169,7 +170,20 @@ export default function HeaderSearchBar() {
   // Sincroniza com a URL sempre que ela mudar — o Header persiste entre
   // navegações (não remonta), então sem isso os campos ficavam presos
   // nos valores de quando o componente montou pela primeira vez.
+  // Sem parâmetro nenhum na URL (ex: home), cai pra última busca salva —
+  // senão a busca do herói mostrava a última busca e a do header, não.
   useEffect(() => {
+    const hasParams = ["destino", "data", "adultos", "criancas"].some((k) => searchParams.has(k));
+
+    if (!hasParams) {
+      const saved = loadSearch();
+      setDestino(saved?.destino ? DESTINOS.find((d) => d.id === saved.destino!.id) ?? null : null);
+      setDate(saved?.date ? new Date(saved.date) : null);
+      setAdults(saved?.adults ?? 1);
+      setKids(saved?.kids ?? 0);
+      return;
+    }
+
     setDestino(DESTINOS.find((d) => d.id === searchParams.get("destino")) ?? null);
     const data = searchParams.get("data");
     setDate(data ? fromISODate(data) : null);
@@ -184,6 +198,14 @@ export default function HeaderSearchBar() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const persist = (patch: Partial<{ destino: Destino | null; date: Date | null; adults: number; kids: number }>) =>
+    saveSearch({
+      destino: "destino" in patch ? (patch.destino ? { id: patch.destino.id, name: patch.destino.name } : null) : destino ? { id: destino.id, name: destino.name } : null,
+      date: "date" in patch ? (patch.date?.toISOString() ?? null) : (date?.toISOString() ?? null),
+      adults: patch.adults ?? adults,
+      kids: patch.kids ?? kids,
+    });
 
   const onSearch = () => {
     setActive(null);
@@ -264,14 +286,19 @@ export default function HeaderSearchBar() {
           padding: "20px", zIndex: 100,
         }}>
           {active === "onde" && (
-            <MiniDestinosList onSelect={(d) => { setDestino(d); setActive("quando"); }} />
+            <MiniDestinosList onSelect={(d) => { setDestino(d); persist({ destino: d }); setActive("quando"); }} />
           )}
           {active === "quando" && (
-            <MiniCalendar selected={date} onSelect={(d) => { setDate(d); setActive("quem"); }} />
+            <MiniCalendar selected={date} onSelect={(d) => { setDate(d); persist({ date: d }); setActive("quem"); }} />
           )}
           {active === "quem" && (
             <div>
-              <MiniGuestPicker adults={adults} kids={kids} onA={setAdults} onK={setKids} />
+              <MiniGuestPicker
+                adults={adults}
+                kids={kids}
+                onA={(n) => { setAdults(n); persist({ adults: n }); }}
+                onK={(n) => { setKids(n); persist({ kids: n }); }}
+              />
               <button onClick={onSearch}
                 style={{
                   marginTop: 16, width: "100%", background: "var(--tps-accent)", color: "#111",

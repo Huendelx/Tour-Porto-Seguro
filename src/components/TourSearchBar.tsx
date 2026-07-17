@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Navigation, CalendarDays, Users } from "lucide-react";
+import { loadSearch, saveSearch } from "@/lib/searchStorage";
 
 // ─── ICONS ───
 const SearchIcon = () => (
@@ -599,18 +600,6 @@ function MobileSearch({ destino, setDestino, date, setDate, adults, setAdults, k
 // ═══════════════════════════════════════════
 // MAIN EXPORT
 // ═══════════════════════════════════════════
-const STORAGE_KEY = "passeador_search";
-
-function loadSearch() {
-  if (typeof window === "undefined") return null;
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null"); } catch { return null; }
-}
-
-function saveSearch(data: object) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
 export default function TourSearchBar() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
@@ -623,7 +612,7 @@ export default function TourSearchBar() {
   useEffect(() => {
     const saved = loadSearch();
     if (!saved) return;
-    if (saved.destino) setDestino(saved.destino);
+    if (saved.destino) setDestino({ ...saved.destino, sub: "" });
     if (saved.date) setDate(new Date(saved.date));
     if (saved.adults != null) setAdults(saved.adults);
     if (saved.kids != null) setKids(saved.kids);
