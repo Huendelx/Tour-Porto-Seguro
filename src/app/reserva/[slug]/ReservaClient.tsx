@@ -54,7 +54,9 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
     // barra window.open depois de um await fora do clique original).
     createBooking({
       tourId: tour.id,
+      tourTitle: tour.title,
       tourDate: toISODate(date),
+      formattedDate: formatDatePt(date),
       adults,
       children,
       totalPrice: total,
