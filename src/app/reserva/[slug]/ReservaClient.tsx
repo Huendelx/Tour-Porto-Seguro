@@ -5,7 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
-import { runsOn, nextValidDate, fromISODate, formatDatePt } from "@/lib/schedule";
+import { runsOn, nextValidDate, fromISODate, toISODate, formatDatePt } from "@/lib/schedule";
+import { createBooking } from "../actions";
 
 export default function ReservaClient({ tour }: { tour: Tour }) {
   const searchParams = useSearchParams();
@@ -48,6 +49,21 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
 
   const confirmar = () => {
     if (!podeConfirmar) return;
+
+    // Dispara sem esperar — não trava/bloqueia o window.open (popup blocker
+    // barra window.open depois de um await fora do clique original).
+    createBooking({
+      tourId: tour.id,
+      tourDate: toISODate(date),
+      adults,
+      children,
+      totalPrice: total,
+      touristName: nome.trim(),
+      touristEmail: email.trim(),
+      touristWhatsapp: whatsapp.trim(),
+      notes: querTransfer ? `Transfer solicitado — buscar em ${enderecoTransfer.trim()}` : undefined,
+    }).catch((e) => console.error("Falha ao salvar reserva:", e));
+
     const msg =
       `Olá! Quero confirmar minha reserva pelo Passeador.\n\n` +
       `*${tour.title}*\n` +
