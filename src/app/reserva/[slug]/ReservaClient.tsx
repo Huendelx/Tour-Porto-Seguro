@@ -241,6 +241,12 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
               <p className="mt-3 text-[12px] text-gray-400">
                 Resposta em até 30 minutos no horário comercial · Operador verificado pelo Passeador
               </p>
+              <p className="mt-2 text-[12px] text-gray-400">
+                Ao confirmar, você concorda com os{" "}
+                <a href="/termos" target="_blank" className="underline underline-offset-2 text-gray-500">Termos de Uso</a>{" "}
+                e a{" "}
+                <a href="/privacidade" target="_blank" className="underline underline-offset-2 text-gray-500">Política de Privacidade</a>.
+              </p>
             </section>
           </div>
 

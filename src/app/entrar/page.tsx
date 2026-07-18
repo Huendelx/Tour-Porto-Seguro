@@ -172,6 +172,12 @@ export default function EntrarPage() {
                 ? "Área do operador — cadastre e gerencie seus passeios."
                 : "Área do turista — acompanhe suas reservas."}
             </p>
+            <p className="mt-3 text-[12px] text-gray-400 text-center leading-relaxed">
+              Ao continuar, você concorda com os{" "}
+              <a href="/termos" target="_blank" className="underline underline-offset-2">Termos de Uso</a>{" "}
+              e a{" "}
+              <a href="/privacidade" target="_blank" className="underline underline-offset-2">Política de Privacidade</a>.
+            </p>
           </>
         )}
       </div>

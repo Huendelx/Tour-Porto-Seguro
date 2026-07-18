@@ -1,8 +1,25 @@
 const columns = [
-  { title: "Destinos", links: ["Porto Seguro", "Arraial d'Ajuda", "Trancoso", "Caraíva", "Praia do Espelho"] },
-  { title: "Categorias", links: ["Náutico", "Aventura", "Cultural", "Praias", "Gastronomia"] },
-  { title: "Passeador", links: ["Sobre nós", "Como funciona", "Para operadores", "Blog", "Contato"] },
-  { title: "Suporte", links: ["Central de ajuda", "Termos de uso", "Política de privacidade", "Cancelamento"] },
+  {
+    title: "Destinos",
+    links: ["Porto Seguro", "Arraial d'Ajuda", "Trancoso", "Caraíva", "Praia do Espelho"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Categorias",
+    links: ["Náutico", "Aventura", "Cultural", "Praias", "Gastronomia"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Passeador",
+    links: ["Sobre nós", "Como funciona", "Para operadores", "Blog", "Contato"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Suporte",
+    links: [
+      { label: "Central de ajuda", href: "#" },
+      { label: "Termos de uso", href: "/termos" },
+      { label: "Política de privacidade", href: "/privacidade" },
+      { label: "Cancelamento", href: "#" },
+    ],
+  },
 ];
 
 export default function Footer() {
@@ -30,8 +47,8 @@ export default function Footer() {
                 {col.title}
               </h4>
               {col.links.map((link, j) => (
-                <a key={j} href="#" className="block text-[13px] text-[#888] mb-2.5 hover:text-[#111] transition-colors no-underline">
-                  {link}
+                <a key={j} href={link.href} className="block text-[13px] text-[#888] mb-2.5 hover:text-[#111] transition-colors no-underline">
+                  {link.label}
                 </a>
               ))}
             </div>
