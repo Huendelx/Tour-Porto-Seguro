@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
 import { runsOn, nextValidDate, fromISODate, toISODate, formatDatePt } from "@/lib/schedule";
-import { createBooking } from "../actions";
+import { createBooking, createPaymentPreference } from "../actions";
 
 export default function ReservaClient({ tour }: { tour: Tour }) {
   const searchParams = useSearchParams();
@@ -46,6 +46,50 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
   const feeNotes = [...new Set(tour.prices.map((p) => p.notes).filter(Boolean))] as string[];
 
   const podeConfirmar = dadosOk && (!querTransfer || enderecoValido);
+
+  const [pagando, setPagando] = useState(false);
+  const [pagarErro, setPagarErro] = useState("");
+
+  const pagar = async () => {
+    if (!podeConfirmar || pagando) return;
+    setPagando(true);
+    setPagarErro("");
+
+    const bookingId = await createBooking({
+      tourId: tour.id,
+      tourTitle: tour.title,
+      tourDate: toISODate(date),
+      formattedDate: formatDatePt(date),
+      adults,
+      children,
+      totalPrice: total,
+      touristName: nome.trim(),
+      touristEmail: email.trim(),
+      touristWhatsapp: whatsapp.trim(),
+      notes: querTransfer ? `Transfer solicitado — buscar em ${enderecoTransfer.trim()}` : undefined,
+    });
+
+    if (!bookingId) {
+      setPagando(false);
+      setPagarErro("Não deu pra registrar a reserva agora — tenta de novo em instantes.");
+      return;
+    }
+
+    const { url } = await createPaymentPreference({
+      bookingId,
+      tourSlug: tour.slug,
+      tourTitle: tour.title,
+      totalPrice: total,
+    });
+
+    if (!url) {
+      setPagando(false);
+      setPagarErro("Não deu pra abrir o pagamento agora — tenta de novo ou reserve pelo WhatsApp.");
+      return;
+    }
+
+    window.location.href = url;
+  };
 
   const confirmar = () => {
     if (!podeConfirmar) return;
@@ -210,35 +254,47 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
             {/* 2. Pagamento */}
             <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
               <h2 className="text-[18px] font-bold text-[#111]">2. Pagamento</h2>
-              <div className="mt-4 flex items-start gap-3.5 rounded-2xl bg-gray-50 border border-gray-100 px-5 py-4">
-                <ShieldCheck size={20} strokeWidth={1.75} className="text-[#2d7d46] flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-[14px] font-semibold text-[#111]">Sem pagamento online por enquanto</p>
-                  <p className="text-[14px] text-gray-500 leading-relaxed mt-1">
-                    Você confirma a reserva pelo WhatsApp e combina o pagamento direto com o operador —
-                    Pix ou cartão. Nenhum valor é cobrado agora.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* 3. Revise e confirme */}
-            <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
-              <h2 className="text-[18px] font-bold text-[#111]">3. Revise e confirme</h2>
               <p className="mt-3 text-[14px] text-gray-500 leading-relaxed">
                 <span className="capitalize">{formatDatePt(date)}</span>
                 {tour.schedule.departureStart && ` · saída ${tour.schedule.departureStart}`} ·{" "}
                 {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? ` e ${children} criança${children > 1 ? "s" : ""}` : ""} ·
-                total estimado de <span className="font-semibold text-[#111]">R$ {total}</span>.
-                Ao confirmar, sua solicitação vai direto pro operador no WhatsApp — a vaga é garantida na resposta dele.
+                total de <span className="font-semibold text-[#111]">R$ {total}</span>.
+              </p>
+              {pagarErro && <p className="mt-3 text-[13px] text-red-500">{pagarErro}</p>}
+              <button
+                onClick={pagar}
+                disabled={!podeConfirmar || pagando}
+                className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-4 rounded-full bg-[var(--tps-accent)] text-[#111] text-[15px] font-semibold hover:bg-[var(--tps-accent-hover)] transition-colors disabled:opacity-40"
+              >
+                <ShieldCheck size={17} strokeWidth={2} />
+                {pagando ? "Abrindo pagamento..." : "Pagar agora"}
+              </button>
+              <p className="mt-3 text-[12px] text-gray-400 flex items-center gap-1.5">
+                <ShieldCheck size={13} strokeWidth={1.75} className="text-gray-400" />
+                Pagamento processado pelo Mercado Pago — Pix ou cartão
+              </p>
+              <p className="mt-2 text-[12px] text-gray-400">
+                Ao continuar, você concorda com os{" "}
+                <a href="/termos" target="_blank" className="underline underline-offset-2 text-gray-500">Termos de Uso</a>{" "}
+                e a{" "}
+                <a href="/privacidade" target="_blank" className="underline underline-offset-2 text-gray-500">Política de Privacidade</a>.
+              </p>
+            </section>
+
+            {/* 3. Ou pelo WhatsApp */}
+            <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
+              <h2 className="text-[18px] font-bold text-[#111]">Prefere combinar direto?</h2>
+              <p className="mt-3 text-[14px] text-gray-500 leading-relaxed">
+                Sua solicitação vai direto pro operador no WhatsApp e vocês combinam o pagamento
+                (Pix ou cartão) diretamente — a vaga é garantida na resposta dele.
               </p>
               <button
                 onClick={confirmar}
                 disabled={!podeConfirmar}
-                className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-4 rounded-full bg-[var(--tps-accent)] text-[#111] text-[15px] font-semibold hover:bg-[var(--tps-accent-hover)] transition-colors disabled:opacity-40"
+                className="mt-5 flex items-center justify-center gap-2.5 w-full md:w-auto md:px-9 py-3.5 rounded-full border border-gray-300 text-[#111] text-[14px] font-semibold hover:border-[#111] transition-colors disabled:opacity-40"
               >
-                <MessageCircle size={17} strokeWidth={2} />
-                Confirmar reserva pelo WhatsApp
+                <MessageCircle size={16} strokeWidth={2} />
+                Reservar pelo WhatsApp
               </button>
               <p className="mt-3 text-[12px] text-gray-400">
                 Resposta em até 30 minutos no horário comercial · Operador verificado pelo Passeador
