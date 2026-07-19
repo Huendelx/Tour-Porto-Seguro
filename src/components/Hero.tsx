@@ -7,7 +7,7 @@ export default function Hero() {
         {/* Cor de fundo — trocar por uma imagem/faixa promocional depois */}
         <div className="absolute inset-0 bg-[#5b3df0]" />
 
-        <div className="relative z-10 h-[220px] md:h-[280px] pt-14 flex flex-col items-center justify-center gap-3 px-5 text-center">
+        <div className="relative z-10 w-full h-[220px] md:h-[280px] pt-14 flex flex-col items-center md:items-start justify-center gap-3 px-5 md:px-6 text-center md:text-left max-w-[1280px] mx-auto">
           <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight">
             Passeie pelo Brasil
           </h1>
