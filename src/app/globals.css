@@ -106,7 +106,7 @@ body {
 /* ── Nossos Destaques ──────────────────────────────────────────────── */
 .hl-section {
   position: relative;
-  padding: 62px 0 0;
+  padding: 52px 0 0;
   background: #fff;
 }
 .hl-head {
@@ -390,7 +390,7 @@ body {
 .hl-play-pill:hover { transform: scale(1.06); }
 
 @media (max-width: 768px) {
-  .hl-section { padding: 36px 0 0; }
+  .hl-section { padding: 26px 0 0; }
   .hl-head { padding: 0 24px 18px; }
   .hl-card { flex-basis: 88vw; }
   .hl-track-pad { flex: 0 0 calc((100vw - 88vw) / 2); }
