@@ -5,7 +5,7 @@ export default function Hero() {
     <>
       <section className="relative">
         {/* Cor de fundo — trocar por uma imagem/faixa promocional depois */}
-        <div className="absolute inset-0 bg-[#5b3df0]" />
+        <div className="absolute inset-0 bg-[#a528fd]" />
 
         <div
           className="relative z-10 h-[220px] md:h-[280px] pt-14 flex flex-col items-center md:items-start justify-center gap-3 text-center md:text-left"

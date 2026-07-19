@@ -168,7 +168,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
                 filter: dark ? "brightness(0)" : "none"
               }}
             >
-              <Image src="/logo-passeador.svg" alt="Passeador" fill className="object-contain" priority />
+              <Image src="/logo-passeador-color-yellow.svg" alt="Passeador" fill className="object-contain" priority />
             </div>
             <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
               Passeador
