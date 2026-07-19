@@ -162,13 +162,14 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
           {/* LEFT — logo + nome */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 cursor-pointer">
-            <div
-              className="relative w-7 h-7 flex-shrink-0 transition-all"
-              style={{
-                filter: dark ? "brightness(0)" : "none"
-              }}
-            >
-              <Image src="/logo-passeador-color-yellow.svg" alt="Passeador" fill className="object-contain" priority />
+            <div className="relative w-7 h-7 flex-shrink-0">
+              <Image
+                src={dark ? "/logo-passeador-color-yellow.svg" : "/logo-passeador-color-white.svg"}
+                alt="Passeador"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
             <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
               Passeador
