@@ -1,4 +1,4 @@
-import Hero from "@/components/Hero";
+import HeroClassic from "@/components/HeroClassic";
 import NossosDestaques from "@/components/NossosDestaques";
 import TrustBar from "@/components/TrustBar";
 import DestinosSection from "@/components/DestinosSection";
@@ -10,15 +10,16 @@ import ProvaSocial from "@/components/ProvaSocial";
 import CtaOperadores from "@/components/CtaOperadores";
 import { getAllTours } from "@/lib/tours-data";
 
-// Sempre por request — o catálogo vem do Supabase.
+// Cópia de segurança da home antiga (hero clássico 100vh) — pra comparar com a nova versão.
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default async function Home2() {
   const tours = await getAllTours();
 
   return (
     <main>
-      <Hero />
+      <HeroClassic />
+      <TrustBar />
       <NossosDestaques />
       <DestinosSection />
       <ExperienciasSection />
@@ -26,7 +27,6 @@ export default async function Home() {
       <ComoFunciona />
       <CategoriasSection />
       <ProvaSocial />
-      <TrustBar />
       <CtaOperadores />
     </main>
   );

@@ -2,27 +2,31 @@ import TourSearchBar from "./TourSearchBar";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen md:min-h-[110vh] flex flex-col items-center overflow-hidden pt-14">
-      {/* Mobile */}
-      <div
-        className="absolute inset-0 bg-cover bg-top md:hidden"
-        style={{ backgroundImage: "url('/hero-bg.webp')" }}
-      />
-      {/* Desktop */}
-      <div
-        className="absolute inset-0 bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: "url('/hero-bg-desktop.webp')" }}
-      />
+    <>
+      <section className="relative">
+        {/* Cor de fundo — trocar por uma imagem/faixa promocional depois */}
+        <div className="absolute inset-0 bg-[#5b3df0]" />
 
-      <div className="relative z-10 w-full max-w-3xl mx-auto px-5 flex flex-col items-center gap-8 mt-8 md:mt-[46px] mb-auto">
-        <h1 className="text-4xl md:text-7xl font-semibold text-white text-center leading-tight tracking-tight drop-shadow-lg whitespace-nowrap">
-          Passeie pelo Brasil
-        </h1>
-        <p className="text-sm text-white/75 text-center max-w-[17rem] md:max-w-md -mt-4">
-          Passeios e experiências exclusivas com guias locais certificados.
-        </p>
-        <TourSearchBar />
-      </div>
-    </section>
+        <div className="relative z-10 h-[220px] md:h-[320px] pt-14 flex flex-col items-center justify-center gap-3 px-5 text-center">
+          <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight">
+            Passeie pelo Brasil
+          </h1>
+          <p className="text-sm text-white/80 max-w-[17rem] md:max-w-md">
+            Passeios e experiências exclusivas com guias locais certificados.
+          </p>
+        </div>
+
+        {/* Search bar — o meio dela fica exatamente na borda de baixo da hero */}
+        <div
+          className="absolute left-0 right-0 z-20 flex justify-center px-4"
+          style={{ bottom: 0, transform: "translateY(50%)", filter: "drop-shadow(0 10px 28px rgba(0,0,0,0.22))" }}
+        >
+          <TourSearchBar />
+        </div>
+      </section>
+
+      {/* Respiro pra metade de baixo da barra de busca não encostar no conteúdo seguinte */}
+      <div className="h-10 md:h-12 bg-white" />
+    </>
   );
 }
