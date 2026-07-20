@@ -304,9 +304,34 @@ body {
   position: relative;
   padding-bottom: 80px;
 }
+.hl-nav-arrow {
+  display: none;
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: #fff;
+  border: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.16);
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.hl-nav-arrow:hover { transform: translateY(-50%) scale(1.06); }
+.hl-nav-arrow:disabled { opacity: 0; pointer-events: none; }
+.hl-nav-arrow-left { left: 12px; }
+.hl-nav-arrow-right { right: 12px; }
+@media (min-width: 900px) {
+  .hl-nav-arrow { display: flex; }
+}
 .hl-player-wrap {
   position: static;
-  margin-top: 20px;
+  margin-top: -20px;
   display: flex;
   justify-content: center;
   align-items: center;

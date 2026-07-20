@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const AUTOPLAY_MS = 5000;
 const SCROLL_MS = 2200;
@@ -216,6 +217,25 @@ export default function NossosDestaques() {
       </div>
 
       <div ref={cardsWrapRef} className="hl-cards-region">
+        <button
+          type="button"
+          className="hl-nav-arrow hl-nav-arrow-left"
+          onClick={() => goTo(Math.max(0, active - 1))}
+          disabled={active === 0}
+          aria-label="Anterior"
+        >
+          <ChevronLeft size={20} strokeWidth={2} />
+        </button>
+        <button
+          type="button"
+          className="hl-nav-arrow hl-nav-arrow-right"
+          onClick={() => goTo(Math.min(SLIDES.length - 1, active + 1))}
+          disabled={active === SLIDES.length - 1}
+          aria-label="Próximo"
+        >
+          <ChevronRight size={20} strokeWidth={2} />
+        </button>
+
         <div className="hl-track" ref={trackRef}>
           <div className="hl-track-pad" />
           {SLIDES.map((item, i) => (
