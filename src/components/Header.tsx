@@ -42,7 +42,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
     router.push("/");
     router.refresh();
   };
-  const { mobileTitle } = useHeaderContext();
+  const { mobileTitle, loginModalOpen, openLoginModal } = useHeaderContext();
   const isHomePage = pathname === "/";
   const isDetalhes = pathname.startsWith("/passeios/");
   const isReserva = pathname.startsWith("/reserva/");
@@ -178,7 +178,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
           {/* CENTER — search bar compacta (some no topo da home e no checkout) */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-            {!isReserva && (!isHomePage || isScrolled) && (
+            {!isReserva && !loginModalOpen && (!isHomePage || isScrolled) && (
               <Suspense fallback={null}>
                 <HeaderSearchBar />
               </Suspense>
@@ -290,9 +290,12 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
                       </button>
                     </>
                   ) : (
-                    <Link href="/entrar" className="block px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors">
+                    <button
+                      onClick={() => { setDesktopMenuOpen(false); openLoginModal(); }}
+                      className="w-full text-left px-4 py-3 text-sm font-semibold text-[#1a1a1a] hover:bg-black/5 transition-colors"
+                    >
                       Entrar ou cadastrar-se
-                    </Link>
+                    </button>
                   )}
                 </div>
               )}

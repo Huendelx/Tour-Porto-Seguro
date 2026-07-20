@@ -3,6 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LoginModal from "@/components/LoginModal";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { getCurrentProfile } from "@/lib/auth";
 
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <HeaderProvider>
           <Header profile={profile} />
           {children}
+          <LoginModal />
         </HeaderProvider>
         <Footer />
       </body>
