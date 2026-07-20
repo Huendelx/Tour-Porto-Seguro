@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, User, Building2, CheckCircle2 } from "lucide-react";
+import { Mail, CheckCircle2 } from "lucide-react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
-export default function EntrarForm() {
-  const [role, setRole] = useState<"turista" | "operador">("turista");
+export default function EntrarForm({ defaultRole = "turista" }: { defaultRole?: "turista" | "operador" }) {
+  const role = defaultRole;
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "verifying" | "error">("idle");
@@ -116,31 +116,14 @@ export default function EntrarForm() {
     </div>
   ) : (
     <>
-      <h1 className="text-[26px] font-bold text-[#111] text-center leading-tight">Entrar no Passeador</h1>
+      <h1 className="text-[26px] font-bold text-[#111] text-center leading-tight">
+        {role === "operador" ? "Cadastre sua empresa" : "Entrar no Passeador"}
+      </h1>
       <p className="text-[14px] text-gray-500 text-center mt-2">
         Sem senha — a gente manda um código no seu e-mail.
       </p>
 
-      {/* Turista / Operador */}
-      <div className="flex rounded-full bg-gray-100 p-1 mt-8">
-        {([
-          { id: "turista" as const, label: "Sou turista", icon: User },
-          { id: "operador" as const, label: "Sou operador", icon: Building2 },
-        ]).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setRole(t.id)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[13px] font-semibold transition-colors ${
-              role === t.id ? "bg-[#111] text-white" : "text-[#444] hover:text-[#111]"
-            }`}
-          >
-            <t.icon size={14} strokeWidth={2} />
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-6 relative">
+      <div className="mt-8 relative">
         <Mail size={17} strokeWidth={1.75} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
           type="email"
@@ -165,11 +148,6 @@ export default function EntrarForm() {
       </button>
 
       <p className="mt-6 text-[12px] text-gray-400 text-center leading-relaxed">
-        {role === "operador"
-          ? "Área do operador — cadastre e gerencie seus passeios."
-          : "Área do turista — acompanhe suas reservas."}
-      </p>
-      <p className="mt-3 text-[12px] text-gray-400 text-center leading-relaxed">
         Ao continuar, você concorda com os{" "}
         <a href="/termos" target="_blank" className="underline underline-offset-2">Termos de Uso</a>{" "}
         e a{" "}

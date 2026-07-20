@@ -6,7 +6,7 @@ import { useHeaderContext } from "@/context/HeaderContext";
 import EntrarForm from "./EntrarForm";
 
 export default function LoginModal() {
-  const { loginModalOpen, closeLoginModal } = useHeaderContext();
+  const { loginModalOpen, loginModalRole, closeLoginModal } = useHeaderContext();
 
   useEffect(() => {
     if (!loginModalOpen) return;
@@ -33,7 +33,7 @@ export default function LoginModal() {
         </button>
 
         <div className="px-6 md:px-8 pt-16 md:pt-14 pb-10">
-          <EntrarForm />
+          <EntrarForm defaultRole={loginModalRole} />
         </div>
       </div>
     </div>

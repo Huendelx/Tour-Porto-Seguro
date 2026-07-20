@@ -187,7 +187,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
           {/* RIGHT — Torne-se um guia + globe pill + hamburger pill */}
           <div className="flex items-center gap-2">
-            <a href="#guia" className={`${linkCls} hidden md:block mr-1 whitespace-nowrap`}>
+            <a href="/#guia" className={`${linkCls} hidden md:block mr-1 whitespace-nowrap`}>
               Torne-se um guia
             </a>
             <div className="relative" ref={langMenuRef}>
@@ -246,7 +246,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
                   <div className="h-px bg-black/8 mx-1 my-1" />
 
-                  <a href="#torne-se-guia" className="block px-4 py-3 hover:bg-black/5 transition-colors">
+                  <a href="/#guia" className="block px-4 py-3 hover:bg-black/5 transition-colors">
                     <span className="block text-sm font-semibold text-[#1a1a1a]">Torne-se um guia</span>
                     <span className="block text-xs text-[#1a1a1a]/60 mt-0.5 leading-relaxed">
                       É fácil começar a guiar turistas, oferecer passeios e experiências e ganhar uma renda extra.
