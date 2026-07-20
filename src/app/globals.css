@@ -324,8 +324,8 @@ body {
 }
 .hl-nav-arrow:hover { transform: translateY(-50%) scale(1.06); }
 .hl-nav-arrow:disabled { opacity: 0; pointer-events: none; }
-.hl-nav-arrow-left { left: 22px; }
-.hl-nav-arrow-right { right: 22px; }
+.hl-nav-arrow-left { left: 32px; }
+.hl-nav-arrow-right { right: 32px; }
 @media (min-width: 900px) {
   .hl-nav-arrow { display: flex; }
 }
