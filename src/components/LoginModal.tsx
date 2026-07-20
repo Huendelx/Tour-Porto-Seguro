@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import { X } from "lucide-react";
 import { useHeaderContext } from "@/context/HeaderContext";
 import EntrarForm from "./EntrarForm";
@@ -19,8 +20,8 @@ export default function LoginModal() {
 
   return (
     <div className="fixed inset-0 z-[200] flex md:items-center md:justify-center">
-      {/* Fundo — placeholder de cor por enquanto, ilustração entra depois */}
-      <div className="hidden md:block absolute inset-0 bg-[#a528fd]" onClick={closeLoginModal} />
+      {/* Fundo — escurece a home por trás (placeholder até ter ilustração de verdade) */}
+      <div className="hidden md:block absolute inset-0 bg-black/50" onClick={closeLoginModal} />
 
       {/* Card — no mobile ocupa a tela inteira, no desktop fica centralizado */}
       <div className="relative w-full h-full md:h-auto md:max-h-[85vh] md:w-[440px] bg-white md:rounded-3xl overflow-y-auto">
@@ -33,6 +34,9 @@ export default function LoginModal() {
         </button>
 
         <div className="px-6 md:px-8 pt-16 md:pt-14 pb-10">
+          <div className="relative w-9 h-9 mx-auto mb-5">
+            <Image src="/logo-passeador-color-yellow.svg" alt="Passeador" fill className="object-contain" />
+          </div>
           <EntrarForm defaultRole={loginModalRole} />
         </div>
       </div>
