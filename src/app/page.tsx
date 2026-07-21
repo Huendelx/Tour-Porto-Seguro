@@ -20,9 +20,9 @@ export default async function Home() {
     <main>
       <Hero />
       <NossosDestaques />
+      <PasseiosProximos tours={tours} />
       <DestinosSection />
       <ExperienciasSection />
-      <PasseiosProximos tours={tours} />
       <ComoFunciona />
       <CategoriasSection />
       <ProvaSocial />

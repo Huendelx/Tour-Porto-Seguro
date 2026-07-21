@@ -12,6 +12,11 @@ const WEEKDAYS_PT = [
   "quinta-feira", "sexta-feira", "sábado",
 ];
 
+/** Nome curto do dia da semana, sem "-feira" ("quarta", "sábado"). */
+export const WEEKDAYS_SHORT = [
+  "domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado",
+];
+
 /** O passeio sai neste dia da semana? (0 = domingo … 6 = sábado) */
 export function runsOn(weekday: number, t: Tour): boolean {
   const f = t.schedule.frequency;
