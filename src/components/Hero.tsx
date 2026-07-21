@@ -14,8 +14,10 @@ export default function Hero() {
         {/* H1 real escondido: o texto da arte é imagem (Google não lê), então mantém o heading pra SEO */}
         <h1 className="sr-only">Passeie pelo Brasil — passeios e experiências em Porto Seguro</h1>
 
-        {/* pt-14: a arte fica ABAIXO do header, que flutua sobre a faixa roxa do topo */}
-        <div className="pt-14">
+        {/* pt-14: a arte fica ABAIXO do header, que flutua sobre a faixa roxa do topo.
+            pb no mobile: a busca flutuante morde a borda de baixo da section — sem esse
+            respiro ela cobria a base da arte (que no mobile é baixinha). */}
+        <div className="pt-14 pb-10 md:pb-0">
           {/* Banner contido na largura do conteúdo (1200px). Nas telas largas o roxo
               da section vaza nas laterais (costura invisível, mesma cor da arte).
               Largura total + altura natural = nada corta, no desktop nem no mobile. */}
