@@ -19,9 +19,9 @@ export default async function Home() {
   return (
     <main>
       <Hero />
+      <DestinosSection />
       <NossosDestaques />
       <PasseiosProximos tours={tours} />
-      <DestinosSection />
       <ExperienciasSection />
       <ComoFunciona />
       <CategoriasSection />
