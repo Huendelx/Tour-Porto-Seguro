@@ -4,6 +4,7 @@ import TrustBar from "@/components/TrustBar";
 import DestinosSection from "@/components/DestinosSection";
 import ExperienciasSection from "@/components/ExperienciasSection";
 import PasseiosProximos from "@/components/PasseiosProximos";
+import PorQuePasseador from "@/components/PorQuePasseador";
 import ComoFunciona from "@/components/ComoFunciona";
 import CategoriasSection from "@/components/CategoriasSection";
 import ProvaSocial from "@/components/ProvaSocial";
@@ -23,6 +24,7 @@ export default async function Home() {
       <NossosDestaques />
       <PasseiosProximos tours={tours} />
       <ExperienciasSection />
+      <PorQuePasseador />
       <ComoFunciona />
       <CategoriasSection />
       <ProvaSocial />
