@@ -1,25 +1,38 @@
+import Image from "next/image";
 import TourSearchBar from "./TourSearchBar";
+
+const BANNER_ALT = "Passeador — passeios e experiências com quem conhece de verdade";
+
+// Dimensões reais da arte atual — trocar se re-exportar noutra proporção.
+const BANNER_W = 2312;
+const BANNER_H = 495;
 
 export default function Hero() {
   return (
     <>
-      <section className="relative">
-        {/* Cor de fundo — trocar por uma imagem/faixa promocional depois */}
-        <div className="absolute inset-0 bg-[#a528fd]" />
+      <section className="relative bg-[#a528fd]">
+        {/* H1 real escondido: o texto da arte é imagem (Google não lê), então mantém o heading pra SEO */}
+        <h1 className="sr-only">Passeie pelo Brasil — passeios e experiências em Porto Seguro</h1>
 
-        <div
-          className="relative z-10 h-[220px] md:h-[280px] pt-14 flex flex-col items-center md:items-start justify-center gap-3 text-center md:text-left"
-          style={{ padding: "56px max(24px, calc((100vw - 1200px) / 2)) 0" }}
-        >
-          <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight">
-            Passeie pelo Brasil
-          </h1>
-          <p className="text-sm text-white/80 max-w-[17rem] md:max-w-md">
-            Passeios e experiências exclusivas com guias locais certificados.
-          </p>
+        {/* pt-14: a arte fica ABAIXO do header, que flutua sobre a faixa roxa do topo */}
+        <div className="pt-14">
+          {/* Banner contido na largura do conteúdo (1200px). Nas telas largas o roxo
+              da section vaza nas laterais (costura invisível, mesma cor da arte).
+              Largura total + altura natural = nada corta, no desktop nem no mobile. */}
+          <div className="mx-auto w-full max-w-[1200px]">
+            <Image
+              src="/hero-banner-desktop.webp"
+              alt={BANNER_ALT}
+              width={BANNER_W}
+              height={BANNER_H}
+              priority
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              className="w-full h-auto"
+            />
+          </div>
         </div>
 
-        {/* Search bar — o meio dela fica exatamente na borda de baixo da hero */}
+        {/* Search bar — o meio dela fica exatamente na borda de baixo da faixa */}
         <div
           className="absolute left-0 right-0 z-20 flex justify-center px-4"
           style={{ bottom: 0, transform: "translateY(50%)", filter: "drop-shadow(0 10px 28px rgba(0,0,0,0.22))" }}
