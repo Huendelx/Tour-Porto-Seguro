@@ -130,7 +130,7 @@ body {
 .hl-card-body {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2 / 1;
   border-radius: 28px;
   overflow: hidden;
   background: #0a0a0a;
