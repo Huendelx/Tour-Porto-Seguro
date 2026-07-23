@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Sailboat, TreePalm, Mountain, Landmark, Moon, Wind } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
+import RoteiroModal from "./RoteiroModal";
 import {
   runsOn,
   departureMinutes,
@@ -170,6 +171,8 @@ function Photo({ tour, lotado, sizes }: { tour: Tour; lotado: boolean; sizes: st
 function Content({ tour, lotado }: { tour: Tour; lotado: boolean }) {
   const op = tour.operator;
   const color = AVATAR_COLORS[hashStr(op.name) % AVATAR_COLORS.length];
+  const [roteiroOpen, setRoteiroOpen] = useState(false);
+  const hasRoteiro = (tour.itinerary?.length ?? 0) > 0;
   return (
     <div className={`min-w-0 ${lotado ? "opacity-55" : ""}`}>
       <Link
@@ -178,7 +181,21 @@ function Content({ tour, lotado }: { tour: Tour; lotado: boolean }) {
       >
         {tour.title}
       </Link>
-      <p className="text-[13px] text-gray-500 mt-1">{metaLine(tour)}</p>
+      <p className="text-[13px] text-gray-500 mt-1">
+        {metaLine(tour)}
+        {hasRoteiro && (
+          <>
+            {" · "}
+            <button
+              onClick={() => setRoteiroOpen(true)}
+              className="underline underline-offset-2 decoration-gray-300 hover:decoration-[#111] hover:text-[#111] transition-colors"
+            >
+              Ver roteiro
+            </button>
+          </>
+        )}
+      </p>
+      {roteiroOpen && <RoteiroModal tour={tour} onClose={() => setRoteiroOpen(false)} />}
       <div className="flex items-center gap-2 mt-2">
         <span
           className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0"
@@ -339,8 +356,9 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
           })}
         </div>
 
+        {/* Leva a data junto — a busca abre já com a aba do mesmo dia selecionada */}
         <Link
-          href="/buscar"
+          href={target ? `/buscar?data=${toISODate(target)}` : "/buscar"}
           className="mt-5 inline-block text-[14px] font-semibold text-[#111] underline underline-offset-2 decoration-gray-300 hover:decoration-[#111] transition-colors"
         >
           Ver todas as saídas →
