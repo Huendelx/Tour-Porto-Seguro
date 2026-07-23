@@ -213,44 +213,6 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
               )}
             </section>
 
-            {/* Transfer — opcional */}
-            {ofereceTransfer && (
-              <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
-                <button
-                  onClick={() => setQuerTransfer((v) => !v)}
-                  className="w-full flex items-start gap-3.5 text-left"
-                >
-                  <span
-                    className={`w-6 h-6 rounded-md border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
-                      querTransfer ? "bg-[#111] border-[#111]" : "border-gray-300"
-                    }`}
-                  >
-                    {querTransfer && <Check size={14} strokeWidth={3} className="text-white" />}
-                  </span>
-                  <span className="flex-1">
-                    <span className="flex items-center gap-2 text-[15px] font-semibold text-[#111]">
-                      <Car size={17} strokeWidth={1.75} className="text-gray-400" />
-                      Adicionar busca no hotel ou pousada
-                    </span>
-                    <span className="block text-[13px] text-gray-500 mt-1">
-                      O operador confirma disponibilidade e valor do transfer pelo WhatsApp.
-                    </span>
-                  </span>
-                </button>
-                {querTransfer && (
-                  <div className="mt-4 pl-9">
-                    <input
-                      type="text"
-                      placeholder="Nome e endereço do hotel/pousada"
-                      value={enderecoTransfer}
-                      onChange={(e) => setEnderecoTransfer(e.target.value)}
-                      className={inputCls(false)}
-                    />
-                  </div>
-                )}
-              </section>
-            )}
-
             {/* 2. Pagamento */}
             <section className={`rounded-3xl border border-gray-200 px-6 md:px-7 py-6 ${dadosOk ? "" : "opacity-50 pointer-events-none"}`}>
               <h2 className="text-[18px] font-bold text-[#111]">2. Pagamento</h2>
@@ -371,6 +333,42 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                   </div>
                 )}
               </div>
+
+              {/* Transfer — add-on da reserva, vive junto de Data/Pessoas */}
+              {ofereceTransfer && (
+                <div className="py-5 border-b border-gray-100">
+                  <button
+                    onClick={() => setQuerTransfer((v) => !v)}
+                    className="w-full flex items-start gap-3 text-left"
+                  >
+                    <span
+                      className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                        querTransfer ? "bg-[#111] border-[#111]" : "border-gray-300"
+                      }`}
+                    >
+                      {querTransfer && <Check size={12} strokeWidth={3} className="text-white" />}
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span className="flex items-center gap-1.5 text-[14px] font-semibold text-[#111]">
+                        <Car size={15} strokeWidth={1.75} className="text-gray-400" />
+                        Busca no hotel ou pousada
+                      </span>
+                      <span className="block text-[13px] text-gray-500 mt-0.5">
+                        O operador confirma disponibilidade e valor pelo WhatsApp.
+                      </span>
+                    </span>
+                  </button>
+                  {querTransfer && (
+                    <input
+                      type="text"
+                      placeholder="Nome e endereço do hotel/pousada"
+                      value={enderecoTransfer}
+                      onChange={(e) => setEnderecoTransfer(e.target.value)}
+                      className="w-full mt-3 px-4 py-3 rounded-xl border border-gray-300 text-[14px] text-[#111] placeholder:text-gray-400 outline-none focus:border-[#111] transition-colors"
+                    />
+                  )}
+                </div>
+              )}
 
               {/* Preço */}
               <div className="pt-5 space-y-2">
