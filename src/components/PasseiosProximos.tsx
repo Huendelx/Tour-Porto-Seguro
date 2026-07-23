@@ -341,7 +341,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
 
         {/* Cards — duas zonas (viagem em cima, faixa de oferta embaixo), estilo ClickBus.
             No mobile só os 4 primeiros aparecem (seção ficava um paredão). */}
-        <div className="mt-8 flex flex-col gap-3">
+        <div className="mt-8 flex flex-col gap-5">
           {list.map(({ tour, seats }, i) => {
             const lotado = seats === 0;
             const hasRoteiro = (tour.itinerary?.length ?? 0) > 0;
