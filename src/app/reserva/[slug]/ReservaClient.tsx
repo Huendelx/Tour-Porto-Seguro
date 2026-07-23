@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
+import { CarProfile } from "@phosphor-icons/react";
 import type { Tour } from "@/lib/tours-data";
 import { runsOn, nextValidDate, fromISODate, toISODate, formatDatePt } from "@/lib/schedule";
 import { createBooking, createPaymentPreference } from "../actions";
@@ -339,23 +340,29 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                 <div className="py-5 border-b border-gray-100">
                   <button
                     onClick={() => setQuerTransfer((v) => !v)}
-                    className="w-full flex items-start gap-3 text-left"
+                    className="w-full flex items-center gap-3 text-left"
                   >
                     <span
-                      className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
-                        querTransfer ? "bg-[#111] border-[#111]" : "border-gray-300"
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                        querTransfer ? "bg-[var(--tps-accent)]" : "bg-gray-100"
                       }`}
                     >
-                      {querTransfer && <Check size={12} strokeWidth={3} className="text-white" />}
+                      <CarProfile size={20} weight="duotone" className="text-[#111]" />
                     </span>
                     <span className="flex-1 min-w-0">
-                      <span className="flex items-center gap-1.5 text-[14px] font-semibold text-[#111]">
-                        <Car size={15} strokeWidth={1.75} className="text-gray-400" />
+                      <span className="block text-[14px] font-semibold text-[#111]">
                         Busca no hotel ou pousada
                       </span>
                       <span className="block text-[13px] text-gray-500 mt-0.5">
                         O operador confirma disponibilidade e valor pelo WhatsApp.
                       </span>
+                    </span>
+                    <span
+                      className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-colors ${
+                        querTransfer ? "bg-[#111] border-[#111]" : "border-gray-300"
+                      }`}
+                    >
+                      {querTransfer && <Check size={12} strokeWidth={3} className="text-white" />}
                     </span>
                   </button>
                   {querTransfer && (
