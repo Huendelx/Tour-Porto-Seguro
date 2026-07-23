@@ -1,7 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { runsOn, fromISODate, toISODate, WEEKDAYS_SHORT } from "@/lib/schedule";
 import {
   Anchor, Car, Mountain, Landmark, Moon, X, ChevronDown,
   Check, SlidersHorizontal, Star,
@@ -238,8 +239,45 @@ function HorarioChecks({ horario, onToggle }: { horario: Horario[]; onToggle: (v
 
 export default function BuscarClient({ tours }: { tours: Tour[] }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const destino = searchParams.get("destino") ?? "";
+
+  // ── Abas de dia (estilo ClickBus) — montadas no cliente pra evitar
+  //    mismatch de hidratação com a data do servidor.
+  const [days, setDays] = useState<Date[] | null>(null);
+  const [dayISO, setDayISO] = useState<string | null>(null);
+
+  useEffect(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const list: Date[] = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      list.push(d);
+    }
+    setDays(list);
+
+    const param = searchParams.get("data");
+    if (param && fromISODate(param)) setDayISO(param);
+    else setDayISO(null);
+  }, [searchParams]);
+
+  const selectDay = (iso: string | null) => {
+    setDayISO(iso);
+    const p = new URLSearchParams(searchParams.toString());
+    if (iso) p.set("data", iso);
+    else p.delete("data");
+    router.replace(`/buscar?${p.toString()}`, { scroll: false });
+  };
+
+  const dayLabel = (d: Date, i: number) => {
+    if (i === 0) return "Hoje";
+    if (i === 1) return "Amanhã";
+    const wd = WEEKDAYS_SHORT[d.getDay()].slice(0, 3);
+    return `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${d.getDate()}`;
+  };
 
   const [cats, setCats]           = useState<string[]>([]);
   const [horario, setHorario]     = useState<Horario[]>([]);
@@ -296,6 +334,10 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
   const filtered = useMemo(() => {
     let result = [...tours];
     if (destino && destino !== "perto") result = result.filter((t) => t.destinos.includes(destino));
+    if (dayISO) {
+      const d = fromISODate(dayISO);
+      if (d) result = result.filter((t) => runsOn(d.getDay(), t));
+    }
     if (cats.length > 0) result = result.filter((t) => cats.includes(t.category));
     if (horario.length > 0) result = result.filter((t) => tourBuckets(t).some((b) => horario.includes(b)));
     result = result.filter((t) => {
@@ -324,7 +366,7 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
     if (sortBy === "price_desc") result.sort((a, b) => b.price - a.price);
     if (sortBy === "relevance")  result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
     return result;
-  }, [tours, destino, cats, horario, price, durIdx, viajante, idiomas, acess, sortBy]);
+  }, [tours, destino, dayISO, cats, horario, price, durIdx, viajante, idiomas, acess, sortBy]);
 
   const destinoLabel = DESTINO_LABELS[destino] ?? "";
 
@@ -359,6 +401,36 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
 
       {/* ── Barra de filtros ── */}
       <div className="sticky top-14 z-30 bg-white border-b border-gray-100">
+        {/* Abas de dia — os passeios têm dias fixos da semana, então cada aba
+            mostra só o que sai naquele dia (runsOn). */}
+        {days && (
+          <div className="flex gap-2 px-4 md:px-6 pt-3 overflow-x-auto justify-start md:justify-center [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <button
+              onClick={() => selectDay(null)}
+              className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors ${
+                dayISO === null ? "bg-[#111] text-white" : "text-[#444] hover:bg-gray-100"
+              }`}
+            >
+              Todos os dias
+            </button>
+            {days.map((d, i) => {
+              const iso = toISODate(d);
+              const sel = dayISO === iso;
+              return (
+                <button
+                  key={iso}
+                  onClick={() => selectDay(iso)}
+                  className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors ${
+                    sel ? "bg-[#111] text-white" : "text-[#444] hover:bg-gray-100"
+                  }`}
+                >
+                  {dayLabel(d, i)}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         <div className="flex items-center justify-center gap-2.5 px-4 md:px-6 py-3">
 
           {/* Tipo */}
@@ -420,10 +492,32 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
       {/* ── Grid ── */}
       <div className="px-4 md:px-6 pt-20 pb-12">
         {filtered.length > 0 && (
-          <h1 className="text-[26px] font-bold text-[#111] leading-tight mb-6">
-            {filtered.length} passeio{filtered.length !== 1 ? "s" : ""}
-            {destinoLabel && ` em ${destinoLabel}`}
-          </h1>
+          <div className="flex items-baseline justify-between gap-4 flex-wrap mb-6">
+            <h1 className="text-[26px] font-bold text-[#111] leading-tight">
+              {filtered.length} passeio{filtered.length !== 1 ? "s" : ""}
+              {destinoLabel && ` em ${destinoLabel}`}
+            </h1>
+            <div className="flex items-center gap-3 text-[13px]">
+              <span className="text-gray-400">Ordenar por</span>
+              {([
+                { v: "relevance" as const, label: "Relevância" },
+                { v: "price_asc" as const, label: "Menor preço" },
+                { v: "price_desc" as const, label: "Maior preço" },
+              ]).map((o) => (
+                <button
+                  key={o.v}
+                  onClick={() => setSortBy(o.v)}
+                  className={
+                    sortBy === o.v
+                      ? "font-semibold text-[#111] underline underline-offset-4"
+                      : "text-gray-500 hover:text-[#111] transition-colors"
+                  }
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
         {filtered.length === 0 ? (
           <div className="text-center py-24">
