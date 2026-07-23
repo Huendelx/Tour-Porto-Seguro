@@ -264,6 +264,14 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
     else setDayISO(null);
   }, [searchParams]);
 
+  // ?categoria= (vindo dos cards de "Explore por categoria") — só na montagem,
+  // senão qualquer troca de aba de dia ressuscitaria um filtro já removido.
+  useEffect(() => {
+    const cat = searchParams.get("categoria");
+    if (cat && (CATEGORIES as readonly string[]).includes(cat)) setCats([cat]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const selectDay = (iso: string | null) => {
     setDayISO(iso);
     const p = new URLSearchParams(searchParams.toString());

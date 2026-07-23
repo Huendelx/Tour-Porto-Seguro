@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Sailboat, TreePalm, Mountain, Landmark, Moon, Wind } from "lucide-react";
+import { Sailboat, TreePalm, Mountain, Landmark, Moon, Wind, Clock, Waves, MoveRight } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
 import RoteiroModal from "./RoteiroModal";
 import {
@@ -90,17 +90,42 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
-function scheduleText(t: Tour): string {
-  const { departureStart, returnTime, frequency } = t.schedule;
-  if (frequency === "tide_based" && !departureStart) return "horário conforme a maré";
-  if (!departureStart) return t.duration;
-  return `sai ${departureStart}${returnTime ? `, volta ${returnTime}` : ""}`;
+function hasHorario(t: Tour): boolean {
+  return Boolean(t.schedule.departureStart) || t.schedule.frequency === "tide_based";
 }
 
 function metaLine(t: Tour): string {
   const destino = DESTINO_LABEL[t.destinos[0]] ?? "";
   const truth = LOCAL_TRUTH[t.slug] ?? t.duration;
-  return [destino, scheduleText(t), truth].filter(Boolean).join(" · ");
+  return [destino, truth].filter(Boolean).join(" · ");
+}
+
+/** Horário em destaque próprio — escuro, com ícone (a hora tava enterrada na linha cinza). */
+function HorarioBadge({ tour }: { tour: Tour }) {
+  const { departureStart, returnTime, frequency } = tour.schedule;
+
+  if (frequency === "tide_based" && !departureStart) {
+    return (
+      <span className="inline-flex items-center gap-1.5 font-semibold text-[#111]">
+        <Waves size={13} strokeWidth={2} className="text-gray-400" />
+        conforme a maré
+      </span>
+    );
+  }
+  if (!departureStart) return null;
+
+  return (
+    <span className="inline-flex items-center gap-1.5 font-semibold text-[#111] tabular-nums">
+      <Clock size={13} strokeWidth={2} className="text-gray-400" />
+      {departureStart}
+      {returnTime && (
+        <>
+          <MoveRight size={12} strokeWidth={2} className="text-gray-400" />
+          {returnTime}
+        </>
+      )}
+    </span>
+  );
 }
 
 /* ── Sub-blocos reusados entre mobile e desktop ── */
@@ -181,11 +206,17 @@ function Content({ tour, lotado }: { tour: Tour; lotado: boolean }) {
       >
         {tour.title}
       </Link>
-      <p className="text-[13px] text-gray-500 mt-1">
-        {metaLine(tour)}
+      <p className="text-[13px] text-gray-500 mt-1.5 flex items-center gap-x-2 gap-y-1 flex-wrap">
+        {hasHorario(tour) && (
+          <>
+            <HorarioBadge tour={tour} />
+            <span className="text-gray-300">·</span>
+          </>
+        )}
+        <span>{metaLine(tour)}</span>
         {hasRoteiro && (
           <>
-            {" · "}
+            <span className="text-gray-300">·</span>
             <button
               onClick={() => setRoteiroOpen(true)}
               className="underline underline-offset-2 decoration-gray-300 hover:decoration-[#111] hover:text-[#111] transition-colors"
