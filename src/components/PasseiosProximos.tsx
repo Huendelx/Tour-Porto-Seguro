@@ -239,19 +239,27 @@ function OperatorTag({ tour }: { tour: Tour }) {
 export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
   const catalog = useMemo(() => tours.filter((t) => !HIDE_SLUGS.has(t.slug)), [tours]);
 
-  // Data-alvo: hoje até 9h, depois disso as saídas já partiram → mostra amanhã.
+  // Data-alvo: hoje até 9h, depois disso as saídas já partiram → default amanhã.
   // null até montar no cliente (evita mismatch de hidratação com o horário do server).
+  // As abas de dia deixam navegar pelos próximos 7 dias.
+  const [days, setDays] = useState<Date[] | null>(null);
   const [target, setTarget] = useState<Date | null>(null);
-  const [isTomorrow, setIsTomorrow] = useState(false);
   const [roteiroTour, setRoteiroTour] = useState<Tour | null>(null);
 
   useEffect(() => {
-    const tomorrow = new Date().getHours() >= 9;
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    if (tomorrow) d.setDate(d.getDate() + 1);
-    setTarget(d);
-    setIsTomorrow(tomorrow);
+    const base = new Date();
+    base.setHours(0, 0, 0, 0);
+    const list: Date[] = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
+      list.push(d);
+    }
+    setDays(list);
+
+    const def = new Date(base);
+    if (new Date().getHours() >= 9) def.setDate(def.getDate() + 1);
+    setTarget(def);
   }, []);
 
   // Antes de montar: lista neutra (só diários), sem rótulo de dia.
@@ -271,13 +279,27 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
 
   const poucas = list.filter((x) => x.seats > 0 && x.seats <= 3).length;
 
-  // Cabeçalho: "Amanhã, quarta 22" / "Hoje, terça 21"
+  // Cabeçalho: "Hoje, terça 21" / "Amanhã, quarta 22" / "Sexta, 25"
   let heading = "Próximas saídas";
   let deadline = "";
   if (target) {
-    const label = isTomorrow ? "Amanhã" : "Hoje";
-    heading = `${label}, ${WEEKDAYS_SHORT[target.getDay()]} ${target.getDate()}`;
-    deadline = isTomorrow ? "reserva até 21h de hoje" : "reserva até 1h antes da saída";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const iso = toISODate(target);
+    const wd = WEEKDAYS_SHORT[target.getDay()];
+
+    if (iso === toISODate(today)) {
+      heading = `Hoje, ${wd} ${target.getDate()}`;
+      deadline = "reserva até 1h antes da saída";
+    } else if (iso === toISODate(tomorrow)) {
+      heading = `Amanhã, ${wd} ${target.getDate()}`;
+      deadline = "reserva até 21h de hoje";
+    } else {
+      heading = `${wd.charAt(0).toUpperCase()}${wd.slice(1)}, ${target.getDate()}`;
+      deadline = "reserva até 21h da véspera";
+    }
   }
 
   return (
@@ -293,6 +315,29 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
           {list.length} saída{list.length !== 1 ? "s" : ""} confirmada{list.length !== 1 ? "s" : ""}
           {poucas > 0 ? ` · ${poucas} já com poucas vagas` : ""}
         </p>
+
+        {/* Abas de dia — navega os próximos 7 dias, título acompanha */}
+        {days && target && (
+          <div className="flex gap-2 mt-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {days.map((d, i) => {
+              const sel = toISODate(d) === toISODate(target);
+              const wd = WEEKDAYS_SHORT[d.getDay()].slice(0, 3);
+              const label =
+                i === 0 ? "Hoje" : i === 1 ? "Amanhã" : `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${d.getDate()}`;
+              return (
+                <button
+                  key={toISODate(d)}
+                  onClick={() => setTarget(d)}
+                  className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
+                    sel ? "bg-[#111] text-white" : "bg-white text-[#444] shadow-sm hover:text-[#111]"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Cards — duas zonas (viagem em cima, faixa de oferta embaixo), estilo ClickBus.
             No mobile só os 4 primeiros aparecem (seção ficava um paredão). */}
