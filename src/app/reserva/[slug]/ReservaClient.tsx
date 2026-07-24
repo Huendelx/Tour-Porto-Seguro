@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
 import { CarProfile } from "@phosphor-icons/react";
+import TimeRail from "@/components/TimeRail";
+import DateTile from "@/components/DateTile";
 import type { Tour } from "@/lib/tours-data";
 import { runsOn, nextValidDate, fromISODate, toISODate, formatDatePt } from "@/lib/schedule";
 import { createBooking, createPaymentPreference } from "../actions";
@@ -298,15 +300,22 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                 </p>
               </div>
 
-              {/* Data */}
+              {/* Data — trilho de horários à esquerda, folhinha de calendário à direita */}
               <div className="py-5 border-b border-gray-100">
-                <p className="text-[14px] font-semibold text-[#111] mb-1">Data</p>
-                <p className="text-[14px] text-gray-500 capitalize">{formatDatePt(date)}</p>
-                <p className="text-[13px] text-gray-400 mt-0.5">
-                  {tour.schedule.frequency === "tide_based"
-                    ? "Horário conforme a maré — confirmado na reserva"
-                    : `Saída ${tour.schedule.departureStart ?? "a combinar"}${tour.schedule.departureEnd ? `–${tour.schedule.departureEnd}` : ""}${tour.schedule.returnTime ? ` · Retorno ${tour.schedule.returnTime}` : ""}`}
-                </p>
+                <p className="text-[14px] font-semibold text-[#111] mb-3">Data</p>
+                <div className="flex items-center justify-between gap-4">
+                  {tour.schedule.departureStart ? (
+                    <TimeRail
+                      departure={`${tour.schedule.departureStart}${tour.schedule.departureEnd ? `–${tour.schedule.departureEnd}` : ""}`}
+                      returnTime={tour.schedule.returnTime}
+                    />
+                  ) : (
+                    <p className="text-[13px] text-gray-400 max-w-[200px]">
+                      Horário conforme a maré — confirmado na reserva
+                    </p>
+                  )}
+                  <DateTile date={date} />
+                </div>
               </div>
 
               {/* Pessoas */}

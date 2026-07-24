@@ -4,7 +4,10 @@ import TourResultCard from "@/components/TourResultCard";
 
 export default async function ExperienciasSection() {
   const tours = await getAllTours();
-  const featured = tours.filter((t) => t.featured).slice(0, 4);
+  // Mesma ordenação do BentoDestaques (featured primeiro): o bento mostra os
+  // 3 primeiros, a grid pega os 4 SEGUINTES — sem repetir passeio na home.
+  const ordered = [...tours.filter((t) => t.featured), ...tours.filter((t) => !t.featured)];
+  const featured = ordered.slice(3, 7);
 
   return (
     <section className="py-20 bg-[#fafafa]">

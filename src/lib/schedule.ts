@@ -17,6 +17,12 @@ export const WEEKDAYS_SHORT = [
   "domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado",
 ];
 
+/** Mês abreviado ("jan", "fev", ...). */
+export const MONTHS_SHORT = [
+  "jan", "fev", "mar", "abr", "mai", "jun",
+  "jul", "ago", "set", "out", "nov", "dez",
+];
+
 /** O passeio sai neste dia da semana? (0 = domingo … 6 = sábado) */
 export function runsOn(weekday: number, t: Tour): boolean {
   const f = t.schedule.frequency;

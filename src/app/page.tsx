@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import NossosDestaques from "@/components/NossosDestaques";
+import BentoDestaques from "@/components/BentoDestaques";
 import TrustBar from "@/components/TrustBar";
 import DestinosSection from "@/components/DestinosSection";
 import ExperienciasSection from "@/components/ExperienciasSection";
@@ -21,8 +22,9 @@ export default async function Home() {
     <main>
       <Hero />
       <DestinosSection />
-      <NossosDestaques />
+      <BentoDestaques />
       <PasseiosProximos tours={tours} />
+      <NossosDestaques />
       <ExperienciasSection />
       <PorQuePasseador />
       <ComoFunciona />
