@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Star, ShieldCheck, MessageCircle, Pencil, Car, Check } from "lucide-react";
-import { CarProfile } from "@phosphor-icons/react";
+import { CarProfile, UsersThree } from "@phosphor-icons/react";
 import TimeRail from "@/components/TimeRail";
 import DateTile from "@/components/DateTile";
 import type { Tour } from "@/lib/tours-data";
@@ -306,7 +306,12 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                 <div className="flex items-center justify-between gap-4">
                   {tour.schedule.departureStart ? (
                     <TimeRail
-                      departure={`${tour.schedule.departureStart}${tour.schedule.departureEnd ? `–${tour.schedule.departureEnd}` : ""}`}
+                      departure={tour.schedule.departureStart}
+                      departureLabel={
+                        tour.schedule.departureEnd
+                          ? `saída · busca até ${tour.schedule.departureEnd}`
+                          : "saída"
+                      }
                       returnTime={tour.schedule.returnTime}
                     />
                   ) : (
@@ -320,16 +325,19 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
 
               {/* Pessoas */}
               <div className="py-5 border-b border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#111] mb-1">Pessoas</p>
-                    <p className="text-[14px] text-gray-500">
+                <div className="flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <UsersThree size={20} weight="duotone" className="text-[#111]" />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-[#111]">Pessoas</p>
+                    <p className="text-[14px] text-gray-500 mt-0.5">
                       {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? `, ${children} criança${children > 1 ? "s" : ""}` : ""}
                     </p>
                   </div>
                   <button
                     onClick={() => setEditGuests((v) => !v)}
-                    className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-[13px] font-semibold text-[#111]"
+                    className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-[13px] font-semibold text-[#111] flex-shrink-0"
                   >
                     {editGuests ? "Fechar" : "Alterar"}
                   </button>
