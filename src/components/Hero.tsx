@@ -21,7 +21,9 @@ export default function Hero() {
           {/* Banner contido na largura do conteúdo (1200px). Nas telas largas o roxo
               da section vaza nas laterais (costura invisível, mesma cor da arte).
               Largura total + altura natural = nada corta, no desktop nem no mobile. */}
-          <div className="mx-auto w-full max-w-[1200px]">
+          {/* Banner 40px mais largo que o conteúdo de cada lado (1200 + 60) — presença
+              maior sem perder o alinhamento geral */}
+          <div className="mx-auto w-full max-w-[1260px]">
             <Image
               src="/hero-banner-desktop.webp"
               alt={BANNER_ALT}

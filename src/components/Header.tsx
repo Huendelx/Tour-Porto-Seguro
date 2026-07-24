@@ -104,7 +104,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
             : "bg-transparent"
         }`}
       >
-        <nav className="relative w-full px-4 md:px-6 h-14 flex items-center justify-between">
+        <nav className="relative w-full max-w-[1200px] mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
 
           {/* MOBILE NON-HOME overlay */}
           {!isHomePage && (

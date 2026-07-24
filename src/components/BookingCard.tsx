@@ -69,7 +69,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
       {/* ── Desktop: versão compacta na largura do card, só antes dele entrar em vista ── */}
       {!cardInView && (
         <div className="hidden lg:block fixed bottom-6 inset-x-0 z-40 pointer-events-none">
-          <div className="max-w-[1280px] mx-auto px-6 flex justify-end">
+          <div className="max-w-[1200px] mx-auto px-6 flex justify-end">
             <div
               className="w-[390px] pointer-events-auto rounded-3xl border border-gray-100 bg-white p-5 flex items-center justify-between gap-4"
               style={{ boxShadow: "0 6px 24px rgba(0,0,0,0.12)" }}

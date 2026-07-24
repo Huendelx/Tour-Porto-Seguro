@@ -19,7 +19,7 @@ function Card({ tour, big = false, sizes }: { tour: Tour; big?: boolean; sizes: 
   return (
     <Link
       href={`/passeios/${tour.slug}`}
-      className="group relative block w-full h-full rounded-3xl overflow-hidden bg-gray-900"
+      className="group relative block w-full h-full rounded-[32px] overflow-hidden bg-gray-900"
     >
       <Image
         src={tour.image}
@@ -99,7 +99,7 @@ export default async function BentoDestaques() {
         </div>
 
         {/* Desktop: bento 2x2 (capa ocupa a coluna inteira) */}
-        <div className="hidden md:grid grid-cols-2 grid-rows-2 gap-4 h-[640px]">
+        <div className="hidden md:grid grid-cols-2 grid-rows-2 gap-4 h-[720px]">
           <div className="row-span-2">
             <Card tour={big} big sizes="600px" />
           </div>
@@ -109,13 +109,13 @@ export default async function BentoDestaques() {
 
         {/* Mobile: empilhado — capa maior, dois menores */}
         <div className="md:hidden flex flex-col gap-3">
-          <div className="h-[340px]">
+          <div className="h-[400px]">
             <Card tour={big} big sizes="100vw" />
           </div>
-          <div className="h-[200px]">
+          <div className="h-[230px]">
             <Card tour={topRight} sizes="100vw" />
           </div>
-          <div className="h-[200px]">
+          <div className="h-[230px]">
             <Card tour={bottomRight} sizes="100vw" />
           </div>
         </div>
