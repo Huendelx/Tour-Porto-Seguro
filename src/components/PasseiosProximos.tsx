@@ -425,7 +425,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                         </Link>
                         {/* items-start: o trilho do horário torna o badge mais alto que a linha —
                             os vizinhos alinham pelo topo (mesma altura da linha dos horários) */}
-                        <p className="text-[13px] text-gray-500 mt-1.5 flex items-start gap-x-2 gap-y-1 flex-wrap">
+                        <p className="text-[13px] text-gray-500 mt-11 flex items-start gap-x-2 gap-y-1 flex-wrap">
                           {hasHorario(tour) && (
                             <>
                               <HorarioBadge tour={tour} />
