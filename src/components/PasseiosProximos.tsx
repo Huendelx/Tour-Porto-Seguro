@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Sailboat, TreePalm, Mountain, Landmark, Moon, Wind, Clock, Flame, ChevronRight,
+  Sailboat, TreePalm, Mountain, Landmark, Moon, Wind, Clock, Flame, ChevronRight, ChevronLeft,
   Bus, UserRound, Utensils, LifeBuoy, Mail, CreditCard, BadgeCheck, Crown, ArrowRight,
+  Ticket, Camera, CupSoda, Umbrella, ShieldCheck, Music,
 } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
 import RoteiroModal from "./RoteiroModal";
@@ -225,20 +226,38 @@ function Photo({ tour, lotado, sizes }: { tour: Tour; lotado: boolean; sizes: st
   );
 }
 
-/** Ícones de benefício derivados do que o passeio inclui de verdade (máx. 3). */
-const INCLUDE_ICONS: { match: RegExp; icon: typeof Bus; label: string }[] = [
-  { match: /transporte|transfer|busca|van|balsa/i, icon: Bus, label: "Transporte incluso" },
-  { match: /guia/i, icon: UserRound, label: "Guia credenciado" },
-  { match: /almoço|refeição|alimenta|lanche|petisco/i, icon: Utensils, label: "Alimentação inclusa" },
-  { match: /snorkel|equipamento|colete|máscara/i, icon: LifeBuoy, label: "Equipamento incluso" },
+/** Ícones de benefício derivados do que o passeio inclui de verdade (máx. 4).
+ *  `short` é o nome que aparece no chip; `label` (tooltip) leva o texto real. */
+const INCLUDE_ICONS: { match: RegExp; icon: typeof Bus; short: string }[] = [
+  { match: /transporte|transfer|busca|van|balsa|4x4/i, icon: Bus, short: "transporte" },
+  { match: /guia|instrutor|condutor/i, icon: UserRound, short: "guia" },
+  { match: /almoço|refeição|alimenta|lanche|petisco|degusta/i, icon: Utensils, short: "refeição" },
+  { match: /snorkel|equipamento|colete|máscara|cilindro/i, icon: LifeBuoy, short: "equipamento" },
+  { match: /ingresso|entrada|taxa/i, icon: Ticket, short: "ingressos" },
+  { match: /foto|filmagem/i, icon: Camera, short: "fotos" },
+  { match: /água|bebida|café/i, icon: CupSoda, short: "bebidas" },
+  { match: /cabana|estrutura de praia|guarda-sol|cadeira/i, icon: Umbrella, short: "cabana" },
+  { match: /seguro/i, icon: ShieldCheck, short: "seguro" },
+  { match: /música|show|forró/i, icon: Music, short: "música" },
 ];
 
+// MOCK visual até a revisão do catálogo da Porto Brasil: passeios de dia
+// inteiro que na prática param pra almoçar, mas cujo "o que inclui" ainda não
+// registra. Remover quando o catálogo real trouxer isso no campo includes.
+const MOCK_EXTRA_INCLUDES: Record<string, string[]> = {
+  trancoso: ["Parada pra almoço"],
+  caraiva: ["Parada pra almoço"],
+  "arraial-da-ajuda": ["Parada pra almoço"],
+  "caraiva-espelho": ["Parada pra almoço"],
+};
+
 function includeIcons(tour: Tour) {
-  const found: { icon: typeof Bus; label: string }[] = [];
+  const incs = [...tour.includes, ...(MOCK_EXTRA_INCLUDES[tour.slug] ?? [])];
+  const found: { icon: typeof Bus; short: string; label: string }[] = [];
   for (const rule of INCLUDE_ICONS) {
-    const hit = tour.includes.find((inc) => rule.match.test(inc));
-    if (hit) found.push({ icon: rule.icon, label: hit });
-    if (found.length === 3) break;
+    const hit = incs.find((inc) => rule.match.test(inc));
+    if (hit) found.push({ icon: rule.icon, short: rule.short, label: hit });
+    if (found.length === 4) break;
   }
   return found;
 }
@@ -271,6 +290,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
   const [days, setDays] = useState<Date[] | null>(null);
   const [target, setTarget] = useState<Date | null>(null);
   const [roteiroTour, setRoteiroTour] = useState<Tour | null>(null);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     const base = new Date();
@@ -294,16 +314,21 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
     targetDay === null ? t.schedule.frequency === "daily" : runsOn(targetDay, t)
   );
 
-  const list = running
+  const all = running
     .map((t) => ({ tour: t, seats: seatsFor(t) }))
     .sort((a, b) => {
       const ka = a.seats === 0 ? Infinity : a.seats;
       const kb = b.seats === 0 ? Infinity : b.seats;
       return ka - kb || departureMinutes(a.tour) - departureMinutes(b.tour);
-    })
-    .slice(0, 8);
+    });
 
-  const poucas = list.filter((x) => x.seats > 0 && x.seats <= 3).length;
+  // Paginação — 4 saídas por página, setinhas + números no rodapé da lista
+  const PAGE_SIZE = 4;
+  const totalPages = Math.ceil(all.length / PAGE_SIZE);
+  const safePage = Math.min(page, Math.max(0, totalPages - 1));
+  const list = all.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE);
+
+  const poucas = all.filter((x) => x.seats > 0 && x.seats <= 3).length;
 
   // Cabeçalho: "Hoje, terça 21" / "Amanhã, quarta 22" / "Sexta, 25"
   let heading = "Próximas saídas";
@@ -341,7 +366,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
           {deadline && <span className="text-[13px] md:text-[14px] text-gray-400 whitespace-nowrap flex-shrink-0">{deadline}</span>}
         </div>
         <p className="text-[14px] md:text-base text-gray-500 mt-2">
-          {list.length} saída{list.length !== 1 ? "s" : ""} confirmada{list.length !== 1 ? "s" : ""}
+          {all.length} saída{all.length !== 1 ? "s" : ""} confirmada{all.length !== 1 ? "s" : ""}
           {poucas > 0 ? ` · ${poucas} já com poucas vagas` : ""}
         </p>
 
@@ -356,7 +381,10 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
               return (
                 <button
                   key={toISODate(d)}
-                  onClick={() => setTarget(d)}
+                  onClick={() => {
+                    setTarget(d);
+                    setPage(0);
+                  }}
                   className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                     sel ? "bg-[#111] text-white" : "bg-white text-[#444] shadow-sm hover:text-[#111]"
                   }`}
@@ -374,9 +402,9 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
         <div className="lg:flex lg:gap-8 lg:items-start">
         <div className="flex-1 min-w-0">
         {/* Cards — duas zonas (viagem em cima, faixa de oferta embaixo), estilo ClickBus.
-            No mobile só os 4 primeiros aparecem (seção ficava um paredão). */}
+            4 por página (a paginação evita o paredão que a seção virava). */}
         <div className="mt-8 flex flex-col gap-5">
-          {list.map(({ tour, seats }, i) => {
+          {list.map(({ tour, seats }) => {
             const lotado = seats === 0;
             const hasRoteiro = (tour.itinerary?.length ?? 0) > 0;
             const reservaDate = target ? nextValidDate(tour, target) : nextValidDate(tour);
@@ -394,7 +422,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
             return (
               <article
                 key={tour.id}
-                className={`rounded-3xl bg-white overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-shadow ${i >= 4 ? "hidden md:block" : ""}`}
+                className="rounded-3xl bg-white overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-shadow"
               >
                 {/* Mobile: foto banner sangrada no topo (formato que funcionou melhor lá) */}
                 <Link href={`/passeios/${tour.slug}`} className="relative block md:hidden w-full h-[160px]">
@@ -416,16 +444,23 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                   <div className="flex-1 min-w-0">
                     {/* ── Zona 1: a viagem ── */}
                     <div className={`flex items-start gap-4 ${lotado ? "opacity-55" : ""}`}>
-                      <div className="flex-1 min-w-0">
+                      {/* Desktop: coluna com a altura da foto (160px) — título ancora no
+                          topo, linha do relógio desce pro pé, alinhada à base da foto */}
+                      <div className="flex-1 min-w-0 md:h-[160px] md:flex md:flex-col">
                         <Link
                           href={`/passeios/${tour.slug}`}
                           className="block font-semibold text-[16px] md:text-[18px] text-[#111] leading-snug line-clamp-2 hover:underline underline-offset-2 decoration-gray-300"
                         >
                           {tour.title}
                         </Link>
+                        {/* Operador logo abaixo do título — a linha de confiança
+                            vem antes até do horário */}
+                        <div className="mt-2 md:mt-4">
+                          <OperatorTag tour={tour} />
+                        </div>
                         {/* items-start: o trilho do horário torna o badge mais alto que a linha —
                             os vizinhos alinham pelo topo (mesma altura da linha dos horários) */}
-                        <p className="text-[13px] text-gray-500 mt-11 flex items-start gap-x-2 gap-y-1 flex-wrap">
+                        <p className="text-[13px] text-gray-500 mt-3 md:mt-auto md:mb-6 flex items-start gap-x-2 gap-y-1 flex-wrap">
                           {hasHorario(tour) && (
                             <>
                               <HorarioBadge tour={tour} />
@@ -445,10 +480,6 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                             </>
                           )}
                         </p>
-                        {/* Operador no mobile — linha do conteúdo (no desktop mora na faixa de oferta) */}
-                        <div className="md:hidden mt-2">
-                          <OperatorTag tour={tour} />
-                        </div>
                       </div>
 
                       {/* Duração + Ver roteiro — canto superior direito, como no ClickBus */}
@@ -484,20 +515,25 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                           : "border-[var(--tps-accent)] hover:ring-1 hover:ring-[var(--tps-accent)]"
                       }`}
                     >
-                      <span className="flex items-center gap-3.5 flex-1 min-w-0 px-4 py-3">
-                        <OperatorTag tour={tour} />
+                      <span className="flex items-center gap-3 flex-1 min-w-0 px-4 py-3">
+                        <SeatsChip seats={seats} />
+                        {/* Benefícios em chips (ícone + nome curto) — derivados do
+                            "o que inclui" real do passeio; tooltip leva o texto completo */}
                         {includeIcons(tour).length > 0 && (
-                          <>
-                            <span className="w-px h-5 bg-gray-200 flex-shrink-0" />
-                            <span className="flex items-center gap-2.5 flex-shrink-0">
-                              {includeIcons(tour).map(({ icon: Inc, label }) => (
-                                <Inc key={label} size={15} strokeWidth={1.75} className="text-gray-400" aria-label={label} />
-                              ))}
-                            </span>
-                          </>
+                          <span className="flex items-center gap-1.5 flex-shrink min-w-0 overflow-hidden">
+                            {includeIcons(tour).map(({ icon: Inc, short, label }) => (
+                              <span
+                                key={label}
+                                title={label}
+                                className="inline-flex items-center gap-1.5 h-8 pl-2.5 pr-3 rounded-full bg-gray-50 text-[12px] font-medium text-gray-600 whitespace-nowrap"
+                              >
+                                <Inc size={14} strokeWidth={1.75} className="text-gray-400 flex-shrink-0" />
+                                {short}
+                              </span>
+                            ))}
+                          </span>
                         )}
-                        <span className="ml-auto flex items-center gap-4">
-                          <SeatsChip seats={seats} />
+                        <span className="ml-auto flex items-center">
                           {lotado ? (
                             <span className="text-right leading-tight">
                               <span className="block text-[17px] font-bold text-[#111] tabular-nums">R$ {tour.price}</span>
@@ -529,7 +565,19 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                       }`}
                     >
                       <span className="flex items-center justify-between gap-2 flex-1 min-w-0 px-3.5 py-3">
-                        <SeatsChip seats={seats} />
+                        <span className="flex items-center gap-1.5 min-w-0">
+                          <SeatsChip seats={seats} />
+                          {/* Benefícios só com ícone (sem texto — espaço curto no mobile) */}
+                          {includeIcons(tour).slice(0, 3).map(({ icon: Inc, short, label }) => (
+                            <span
+                              key={short}
+                              title={label}
+                              className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0"
+                            >
+                              <Inc size={14} strokeWidth={1.75} className="text-gray-400" aria-label={label} />
+                            </span>
+                          ))}
+                        </span>
                         {lotado ? (
                           <span className="text-right leading-tight">
                             <span className="block text-[17px] font-bold text-[#111] tabular-nums">R$ {tour.price}</span>
@@ -573,6 +621,40 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
             );
           })}
         </div>
+
+        {/* Paginação — mesma linguagem das abas de dia (branco/sombra, ativo preto) */}
+        {totalPages > 1 && (
+          <div className="mt-7 flex items-center justify-center gap-2">
+            <button
+              onClick={() => setPage(Math.max(0, safePage - 1))}
+              disabled={safePage === 0}
+              aria-label="Página anterior"
+              className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-[#444] hover:text-[#111] transition-colors disabled:opacity-35 disabled:pointer-events-none"
+            >
+              <ChevronLeft size={16} strokeWidth={2} />
+            </button>
+            {Array.from({ length: totalPages }, (_, p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                aria-label={`Página ${p + 1}`}
+                className={`w-9 h-9 rounded-full text-[13px] font-medium tabular-nums transition-colors ${
+                  p === safePage ? "bg-[#111] text-white" : "bg-white text-[#444] shadow-sm hover:text-[#111]"
+                }`}
+              >
+                {p + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+              disabled={safePage === totalPages - 1}
+              aria-label="Próxima página"
+              className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-[#444] hover:text-[#111] transition-colors disabled:opacity-35 disabled:pointer-events-none"
+            >
+              <ChevronRight size={16} strokeWidth={2} />
+            </button>
+          </div>
+        )}
 
         {/* Leva a data junto — a busca abre já com a aba do mesmo dia selecionada */}
         <Link
