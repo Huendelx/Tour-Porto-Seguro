@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Sailboat, TreePalm, Mountain, Landmark, Moon, Wind, Clock, MoveRight, Flame, ChevronRight,
-  Bus, UserRound, Utensils, LifeBuoy, Mail, CreditCard, BadgeCheck, Crown,
+  Sailboat, TreePalm, Mountain, Landmark, Moon, Wind, Clock, Flame, ChevronRight,
+  Bus, UserRound, Utensils, LifeBuoy, Mail, CreditCard, BadgeCheck, Crown, ArrowRight,
 } from "lucide-react";
 import type { Tour } from "@/lib/tours-data";
 import RoteiroModal from "./RoteiroModal";
@@ -103,7 +103,9 @@ function metaLine(t: Tour): string {
   return [destino, truth].filter(Boolean).join(" · ");
 }
 
-/** Horário em destaque próprio — escuro, com ícone (a hora tava enterrada na linha cinza). */
+/** Horário em destaque próprio — trilho DEITADO (● saída ─── ● retorno),
+ *  versão horizontal do TimeRail do checkout. Aqui o espaço é horizontal,
+ *  então os horários ficam em cima e o trilho corre por baixo deles. */
 function HorarioBadge({ tour }: { tour: Tour }) {
   const { departureStart, returnTime, frequency } = tour.schedule;
 
@@ -119,16 +121,40 @@ function HorarioBadge({ tour }: { tour: Tour }) {
   }
   if (!departureStart) return null;
 
+  // Sem horário de retorno não tem trilho — fica só o relógio + hora.
+  if (!returnTime) {
+    return (
+      <span className="inline-flex items-center gap-1.5 font-semibold text-[#111] tabular-nums">
+        <Clock size={13} strokeWidth={2} className="text-gray-400" />
+        {departureStart}
+      </span>
+    );
+  }
+
+  // Cartão de embarque em miniatura: horários nas pontas, trilho no meio com
+  // o ícone da categoria "viajando" na linha, labels miúdos embaixo.
+  const Icon = CATEGORY_ICON[tour.category] ?? Sailboat;
   return (
-    <span className="inline-flex items-center gap-1.5 font-semibold text-[#111] tabular-nums">
-      <Clock size={13} strokeWidth={2} className="text-gray-400" />
-      {departureStart}
-      {returnTime && (
-        <>
-          <MoveRight size={12} strokeWidth={2} className="text-gray-400" />
-          {returnTime}
-        </>
-      )}
+    <span className="inline-flex items-start gap-1.5">
+      <Clock size={13} strokeWidth={2} className="text-gray-400 mt-[3px]" />
+      <span className="inline-flex flex-col gap-[3px]">
+        <span className="flex items-center gap-2 font-semibold text-[#111] tabular-nums leading-tight">
+          <span>{departureStart}</span>
+          <span className="relative flex items-center w-14 md:w-20" aria-hidden="true">
+            <span className="w-[6px] h-[6px] rounded-full bg-[#111] flex-shrink-0" />
+            <span className="flex-1 h-[2px] bg-[#111] mx-[-1px]" />
+            <span className="w-[6px] h-[6px] rounded-full bg-[#111] flex-shrink-0" />
+            <span className="absolute left-1/2 -translate-x-1/2 w-[19px] h-[19px] rounded-full bg-white ring-1 ring-gray-200 flex items-center justify-center">
+              <Icon size={11} strokeWidth={2.2} className="text-[#111]" />
+            </span>
+          </span>
+          <span>{returnTime}</span>
+        </span>
+        <span className="flex justify-between text-[10px] font-medium text-gray-400 leading-none">
+          <span>saída</span>
+          <span>retorno</span>
+        </span>
+      </span>
     </span>
   );
 }
@@ -306,7 +332,10 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
     // Fundo cinza-claro pros cards sem borda (só sombra) se destacarem — como no ClickBus
     <section className="py-16 md:py-20 bg-[#f7f7f8]">
       <div className="max-w-[1200px] mx-auto px-6">
-        {/* Cabeçalho */}
+        {/* Cabeçalho — o eyebrow situa a praça (no multi-praça ele vira seletor de cidade) */}
+        <p className="text-[11px] md:text-[12px] font-semibold tracking-[0.12em] text-gray-400 uppercase mb-2">
+          Saindo de Porto Seguro
+        </p>
         <div className="flex justify-between items-baseline gap-4">
           <h2 className="text-[26px] md:text-[32px] font-bold text-[#111] leading-tight capitalize">{heading}</h2>
           {deadline && <span className="text-[13px] md:text-[14px] text-gray-400 whitespace-nowrap flex-shrink-0">{deadline}</span>}
@@ -339,6 +368,11 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
           </div>
         )}
 
+        {/* Lista + trilho de publicidade: os cards abrem mão de ~300px pro slot
+            vertical à direita (meia-página 300×600, formato padrão de mídia).
+            Abaixo de lg o trilho some e a lista volta a ocupar tudo. */}
+        <div className="lg:flex lg:gap-8 lg:items-start">
+        <div className="flex-1 min-w-0">
         {/* Cards — duas zonas (viagem em cima, faixa de oferta embaixo), estilo ClickBus.
             No mobile só os 4 primeiros aparecem (seção ficava um paredão). */}
         <div className="mt-8 flex flex-col gap-5">
@@ -367,26 +401,31 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                   <Photo tour={tour} lotado={lotado} sizes="100vw" />
                 </Link>
 
-                <div className="p-4 md:p-5 md:flex md:gap-5">
-                  {/* Desktop: foto grande em coluna, altura total do conteúdo */}
+                <div className="p-4 md:p-5">
+                  {/* Linha de cima: foto quadrada + infos da viagem. A faixa de
+                      oferta fica FORA dela, correndo a largura toda do card. */}
+                  <div className="md:flex md:gap-5 md:items-center">
+                  {/* Desktop: foto quadrada */}
                   <Link
                     href={`/passeios/${tour.slug}`}
-                    className="relative hidden md:block w-[180px] min-h-[188px] rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 self-stretch"
+                    className="relative hidden md:block w-[160px] h-[160px] rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0"
                   >
                     <Photo tour={tour} lotado={lotado} sizes="180px" />
                   </Link>
 
-                  <div className="flex-1 min-w-0 flex flex-col">
+                  <div className="flex-1 min-w-0">
                     {/* ── Zona 1: a viagem ── */}
                     <div className={`flex items-start gap-4 ${lotado ? "opacity-55" : ""}`}>
                       <div className="flex-1 min-w-0">
                         <Link
                           href={`/passeios/${tour.slug}`}
-                          className="block font-semibold text-[16px] md:text-[19px] text-[#111] leading-snug hover:underline underline-offset-2 decoration-gray-300"
+                          className="block font-semibold text-[16px] md:text-[18px] text-[#111] leading-snug line-clamp-2 hover:underline underline-offset-2 decoration-gray-300"
                         >
                           {tour.title}
                         </Link>
-                        <p className="text-[13px] text-gray-500 mt-1.5 flex items-center gap-x-2 gap-y-1 flex-wrap">
+                        {/* items-start: o trilho do horário torna o badge mais alto que a linha —
+                            os vizinhos alinham pelo topo (mesma altura da linha dos horários) */}
+                        <p className="text-[13px] text-gray-500 mt-1.5 flex items-start gap-x-2 gap-y-1 flex-wrap">
                           {hasHorario(tour) && (
                             <>
                               <HorarioBadge tour={tour} />
@@ -429,9 +468,11 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                       </p>
                     </div>
 
-                    {/* Respiro proposital entre a viagem e a oferta (mt-auto) — e espaço
-                        livre pra uma futura linha de ícones se fizer sentido */}
-                    <div className="mt-auto pt-4 md:pt-5">
+                  </div>
+                  </div>
+
+                    {/* Oferta em largura total, embaixo da foto + infos */}
+                    <div className="pt-4 md:pt-5">
 
                     {/* ── Zona 2 desktop: faixa de oferta — a faixa INTEIRA é o botão,
                         borda engrossa no hover (ring, sem pulo de layout) ── */}
@@ -443,7 +484,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                           : "border-[var(--tps-accent)] hover:ring-1 hover:ring-[var(--tps-accent)]"
                       }`}
                     >
-                      <span className="flex items-center gap-4 flex-1 min-w-0 px-4 py-3">
+                      <span className="flex items-center gap-3.5 flex-1 min-w-0 px-4 py-3">
                         <OperatorTag tour={tour} />
                         {includeIcons(tour).length > 0 && (
                           <>
@@ -471,7 +512,7 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                           {verLabel}
                         </span>
                       ) : (
-                        <span className="flex items-center gap-1.5 px-6 rounded-r-[11px] bg-[var(--tps-accent)] group-hover:bg-[var(--tps-accent-hover)] text-[#111] text-[14px] font-semibold transition-colors whitespace-nowrap">
+                        <span className="flex items-center gap-1.5 px-5 rounded-r-[11px] bg-[var(--tps-accent)] group-hover:bg-[var(--tps-accent-hover)] text-[#111] text-[14px] font-semibold transition-colors whitespace-nowrap">
                           Reservar
                           <ChevronRight size={16} strokeWidth={2.5} />
                         </span>
@@ -527,7 +568,6 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
                       </div>
                     )}
                     </div>
-                  </div>
                 </div>
               </article>
             );
@@ -541,6 +581,46 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
         >
           Ver todas as saídas →
         </Link>
+        </div>
+
+        {/* ── Trilho de publicidade (meia-página 300×600) — rola junto com a
+            página (sem sticky: perseguindo o scroll chamava atenção demais).
+            Por enquanto publicidade da casa; quando tiver mídia de parceiro
+            de verdade, a arte entra aqui no lugar. ── */}
+        <aside className="hidden lg:block w-[300px] flex-shrink-0 mt-8 lg:order-first">
+          <a
+            href="#guia"
+            className="group relative flex flex-col justify-between h-[600px] rounded-3xl overflow-hidden bg-[#a528fd] p-8 text-white"
+          >
+            <div>
+              <div className="relative w-8 h-8 mb-6">
+                <Image src="/logo-passeador-color-white.svg" alt="" fill className="object-contain" />
+              </div>
+              <p className="text-[26px] font-bold leading-tight">
+                Tem uma empresa de passeios?
+              </p>
+              <p className="text-[15px] text-white/80 mt-3 leading-relaxed">
+                Seus passeios aqui, vendendo online — a gente cadastra tudo pra você.
+              </p>
+            </div>
+
+            <div>
+              <div className="space-y-2.5 mb-7">
+                {["0% pra entrar", "15% só quando vende", "Cadastro feito pra você"].map((f) => (
+                  <p key={f} className="flex items-center gap-2.5 text-[14px] font-medium">
+                    <BadgeCheck size={16} strokeWidth={2} className="text-white/70 flex-shrink-0" />
+                    {f}
+                  </p>
+                ))}
+              </div>
+              <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-[#111] text-[14px] font-semibold group-hover:bg-[var(--tps-accent)] transition-colors">
+                Quero anunciar
+                <ArrowRight size={15} strokeWidth={2.5} />
+              </span>
+            </div>
+          </a>
+        </aside>
+        </div>
 
         {/* Rodapé — clima + cancelamento (mock) */}
         <p className="flex items-start gap-2 mt-6 text-[13px] text-gray-400 leading-relaxed">
