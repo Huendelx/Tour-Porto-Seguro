@@ -407,12 +407,15 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── Barra de filtros ── */}
+      {/* ── Barra de filtros — UMA linha no desktop: abas de dia à esquerda
+          (largura toda, com scroll se apertar), Tipo/Horário/Filtros à direita.
+          No mobile empilha (não cabe numa linha de 375px). ── */}
       <div className="sticky top-14 z-30 bg-white border-b border-gray-100">
+        <div className="md:flex md:items-center md:gap-3 px-4 md:px-6 py-3">
         {/* Abas de dia — os passeios têm dias fixos da semana, então cada aba
             mostra só o que sai naquele dia (runsOn). */}
         {days && (
-          <div className="flex gap-2 px-4 md:px-6 pt-3 overflow-x-auto justify-start md:justify-center [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex gap-2 md:flex-1 md:min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
               onClick={() => selectDay(null)}
               className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors ${
@@ -439,7 +442,7 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-2.5 px-4 md:px-6 py-3">
+        <div className="flex items-center gap-2.5 flex-shrink-0 mt-3 md:mt-0">
 
           {/* Tipo */}
           <div className="relative" ref={tipoRef}>
@@ -448,7 +451,7 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
               <ChevronDown size={14} strokeWidth={2} className={`transition-transform ${tipoOpen ? "rotate-180" : ""}`} />
             </button>
             {tipoOpen && (
-              <div className="absolute top-[calc(100%+10px)] left-0 w-64 bg-white rounded-2xl shadow-xl border border-black/8 z-40 py-2">
+              <div className="absolute top-[calc(100%+10px)] left-0 md:left-auto md:right-0 w-64 bg-white rounded-2xl shadow-xl border border-black/8 z-40 py-2">
                 {CATEGORIES.map((c) => {
                   const sel = cats.includes(c);
                   return (
@@ -474,7 +477,7 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
               <ChevronDown size={14} strokeWidth={2} className={`transition-transform ${horarioOpen ? "rotate-180" : ""}`} />
             </button>
             {horarioOpen && (
-              <div className="absolute top-[calc(100%+10px)] left-0 w-80 bg-white rounded-2xl shadow-xl border border-black/8 z-40 p-6">
+              <div className="absolute top-[calc(100%+10px)] left-0 md:left-auto md:right-0 w-80 bg-white rounded-2xl shadow-xl border border-black/8 z-40 p-6">
                 <HorarioChecks horario={horario} onToggle={toggleHorario} />
               </div>
             )}
@@ -494,6 +497,7 @@ export default function BuscarClient({ tours }: { tours: Tour[] }) {
               </span>
             )}
           </div>
+        </div>
         </div>
       </div>
 

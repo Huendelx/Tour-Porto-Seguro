@@ -104,7 +104,13 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
             : "bg-transparent"
         }`}
       >
-        <nav className="relative w-full max-w-[1200px] mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
+        {/* Na busca o header abre a largura toda, casando com a barra de
+            filtros full-width; no resto alinha com o body (1200px) */}
+        <nav
+          className={`relative w-full ${
+            pathname.startsWith("/buscar") ? "" : "max-w-[1200px]"
+          } mx-auto px-4 md:px-6 h-14 flex items-center justify-between`}
+        >
 
           {/* MOBILE NON-HOME overlay */}
           {!isHomePage && (
@@ -162,7 +168,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
 
           {/* LEFT — logo + nome */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 cursor-pointer">
-            <div className="relative w-7 h-7 flex-shrink-0">
+            <div className="relative w-9 h-9 flex-shrink-0">
               <Image
                 src={dark ? "/logo-passeador-color-yellow.svg" : "/logo-passeador-color-white.svg"}
                 alt="Passeador"
@@ -171,7 +177,7 @@ export default function Header({ profile }: { profile: CurrentProfile | null }) 
                 priority
               />
             </div>
-            <span className={`text-[14px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
+            <span className={`text-[15px] font-medium transition-colors ${dark ? "text-[#1a1a1a]" : "text-white"}`}>
               Passeador
             </span>
           </Link>

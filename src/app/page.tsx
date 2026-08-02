@@ -21,9 +21,9 @@ export default async function Home() {
   return (
     <main>
       <Hero />
-      <DestinosSection />
       {/* Partidas antes do editorial: inventário reservável é a maior intenção da home */}
       <PasseiosProximos tours={tours} />
+      <DestinosSection />
       <BentoDestaques />
       <NossosDestaques />
       <ExperienciasSection />

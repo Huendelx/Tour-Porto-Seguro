@@ -36,7 +36,13 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Search bar — o meio dela fica exatamente na borda de baixo da faixa */}
+        {/* Search bar — o meio dela fica exatamente na borda de baixo da faixa.
+            CONTRATO: a metade de baixo (~35px) sangra pra dentro da PRÓXIMA seção.
+            Por isso o Hero termina rente ao roxo, sem espaçador — assim a seção
+            seguinte encaixa direto (funciona com qualquer cor de fundo). Quem vier
+            depois do Hero precisa de padding-top >= ~80px pra barra não colar no
+            conteúdo. Não meta um <div> de respiro aqui: ele vira uma faixa branca
+            visível assim que a seção de baixo não for branca. */}
         <div
           className="absolute left-0 right-0 z-20 flex justify-center px-4"
           style={{ bottom: 0, transform: "translateY(50%)", filter: "drop-shadow(0 10px 28px rgba(0,0,0,0.22))" }}
@@ -44,9 +50,6 @@ export default function Hero() {
           <TourSearchBar />
         </div>
       </section>
-
-      {/* Respiro pra metade de baixo da barra de busca não encostar no conteúdo seguinte */}
-      <div className="h-10 md:h-12 bg-white" />
     </>
   );
 }

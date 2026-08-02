@@ -355,7 +355,9 @@ export default function PasseiosProximos({ tours }: { tours: Tour[] }) {
 
   return (
     // Fundo cinza-claro pros cards sem borda (só sombra) se destacarem — como no ClickBus
-    <section className="py-16 md:py-20 bg-[#f7f7f8]">
+    // pt maior que o pb: esta seção vem logo abaixo do Hero e absorve a metade de baixo
+    // da barra de busca (~35px), que flutua na emenda roxo/cinza.
+    <section className="pt-20 md:pt-24 pb-16 md:pb-20 bg-[#f7f7f8]">
       <div className="max-w-[1200px] mx-auto px-6">
         {/* Cabeçalho — o eyebrow situa a praça (no multi-praça ele vira seletor de cidade) */}
         <p className="text-[11px] md:text-[12px] font-semibold tracking-[0.12em] text-gray-400 uppercase mb-2">
