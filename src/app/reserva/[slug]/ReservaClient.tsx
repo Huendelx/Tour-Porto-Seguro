@@ -22,6 +22,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
 
   const [adults, setAdults] = useState(() => Math.max(1, Number(searchParams.get("adultos") ?? 1) || 1));
   const [children, setChildren] = useState(() => Math.max(0, Number(searchParams.get("criancas") ?? 0) || 0));
+  const [pets, setPets] = useState(() => Math.max(0, Number(searchParams.get("pets") ?? 0) || 0));
   const [editGuests, setEditGuests] = useState(false);
 
   // Passo 1 — dados do turista
@@ -37,6 +38,8 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
 
   // Transfer — só faz sentido oferecer em passeios que não já incluem busca no pacote
   const ofereceTransfer = !tour.hasTransfer;
+  // Valor fixo do add-on por reserva (spec: "Adicionar transfer — +R$25")
+  const TRANSFER_PRICE = 25;
   const [querTransfer, setQuerTransfer] = useState(false);
   const [enderecoTransfer, setEnderecoTransfer] = useState("");
   const enderecoValido = enderecoTransfer.trim().length >= 5;
@@ -45,10 +48,19 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
   const childPrice = tour.prices.find((p) => p.category === "child");
   const adultUnit = adultPrice?.priceMin ?? tour.price;
   const childUnit = childPrice?.priceMin ?? 0;
-  const total = adults * adultUnit + children * childUnit;
+  const total = adults * adultUnit + children * childUnit + (querTransfer ? TRANSFER_PRICE : 0);
   const feeNotes = [...new Set(tour.prices.map((p) => p.notes).filter(Boolean))] as string[];
 
   const podeConfirmar = dadosOk && (!querTransfer || enderecoValido);
+
+  // Observações que o operador precisa ver na reserva (transfer, pets)
+  const notasReserva =
+    [
+      querTransfer ? `Transfer solicitado (+R$ ${TRANSFER_PRICE}) — buscar em ${enderecoTransfer.trim()}` : null,
+      pets > 0 ? `${pets} pet${pets > 1 ? "s" : ""} — confirmar acomodação com o operador` : null,
+    ]
+      .filter(Boolean)
+      .join(" · ") || undefined;
 
   const [pagando, setPagando] = useState(false);
   const [pagarErro, setPagarErro] = useState("");
@@ -69,7 +81,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
       touristName: nome.trim(),
       touristEmail: email.trim(),
       touristWhatsapp: whatsapp.trim(),
-      notes: querTransfer ? `Transfer solicitado — buscar em ${enderecoTransfer.trim()}` : undefined,
+      notes: notasReserva,
     });
 
     if (!bookingId) {
@@ -110,7 +122,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
       touristName: nome.trim(),
       touristEmail: email.trim(),
       touristWhatsapp: whatsapp.trim(),
-      notes: querTransfer ? `Transfer solicitado — buscar em ${enderecoTransfer.trim()}` : undefined,
+      notes: notasReserva,
     }).catch((e) => console.error("Falha ao salvar reserva:", e));
 
     const msg =
@@ -120,9 +132,9 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
       (tour.schedule.departureStart
         ? `Saída: ${tour.schedule.departureStart}${tour.schedule.departureEnd ? `–${tour.schedule.departureEnd}` : ""}\n`
         : `Horário: conforme tábua de marés\n`) +
-      `Adultos: ${adults}${children > 0 ? `\nCrianças: ${children}` : ""}\n` +
+      `Adultos: ${adults}${children > 0 ? `\nCrianças: ${children}` : ""}${pets > 0 ? `\nPets: ${pets}` : ""}\n` +
       `Total estimado: R$ ${total}\n` +
-      (querTransfer ? `\nTransfer: sim — buscar em ${enderecoTransfer.trim()} (valor a confirmar)\n` : "\n") +
+      (querTransfer ? `\nTransfer: sim (+R$ ${TRANSFER_PRICE}) — buscar em ${enderecoTransfer.trim()}\n` : "\n") +
       `Nome: ${nome.trim()}\n` +
       `E-mail: ${email.trim()}\n` +
       `WhatsApp: ${whatsapp.trim()}`;
@@ -332,7 +344,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-[#111]">Pessoas</p>
                     <p className="text-[14px] text-gray-500 mt-0.5">
-                      {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? `, ${children} criança${children > 1 ? "s" : ""}` : ""}
+                      {adults} adulto{adults > 1 ? "s" : ""}{children > 0 ? `, ${children} criança${children > 1 ? "s" : ""}` : ""}{pets > 0 ? `, ${pets} pet${pets > 1 ? "s" : ""}` : ""}
                     </p>
                   </div>
                   <button
@@ -347,6 +359,12 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                     <SummaryCounter label="Adultos" value={adults} min={1} onChange={setAdults} />
                     {childPrice && (
                       <SummaryCounter label={`Crianças (${childPrice.label.replace("Criança ", "")})`} value={children} min={0} onChange={setChildren} />
+                    )}
+                    <SummaryCounter label="Pets" value={pets} min={0} onChange={setPets} />
+                    {pets > 0 && (
+                      <p className="text-[12px] text-gray-400">
+                        Cães, gatos e outros — o operador confirma se o passeio comporta.
+                      </p>
                     )}
                   </div>
                 )}
@@ -371,8 +389,11 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                         Busca no hotel ou pousada
                       </span>
                       <span className="block text-[13px] text-gray-500 mt-0.5">
-                        O operador confirma disponibilidade e valor pelo WhatsApp.
+                        O operador confirma o ponto de busca pelo WhatsApp.
                       </span>
+                    </span>
+                    <span className="text-[14px] font-semibold text-[#111] flex-shrink-0 tabular-nums">
+                      +R$ {TRANSFER_PRICE}
                     </span>
                     <span
                       className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-colors ${
@@ -416,7 +437,7 @@ export default function ReservaClient({ tour }: { tour: Tour }) {
                       <Car size={14} strokeWidth={1.75} className="text-gray-400" />
                       Transfer do hotel
                     </span>
-                    <span className="text-gray-400">a combinar</span>
+                    <span>R$ {TRANSFER_PRICE}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between pt-3 mt-1 border-t border-gray-100">
